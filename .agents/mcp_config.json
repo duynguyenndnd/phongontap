@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "notebooklm": {
+      "command": "node",
+      "args": [
+        "c:/Users/duy/Downloads/phonglabontap/notebooklm-mcp/dist/index.js"
+      ],
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}
+

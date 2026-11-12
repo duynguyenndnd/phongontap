@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepGuard AI Enterprise - Phòng Ôn Tập & Bảo Vệ Đa Chiều</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header & Status Bar -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-badge">
+        <span class="shield-icon">🛡️</span>
+        <div class="logo-text">
+          <h1>DEEPGUARD AI <span class="enterprise-tag">ENTERPRISE</span></h1>
+          <p class="subtitle">Phòng Ôn Tập Thực Chiến & Giả Lập Hội Đồng Bảo Vệ Pháp Y Âm Thanh</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <button id="btn-quick-goto-academy" class="quick-nav-pill-btn" title="Đi tới phần ôn tập dành cho người mới nhập môn">
+        <span class="pulse-dot"></span>
+        <span>🌱 Ôn Tập Nhập Môn (44 Câu)</span>
+      </button>
+      <div class="status-pill green-glow">
+        <span class="pulse-dot"></span>
+        <span>ONNX Opset 14 (6.8ms)</span>
+      </div>
+      <div class="status-pill cyan-glow">
+        <span class="pulse-dot cyan"></span>
+        <span>DSP: Hann 1024 / Hop 256</span>
+      </div>
+      <div class="status-pill purple-glow">
+        <span class="pulse-dot purple"></span>
+        <span>E2E Latency: ~350ms</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav class="main-nav">
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-tab="defense-arena">
+        <span class="tab-icon">⚔️</span> Đấu Trường Bảo Vệ (5 Chế Độ)
+      </button>
+      <button class="nav-tab academy-highlight" data-tab="progressive-academy" id="nav-tab-progressive-academy">
+        <span class="tab-icon">🌱</span> Ôn Tập Nhập Môn & CSDL (44 Câu) <span class="hot-badge">MỚI</span>
+      </button>
+      <button class="nav-tab" data-tab="audio-lab">
+        <span class="tab-icon">🔬</span> DSP Lab & Micro Sống (Phương Án A)
+      </button>
+      <button class="nav-tab" data-tab="file-inspector">
+        <span class="tab-icon">📁</span> Giám Định File & Báo Cáo FIPS (Phương Án B)
+      </button>
+      <button class="nav-tab" data-tab="red-team-sandbox">
+        <span class="tab-icon">🧪</span> Tấn Công Red-Team G.711 (Phương Án D)
+      </button>
+      <button class="nav-tab" data-tab="certification-exam">
+        <span class="tab-icon">🎓</span> Thi Sát Hạch 45 Phút & Chứng Chỉ (Phương Án C)
+      </button>
+      <button class="nav-tab" data-tab="quiz-trap">
+        <span class="tab-icon">⚡</span> Trắc Nghiệm Bẫy Sâu (24+ Câu)
+      </button>
+      <button class="nav-tab ai-forge-highlight" data-tab="ai-question-forge">
+        <span class="tab-icon">🤖</span> AI Forge & Tự Động Hóa Kho Câu Hỏi (Mới)
+      </button>
+      <button class="nav-tab" data-tab="master-questions">
+        <span class="tab-icon">📚</span> Kho 100+ Đề Thi & Bách Khoa
+      </button>
+      <button class="nav-tab" data-tab="knowledge-base">
+        <span class="tab-icon">📜</span> Hồ Sơ 11 Trụ Cột Tri Thức
+      </button>
+      <button class="nav-tab" data-tab="case-study">
+        <span class="tab-icon">⚖️</span> Án Lệ Ngân Hàng
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Workspace -->
+  <main class="main-content">
+    
+    <!-- TAB 1: ĐẤU TRƯỜNG BẢO VỆ (5 CHẾ ĐỘ) -->
+    <section id="defense-arena" class="tab-panel active">
+      <div class="mode-selector-bar">
+        <div class="mode-label">CHỌN CHẾ ĐỘ LUYỆN TẬP:</div>
+        <div class="mode-buttons">
+          <button class="mode-btn active" data-mode="1">
+            <span class="mode-num">/mode 1</span>
+            <span class="mode-title">Vấn Đáp Socratic Deep-Dive</span>
+          </button>
+          <button class="mode-btn" data-mode="2">
+            <span class="mode-num">/mode 2</span>
+            <span class="mode-title">Phản Biện Hội Đồng Ngân Hàng</span>
+          </button>
+          <button class="mode-btn" data-mode="3">
+            <span class="mode-num">/mode 3</span>
+            <span class="mode-title">Khám Nghiệm Hiện Trường</span>
+          </button>
+          <button class="mode-btn" data-mode="4">
+            <span class="mode-num">/mode 4</span>
+            <span class="mode-title">Flashcard Bẫy Sâu</span>
+          </button>
+          <button class="mode-btn" data-mode="5">
+            <span class="mode-num">/mode 5</span>
+            <span class="mode-title">Kiến Trúc & Code Audit</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mode 1: Socratic Deep-Dive -->
+      <div id="mode-content-1" class="mode-view active">
+        <div class="view-header">
+          <h2>CHẾ ĐỘ 1: VẤN ĐÁP BẢN CHẤT KỸ THUẬT & TOÁN HỌC (SOCRATIC DEEP-DIVE)</h2>
+          <p class="view-desc">Đi từ trực giác vật lý đến công thức giải tích và code logic. Khơi mở bản chất cơ học của dây thanh, nắp thanh môn và các bất biến sóng âm.</p>
+        </div>
+
+        <div class="socratic-grid">
+          <div class="question-list-sidebar">
+            <div class="sidebar-title">DANH MỤC CÂU HỎI HẠT NHÂN</div>
+            <div class="socratic-nav-list" id="socratic-nav">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <div class="question-detail-area">
+            <div class="challenge-card" id="socratic-card">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mode 2: Hội Đồng Phản Biện Ngân Hàng -->
+      <div id="mode-content-2" class="mode-view">
+        <div class="view-header">
+          <h2>CHẾ ĐỘ 2: BÀN PHẢN BIỆN HỘI ĐỒNG KHOA HỌC & AN NINH NGÂN HÀNG</h2>
+          <p class="view-desc">Đối mặt với 4 giám khảo khó tính nhất: Giám định viên trưởng pháp y, Giám đốc Quản trị rủi ro ngân hàng, Chuyên gia mạng viễn thông và Trưởng nhóm AI.</p>
+        </div>
+
+        <div class="council-board">
+          <div class="judges-row" id="judges-container">
+            <!-- Rendered via JS -->
+          </div>
+
+          <div class="council-stage" id="council-stage">
+            <!-- Active judge cross-examination view -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Mode 3: Khám Nghiệm Hiện Trường -->
+      <div id="mode-content-3" class="mode-view">
+        <div class="view-header">
+          <h2>CHẾ ĐỘ 3: PHÒNG KHÁM NGHIỆM PHÁP Y THỰC TẾ (FORENSIC CASE STUDY)</h2>
+          <p class="view-desc">Tiếp nhận hồ sơ âm thanh từ các cuộc gọi gian lận ngân hàng thực tế. Đo đạc các chỉ số, bóc tách tín hiệu và lập biên bản kết luận pháp lý.</p>
+        </div>
+
+        <div class="forensic-dossier-grid" id="forensic-cases-container">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Mode 4: Flashcard & Bẫy Sâu -->
+      <div id="mode-content-4" class="mode-view">
+        <div class="view-header">
+          <h2>CHẾ ĐỘ 4: FLASHCARD & BẪY LOGIC SÂU (DEEP TRAP FLASHCARDS)</h2>
+          <p class="view-desc">Các câu hỏi xoáy sâu vào các hiểu lầm kinh điển giữa học thuyết và triển khai thực chiến.</p>
+        </div>
+
+        <div class="flashcards-wrapper" id="flashcards-container">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Mode 5: Code Walkthrough & Kiến Trúc Hệ Thống -->
+      <div id="mode-content-5" class="mode-view">
+        <div class="view-header">
+          <h2>CHẾ ĐỘ 5: BẢN ĐỒ KIẾN TRÚC & CODE AUDIT BẬC THẦY (ARCHITECTURE & CODE AUDIT)</h2>
+          <p class="view-desc">Khám nghiệm trực tiếp 5 module hạt nhân của backend DeepGuard: DSP Pipeline, Ngữ âm NAFE & Glottal Stop Miner, ISO 3382 Schroeder, MelCNN ONNX Opset 14, và Fusion Veto Engine.</p>
+        </div>
+
+        <div class="code-audit-layout">
+          <div class="code-module-selector" id="code-module-nav">
+            <!-- Rendered via JS -->
+          </div>
+          <div class="code-viewer-panel" id="code-viewer-panel">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: PHÒNG THÍ NGHIỆM PHÁP Y DSP (LIVE AUDIO LAB) -->
+    <section id="audio-lab" class="tab-panel">
+      <div class="lab-layout">
+        <div class="lab-controls-panel">
+          <div class="panel-header">
+            <h3>🎛️ BỘ TỔNG HỢP VẬT LÝ & TÍN HIỆU PHÁP Y</h3>
+            <span class="badge live-badge">Web Audio API Native</span>
+          </div>
+          
+          <p class="lab-intro">
+            Nhấn các nút dưới đây để tạo và phát âm thanh mô phỏng trực tiếp trên trình duyệt, quan sát dạng sóng (Waveform), biến thiên phổ (FFT), đường rơi năng lượng Schroeder và cao độ F0.
+          </p>
+
+          <div class="sound-generator-grid">
+            <button class="synth-btn btn-human" id="btn-synth-human">
+              <span class="synth-icon">👤</span>
+              <div class="synth-text">
+                <span class="title">1. Giọng Người Thật</span>
+                <span class="desc">Jitter sinh học 1.25%, hài âm nắp thanh môn phong phú</span>
+              </div>
+            </button>
+
+            <button class="synth-btn btn-vocoder" id="btn-synth-vocoder">
+              <span class="synth-icon">🤖</span>
+              <div class="synth-text">
+                <span class="title">2. Deepfake Vocoder (HiFi-GAN)</span>
+                <span class="desc">Trơn hóa cực đoan (Over-smoothed), Jitter 0.16%, F0 bẹp</span>
+              </div>
+            </button>
+
+            <button class="synth-btn btn-rvc" id="btn-synth-rvc">
+              <span class="synth-icon">⚡</span>
+              <div class="synth-text">
+                <span class="title">3. Tấn Công RVC v2 Voice Clone</span>
+                <span class="desc">Vỡ pha cục bộ (Phase Jitter 5.3%), giật nảy bước sóng</span>
+              </div>
+            </button>
+
+            <button class="synth-btn btn-glottal-real" id="btn-synth-glottal-real">
+              <span class="synth-icon">🇻🇳</span>
+              <div class="synth-text">
+                <span class="title">4. Thanh Ngã Thật (Glottal Stop)</span>
+                <span class="desc">Nắp thanh môn siết ngắt, ΔE = -15dB trong 35ms, đứt F0</span>
+              </div>
+            </button>
+
+            <button class="synth-btn btn-glottal-fake" id="btn-synth-glottal-fake">
+              <span class="synth-icon">⚠️</span>
+              <div class="synth-text">
+                <span class="title">5. Thanh Ngã AI Bị Bại Lộ</span>
+                <span class="desc">ElevenLabs/Bark: Đáy F0 trơn tuột, thiếu cú ngắt thanh môn</span>
+              </div>
+            </button>
+
+            <button class="synth-btn btn-replay" id="btn-synth-replay">
+              <span class="synth-icon">📢</span>
+              <div class="synth-text">
+                <span class="title">6. Tấn Công Phát Lại (Replay Attack)</span>
+                <span class="desc">Lọc lược (Comb-filter) + Dội âm phòng kép RT60 = 0.92s</span>
+              </div>
+            </button>
+          </div>
+
+          <div class="audio-stop-bar">
+            <button class="btn-stop-audio" id="btn-stop-audio">⏹️ Dừng Phát Âm Thanh</button>
+            <div class="audio-vol-slider">
+              <span>Âm lượng:</span>
+              <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="0.7">
+            </div>
+          </div>
+
+          <!-- Forensic Metric Readout -->
+          <div class="metrics-dashboard">
+            <div class="metric-box">
+              <span class="metric-label">Micro-Jitter:</span>
+              <span class="metric-val" id="disp-jitter">-- %</span>
+              <span class="metric-status" id="status-jitter">Chờ phân tích</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Nghẽn Thanh Môn ΔE:</span>
+              <span class="metric-val" id="disp-glottal">-- dB</span>
+              <span class="metric-status" id="status-glottal">Chờ phân tích</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Thời Gian Dội Âm RT60:</span>
+              <span class="metric-val" id="disp-rt60">-- s</span>
+              <span class="metric-status" id="status-rt60">Chờ phân tích</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Veto Quyết Định:</span>
+              <span class="metric-val" id="disp-decision">--</span>
+              <span class="metric-status" id="status-decision">Chờ tín hiệu</span>
+            </div>
+          </div>
+          <!-- PHƯƠNG ÁN A: THU ÂM MICRO TRỰC TIẾP & GIỌNG ĐỌC GIÁM KHẢO -->
+          <div class="live-mic-box" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1rem; margin-top: 0.8rem;">
+            <div class="panel-header">
+              <h4 style="font-family: var(--font-heading); font-size: 0.9rem; color: #fff;">🎙️ THU ÂM & PHÂN TÍCH MICRO TRỰC TIẾP</h4>
+              <span class="badge" id="mic-status-badge" style="background: rgba(148,163,184,0.2); color: #94a3b8;">Chưa bật mic</span>
+            </div>
+            <p style="font-size: 0.78rem; color: #8b9bb4; line-height: 1.4; margin-top: 0.4rem;">
+              Bật micro và nói một câu bất kỳ để hệ thống đo đạc trực tiếp F0, Micro-Jitter dây thanh và liveness sinh học của chính bạn.
+            </p>
+            <div style="display: flex; gap: 0.6rem; margin-top: 0.6rem;">
+              <button class="btn-primary" id="btn-toggle-mic" style="font-size: 0.8rem; padding: 0.5rem 0.9rem;">
+                🎙️ Bật Micro Phân Tích
+              </button>
+              <button class="btn-secondary" id="btn-speak-judge-q" style="font-size: 0.8rem; padding: 0.5rem 0.9rem; color: #00f0ff; border-color: rgba(0,240,255,0.3);">
+                🗣️ Giám Khảo Đọc Câu Hỏi (TTS vi-VN)
+              </button>
+            </div>
+            <div id="live-mic-readout" style="display: none; margin-top: 0.8rem; padding: 0.6rem; background: rgba(0,255,157,0.06); border: 1px solid rgba(0,255,157,0.3); border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; color: #a7f3d0;">
+              Giọng bạn: <span id="mic-f0-val">-- Hz</span> | Jitter: <span id="mic-jitter-val">-- %</span> | Trạng thái: <span id="mic-liveness-val">--</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-visualizers-panel">
+          <!-- Canvas 1: Waveform Oscilloscope -->
+          <div class="canvas-card">
+            <div class="canvas-header">
+              <h4>📊 DAO ĐỘNG KÝ THỜI GIAN THỰC (OSCILLOSCOPE & JITTER WAVEFORM)</h4>
+              <span class="canvas-tag">Miền Thời Gian (Time Domain)</span>
+            </div>
+            <canvas id="canvas-oscilloscope" width="600" height="150"></canvas>
+          </div>
+
+          <!-- Canvas 2: Realtime FFT Spectrogram -->
+          <div class="canvas-card">
+            <div class="canvas-header">
+              <h4>🌈 PHỔ TẦN SỐ THỜI GIAN THỰC (REALTIME FFT & HARMONIC SPECTRUM)</h4>
+              <span class="canvas-tag">Miền Tần Số (Frequency Domain)</span>
+            </div>
+            <canvas id="canvas-spectrogram" width="600" height="150"></canvas>
+          </div>
+
+          <!-- Canvas 3: Schroeder Decay & RT60 Curve -->
+          <div class="canvas-card">
+            <div class="canvas-header">
+              <h4>📉 ĐƯỜNG CONG TÍCH PHÂN LÙI SCHROEDER & ƯỚC LƯỢNG T20 -> RT60</h4>
+              <span class="canvas-tag">ISO 3382 Energy Decay</span>
+            </div>
+            <canvas id="canvas-schroeder" width="600" height="150"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHƯƠNG ÁN B: GIÁM ĐỊNH FILE ÂM THANH & XUẤT HỒ SƠ FIPS -->
+    <section id="file-inspector" class="tab-panel">
+      <div class="view-header">
+        <h2>📁 PHÒNG KHÁM NGHIỆM TẬP TIN ÂM THANH & XUẤT BIÊN BẢN PHÁP Y FIPS 140-3</h2>
+        <p class="view-desc">Tải lên bất kỳ file âm thanh nào (.wav, .mp3, .ogg, .m4a). Hệ thống tự động bóc tách Mel Spectrogram, Jitter, Glottal Stop, Schroeder RT60, tính mã băm SHA-256 và sinh Biên bản Giám định có giá trị tố tụng.</p>
+      </div>
+
+      <div class="inspector-mode-bar" style="display: flex; gap: 0.8rem; margin-bottom: 1.2rem;">
+        <button class="mode-btn active" id="tab-sub-single-file">🔍 Giám Định Đơn Tệp (SHA-256 & FIPS 140-3)</button>
+        <button class="mode-btn" id="tab-sub-dual-file">👥 Đối Soát Kép 1:1 (Sinh Trắc Giọng Nói VIP)</button>
+      </div>
+
+      <div class="file-inspector-layout" id="single-file-layout">
+        <div class="file-upload-card">
+          <div class="drop-zone" id="file-drop-zone">
+            <span class="drop-icon" style="font-size: 2.8rem;">📤</span>
+            <div class="drop-title" style="font-weight: 700; font-size: 1.1rem; color: #fff; margin-top: 0.5rem;">KÉO THẢ TỆP ÂM THANH VÀO ĐÂY</div>
+            <div class="drop-sub" style="font-size: 0.8rem; color: #8b9bb4; margin-top: 0.3rem;">hoặc nhấp chuột để chọn file từ máy tính (.wav, .mp3, .ogg)</div>
+            <input type="file" id="audio-file-input" accept="audio/*" style="display: none;">
+          </div>
+
+          <div id="file-meta-card" class="file-meta-box" style="display: none;">
+            <!-- Populated via JS -->
+          </div>
+
+          <button class="btn-primary" id="btn-export-dossier" style="display: none; width: 100%; margin-top: 1rem;">
+            🔏 Xuất Biên Bản Giám Định Chuẩn FIPS 140-3 & TSA RFC 3161
+          </button>
+        </div>
+
+        <div class="file-visualizer-card">
+          <div class="canvas-card">
+            <div class="canvas-header">
+              <h4>📊 DẠNG SÓNG MIỀN THỜI GIAN & ĐƯỜNG BAO NĂNG LƯỢNG</h4>
+              <span class="canvas-tag">Waveform & RMS Envelope</span>
+            </div>
+            <canvas id="canvas-file-waveform" width="600" height="130"></canvas>
+          </div>
+
+          <div class="canvas-card" style="margin-top: 1rem;">
+            <div class="canvas-header">
+              <h4>🌈 PHỔ TẦN SỐ LOG-MEL & HARMONIC FORMANTS</h4>
+              <span class="canvas-tag">Mel-Spectrogram (80 Bins)</span>
+            </div>
+            <canvas id="canvas-file-spectrogram" width="600" height="130"></canvas>
+          </div>
+
+          <div id="dossier-report-view" class="dossier-report-view" style="display: none; margin-top: 1rem;">
+            <!-- Rendered Official Forensic Report -->
+          </div>
+        </div>
+      </div>
+
+      <!-- DUAL AUDIO COMPARATOR -->
+      <div id="dual-file-layout" style="display: none;">
+        <div class="dual-slots-grid">
+          <div class="slot-card" id="slot-card-a">
+            <h4 style="color: #00f0ff; font-family: var(--font-heading); margin-bottom: 0.5rem;">📁 MẪU A: GIỌNG NÓI CHUẨN (ENROLLED REFERENCE)</h4>
+            <p style="font-size: 0.78rem; color: #8b9bb4; margin-bottom: 0.8rem;">File âm thanh xác thực của chủ tài khoản VIP khi đăng ký sinh trắc</p>
+            <button class="btn-secondary" id="btn-load-sample-a" style="font-size: 0.8rem;">Tải Mẫu Chuẩn A (Chủ Thật)</button>
+            <div id="meta-slot-a" style="font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8; margin-top: 0.6rem;">Chưa tải</div>
+          </div>
+          <div class="slot-card" id="slot-card-b">
+            <h4 style="color: #ff3366; font-family: var(--font-heading); margin-bottom: 0.5rem;">📁 MẪU B: CUỘC GỌI NGHI VẤN (QUESTIONED CALL)</h4>
+            <p style="font-size: 0.78rem; color: #8b9bb4; margin-bottom: 0.8rem;">File âm thanh cuộc gọi đòi chuyển tiền khẩn cấp 5 tỷ đồng</p>
+            <button class="btn-secondary" id="btn-load-sample-b" style="font-size: 0.8rem;">Tải Mẫu Nghi Vấn B (Deepfake Clone)</button>
+            <div id="meta-slot-b" style="font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8; margin-top: 0.6rem;">Chưa tải</div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 1.2rem;">
+          <button class="btn-primary" id="btn-run-dual-compare" style="padding: 0.8rem 2rem; font-size: 0.95rem;">
+            ⚖️ Thực Hiện So Sánh Đối Soát Sinh Trắc Học & Phân Ly Trực Giao
+          </button>
+        </div>
+
+        <div id="dual-compare-results" style="display: none; margin-top: 1.5rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-glow-cyan); border-radius: var(--radius-sm); padding: 1.2rem;">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PHƯƠNG ÁN D: ĐẤU TRƯỜNG TẤN CÔNG RED-TEAM & SUY HAO ÂM THANH -->
+    <section id="red-team-sandbox" class="tab-panel">
+      <div class="view-header">
+        <h2>🧪 ĐẤU TRƯỜNG GIẢ LẬP TẤN CÔNG RED-TEAM & PHÒNG VỆ CHỦ ĐỘNG</h2>
+        <p class="view-desc">Tự tay đóng vai kẻ tấn công, kích hoạt các biến dạng âm thanh thực tế (kênh thoại hẹp G.711, rớt gói viễn thông 5%, nhồi tạp âm Babble, bẻ F0, dội âm loa ngoài) để kiểm thử phản xạ của Cổng động thích ứng.</p>
+      </div>
+
+      <div class="red-team-layout">
+        <div class="red-team-controls">
+          <div class="panel-header">
+            <h3 style="font-family: var(--font-heading); color: #fff;">🎛️ BỘ NÚT ĐIỀU KHIỂN TẤN CÔNG (ATTACK VECTORS)</h3>
+            <span class="badge" style="background: rgba(255,51,102,0.15); color: #ff3366;">Red-Team Suite</span>
+          </div>
+
+          <div class="attack-vector-list">
+            <label class="attack-toggle-row">
+              <input type="checkbox" id="atk-g711">
+              <div>
+                <span class="atk-name">1. Kênh Viễn Thông G.711 (8kHz, 300-3400Hz)</span>
+                <span class="atk-desc">Cắt cụt toàn bộ dải cao tần > 3.4kHz và nén 8-bit mu-law</span>
+              </div>
+            </label>
+
+            <label class="attack-toggle-row">
+              <input type="checkbox" id="atk-noise">
+              <div>
+                <span class="atk-name">2. Nhồi Tạp Âm Callcenter / Đường Phố (Babble Noise)</span>
+                <span class="atk-desc">Thêm nhiễu nền phi tuyến tính ở dải SNR 10dB</span>
+              </div>
+            </label>
+
+            <label class="attack-toggle-row">
+              <input type="checkbox" id="atk-packet-loss">
+              <div>
+                <span class="atk-name">3. Giả Lập Rớt Gói Viễn Thông 5% (AMR-NB Packet Loss)</span>
+                <span class="atk-desc">Mất khung âm thanh ngẫu nhiên kích hoạt bộ bù khung PLC</span>
+              </div>
+            </label>
+
+            <label class="attack-toggle-row">
+              <input type="checkbox" id="atk-pitch-shift">
+              <div>
+                <span class="atk-name">4. Tấn Công Bẻ Cong Cao Độ F0 (Pitch Bending ±20%)</span>
+                <span class="atk-desc">Dịch chuyển dải cao độ nhằm đánh lừa bộ bóc tách ngữ âm</span>
+              </div>
+            </label>
+
+            <label class="attack-toggle-row">
+              <input type="checkbox" id="atk-replay-reverb">
+              <div>
+                <span class="atk-name">5. Dội Âm Kép Loa Ngoài Replay (RT60 > 0.85s)</span>
+                <span class="atk-desc">Mô phỏng phát lại qua màng loa Bluetooth trong phòng họp</span>
+              </div>
+            </label>
+          </div>
+
+          <div style="margin-top: 1rem; display: flex; gap: 0.8rem;">
+            <button class="btn-primary" id="btn-play-degraded" style="background: linear-gradient(135deg, #ff3366, #ff0055); color: #fff;">
+              🔊 Phát Âm Thanh Bị Tấn Công
+            </button>
+            <button class="btn-secondary" id="btn-stop-degraded">⏹️ Dừng</button>
+          </div>
+        </div>
+
+        <div class="red-team-monitor">
+          <div class="panel-header">
+            <h3 style="font-family: var(--font-heading); color: #fff;">🛡️ PHẢN ỨNG CỦA HỆ THỐNG PHÒNG VỆ (DEFENSE REACTION)</h3>
+            <span class="badge" style="background: rgba(0,255,157,0.15); color: #00ff9d;">Context-Aware Gating</span>
+          </div>
+
+          <div class="weight-shift-box" id="red-team-weight-shift" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1.2rem; margin-top: 1rem;">
+            <div style="font-size: 0.85rem; color: #fff; font-weight: 700; margin-bottom: 0.8rem;">
+              TRỌNG SỐ CỔNG ĐỘNG HIỆN TẠI (DYNAMIC GATED WEIGHTS):
+            </div>
+            <div class="weight-bar-group">
+              <div class="w-label" style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #8b9bb4; margin-bottom: 3px;">
+                <span>CNN Weight (W_cnn):</span>
+                <span id="dyn-w-cnn" style="color: #00f0ff; font-family: var(--font-mono); font-weight: 700;">0.50</span>
+              </div>
+              <div class="w-progress" style="background: rgba(255,255,255,0.05); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 0.8rem;">
+                <div class="w-fill-cnn" id="fill-w-cnn" style="width: 50%; height: 100%; background: #00f0ff; transition: width 0.3s;"></div>
+              </div>
+            </div>
+            <div class="weight-bar-group">
+              <div class="w-label" style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #8b9bb4; margin-bottom: 3px;">
+                <span>Prosody Weight (W_prosody):</span>
+                <span id="dyn-w-prosody" style="color: #00ff9d; font-family: var(--font-mono); font-weight: 700;">0.30</span>
+              </div>
+              <div class="w-progress" style="background: rgba(255,255,255,0.05); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 0.8rem;">
+                <div class="w-fill-prosody" id="fill-w-prosody" style="width: 30%; height: 100%; background: #00ff9d; transition: width 0.3s;"></div>
+              </div>
+            </div>
+            <div class="weight-bar-group">
+              <div class="w-label" style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #8b9bb4; margin-bottom: 3px;">
+                <span>Acoustics Weight (W_acoustics):</span>
+                <span id="dyn-w-acoustics" style="color: #ffb700; font-family: var(--font-mono); font-weight: 700;">0.20</span>
+              </div>
+              <div class="w-progress" style="background: rgba(255,255,255,0.05); height: 8px; border-radius: 4px; overflow: hidden;">
+                <div class="w-fill-acoustics" id="fill-w-acoustics" style="width: 20%; height: 100%; background: #ffb700; transition: width 0.3s;"></div>
+              </div>
+            </div>
+            <div id="red-team-veto-banner" style="margin-top: 1.2rem; padding: 0.8rem; background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.3); border-radius: 4px; font-family: var(--font-mono); font-size: 0.82rem; color: #00f0ff;">
+              Trạng thái: Kênh băng rộng chuẩn 16kHz - Trọng số cân bằng
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHƯƠNG ÁN C: PHÒNG THI SÁT HẠCH 45 PHÚT & CHỨNG CHỈ PHÁP Y -->
+    <section id="certification-exam" class="tab-panel">
+      <div class="view-header">
+        <h2>🎓 PHÒNG THI SÁT HẠCH BẢO VỆ ĐỒ ÁN TOÀN DIỆN & CẤP CHỨNG CHỈ (45 PHÚT)</h2>
+        <p class="view-desc">Mô phỏng buổi bảo vệ chính thức trước Hội đồng Khoa học & Ban An ninh Ngân hàng: 10 câu hỏi ngẫu nhiên từ 11 trụ cột + 2 ca án pháp y + 1 bài code audit. Đạt ≥8.5/10 để nhận Chứng chỉ Chuyên gia Pháp y Âm thanh Cấp cao Level 3.</p>
+      </div>
+
+      <div class="exam-workspace" id="exam-workspace">
+        <div class="exam-start-card" id="exam-start-card" style="text-align: center; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 3rem 2rem;">
+          <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🎖️</div>
+          <h3 style="font-size: 1.6rem; color: #fff; font-family: var(--font-heading);">SẴN SÀNG BƯỚC VÀO PHÒNG BẢO VỆ ĐỒ ÁN CHÍNH THỨC?</h3>
+          <p style="color: #8b9bb4; font-size: 0.95rem; max-width: 650px; margin: 1rem auto 1.8rem; line-height: 1.6;">
+            Buổi thi diễn ra trong <strong>45 phút</strong> có tính giờ thực tế. Đề thi tổng hợp gồm trắc nghiệm bẫy, chứng minh vật lý, bóc tách telemetry ca án và rà soát mã nguồn backend.
+          </p>
+          <div style="display: flex; gap: 1rem; justify-content: center; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+            <input type="text" id="candidate-name" placeholder="Nhập Họ và Tên của bạn (in trên chứng chỉ)..." style="padding: 0.8rem 1.4rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #fff; border-radius: 6px; width: 340px; font-size: 0.95rem;">
+            <button class="btn-primary" id="btn-start-exam" style="padding: 0.8rem 1.8rem;">🚀 Bắt Đầu Buổi Sát Hạch (45m)</button>
+          </div>
+        </div>
+
+        <div class="exam-active-card" id="exam-active-card" style="display: none;">
+          <!-- Dynamically populated during 45m exam -->
+        </div>
+
+        <div class="exam-result-card" id="exam-result-card" style="display: none;">
+          <!-- Certificate view & Scorecard -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: HỒ SƠ 11 TRỤ CỘT TRI THỨC -->
+    <section id="knowledge-base" class="tab-panel">
+      <div class="knowledge-container">
+        <div class="knowledge-search-bar">
+          <input type="text" id="knowledge-search" placeholder="🔍 Tìm kiếm trụ cột: DSP, ISO 3382, Jitter, Glottal Stop, ONNX, Hard Veto, G.711, SHA-256...">
+          <div class="quick-tags">
+            <span class="qtag" data-tag="all">Tất cả</span>
+            <span class="qtag" data-tag="dsp">DSP & ISO 3382</span>
+            <span class="qtag" data-tag="prosody">Ngữ Âm Tiếng Việt</span>
+            <span class="qtag" data-tag="ai">MelCNN & ONNX</span>
+            <span class="qtag" data-tag="fusion">Fusion & Hard Veto</span>
+            <span class="qtag" data-tag="security">Pháp Lý & Ngân Hàng</span>
+          </div>
+        </div>
+
+        <div class="pillars-accordion" id="pillars-list">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: KHÁM NGHIỆM ÁN LỆ NGÂN HÀNG -->
+    <section id="case-study" class="tab-panel">
+      <div class="case-study-hero">
+        <h2>TRUNG TÂM PHÂN TÍCH PHÁP Y ÁN LỆ GIAN LẬN TÀI CHÍNH</h2>
+        <p>Hóa thân thành Chuyên gia Giám định Trưởng độc lập để bảo vệ ngân hàng trước các vụ kiện tụng và đợt tấn công Deepfake công nghệ cao.</p>
+      </div>
+
+      <div class="cases-workspace" id="cases-workspace">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- TAB 5: TRẮC NGHIỆM BẪY LOGIC SÂU -->
+    <section id="quiz-trap" class="tab-panel">
+      <div class="quiz-container">
+        <div class="quiz-filter-bar" id="quiz-filter-bar">
+          <button class="quiz-filter-pill active" data-cat="all">Tất Cả (24+ Câu)</button>
+          <button class="quiz-filter-pill" data-cat="dsp">DSP & Lấy Mẫu</button>
+          <button class="quiz-filter-pill" data-cat="acoustics">Âm Học ISO 3382 & Replay</button>
+          <button class="quiz-filter-pill" data-cat="prosody">Ngữ Âm & Thanh Ngã</button>
+          <button class="quiz-filter-pill" data-cat="onnx">MelCNN & ONNX</button>
+          <button class="quiz-filter-pill" data-cat="fusion">Fusion & Hard Veto</button>
+          <button class="quiz-filter-pill" data-cat="security">Pháp Y, PKI & Ngân Hàng</button>
+          <button class="quiz-filter-pill" data-cat="ai-generated" style="background: rgba(181, 95, 230, 0.15); border-color: #b55fe6; color: #d8b4fe;">🤖 Đề AI Sinh Mới Nhất</button>
+          <button class="quiz-filter-pill" data-cat="prog-beginner" style="background: rgba(0, 255, 157, 0.12); border-color: #00ff9d; color: #6ee7b7;">🌱 Nhập Môn Lập Trình</button>
+          <button class="quiz-filter-pill" data-cat="prog-db-basic" style="background: rgba(0, 240, 255, 0.12); border-color: #00f0ff; color: #7dd3fc;">🗄️ Nền Tảng CSDL</button>
+          <button class="quiz-filter-pill" data-cat="prog-db-deepguard" style="background: rgba(181, 95, 230, 0.12); border-color: #b55fe6; color: #d8b4fe;">🛡️ CSDL Chuyên Sâu DeepGuard</button>
+        </div>
+
+        <div class="quiz-scoreboard">
+          <div class="score-card">
+            <span class="sc-label">CÂU HỎI:</span>
+            <span class="sc-val" id="quiz-progress">1 / 12</span>
+          </div>
+          <div class="score-card">
+            <span class="sc-label">ĐIỂM SỐ:</span>
+            <span class="sc-val text-green" id="quiz-score">0</span>
+          </div>
+          <div class="score-card">
+            <span class="sc-label">TỶ LỆ CHÍNH XÁC:</span>
+            <span class="sc-val text-cyan" id="quiz-acc">0%</span>
+          </div>
+          <button class="btn-reset-quiz" id="btn-reset-quiz">🔄 Làm Lại Từ Đầu</button>
+        </div>
+
+        <div class="quiz-card" id="quiz-card">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: KHO 100+ ĐỀ THI & BÁCH KHOA TOÀN THƯ BẢO VỆ CHUYÊN SÂU -->
+    <section id="master-questions" class="tab-panel">
+      <div class="view-header">
+        <h2>📚 BÁCH KHOA TOÀN THƯ & KHO 100+ CÂU HỎI BẢO VỆ ĐỒ ÁN BẬC THẦY</h2>
+        <p class="view-desc">Kho ngân hàng câu hỏi đồ sộ bao phủ toàn diện 11 Phân khu Hạt nhân. Mỗi câu hỏi đi kèm phân tích vật lý, chứng minh toán học LaTeX chi tiết từng bước, sơ đồ vector trực quan và tiêu chuẩn pháp lý quốc tế (ISO 3382, ITU-T, FIPS 140-3, RFC 3161).</p>
+      </div>
+
+      <div class="master-q-controls" style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.2rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+          <input type="text" id="master-q-search" placeholder="🔍 Tìm kiếm theo từ khóa: Nyquist, STFT, Hann, Schroeder, T20, Glottal Stop, Jitter, Shimmer, ONNX, Dempster-Shafer, FIPS 140-3, Replay..." style="flex: 1; min-width: 300px; padding: 0.7rem 1.2rem; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); color: #fff; border-radius: 6px; font-size: 0.9rem;">
+          <select id="master-q-pillar-select" style="padding: 0.7rem 1.2rem; background: #070c18; border: 1px solid var(--border-glow-cyan); color: #00f0ff; border-radius: 6px; font-size: 0.85rem; font-family: var(--font-mono);">
+            <option value="all">-- Tất Cả 11 Phân Khu --</option>
+            <option value="1">Phân Khu 1: DSP Foundations (STFT & Polyphase)</option>
+            <option value="2">Phân Khu 2: Âm Học Phòng ISO 3382 & Replay</option>
+            <option value="3">Phân Khu 3: Ngữ Âm Học, 6 Thanh Điệu & Dây Thanh</option>
+            <option value="4">Phân Khu 4: Học Sâu MelCNN 2D & ONNX Opset 14</option>
+            <option value="5">Phân Khu 5: Dung Hợp Dempster-Shafer & Hard Veto</option>
+            <option value="6">Phân Khu 6: Bóc Tách Dấu Vân Tay Vocoder AI</option>
+            <option value="7">Phân Khu 7: Sinh Trắc Giọng Nói 1:1 & Phân Ly Trực Giao</option>
+            <option value="8">Phân Khu 8: Giả Lập Tấn Công Kênh Viễn Thông G.711</option>
+            <option value="9">Phân Khu 9: Ngân Sách Độ Trễ Toàn Trình 350ms</option>
+            <option value="10">Phân Khu 10: Pháp Y Số & Chuỗi Bằng Chứng FIPS</option>
+            <option value="11">Phân Khu 11: Kiến Trúc Doanh Nghiệp C++ & Fast API</option>
+          </select>
+        </div>
+
+        <div class="master-stats-bar" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #8b9bb4; font-family: var(--font-mono);">
+          <span>Hiển thị: <strong id="master-q-count" style="color: #00ff9d;">--</strong> câu hỏi</span>
+          <span style="color: #ffb700;">⭐ 100% Kèm Lời Giải Toán Học, Sơ Đồ Vector SVG & Tiêu Chuẩn Quốc Tế</span>
+        </div>
+      </div>
+
+      <div class="master-q-grid" id="master-q-container" style="display: flex; flex-direction: column; gap: 1.2rem;">
+        <!-- Dynamically rendered via JS -->
+      </div>
+    </section>
+
+    <!-- TAB 10: AI QUESTION FORGE & KHO TỰ ĐỘNG HÓA THỰC CHIẾN -->
+    <section id="ai-question-forge" class="tab-panel">
+      <div class="ai-forge-container">
+        <!-- Hero Header & Status -->
+        <div class="view-header" style="margin-bottom: 0;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h2>⚡ AI QUESTION FORGE & KHO CÂU HỎI TỰ ĐỘNG HÓA THỰC CHIẾN</h2>
+              <p class="view-desc">
+                Hệ thống AI đa phương thức tự động hóa mở rộng ngân hàng câu hỏi: Quét vấn đề thực tế từ Stack Overflow, phân tích bẫy lỗi từ Source Code, chẩn đoán lỗ hổng theo hành vi làm bài của người dùng và xử lý giám định bằng chứng Hình Ảnh trực quan.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Configuration Bar -->
+        <div class="ai-top-bar">
+          <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <div id="ai-api-status-pill" class="status-pill cyan-glow">
+              <span class="pulse-dot cyan"></span> DeepGuard Heuristic AI (Offline)
+            </div>
+            <div class="ai-api-key-config">
+              <span style="font-size: 0.8rem; color: #8b9bb4; font-family: var(--font-mono);">Khóa Gemini API (Tùy chọn):</span>
+              <input type="password" id="input-gemini-key" class="ai-api-input" placeholder="Dán Gemini API Key (để dùng AI trực tiếp)" autocomplete="off">
+              <button class="btn-secondary" id="btn-save-gemini-key" style="font-size: 0.75rem; padding: 0.45rem 0.8rem;">Lưu Khóa</button>
+            </div>
+          </div>
+          <div>
+            <span class="badge" style="background: rgba(0,255,157,0.15); color: #00ff9d; font-family: var(--font-mono);">
+              📦 Kho AI Hiện Có: <strong id="ai-bank-count-badge">0 câu</strong>
+            </span>
+          </div>
+        </div>
+
+        <!-- Sub-Navigation Consoles Bar -->
+        <div class="ai-subnav">
+          <button class="ai-subnav-btn active" data-subtab="subtab-so">
+            🌐 1. Stack Overflow & Thực Chiến
+          </button>
+          <button class="ai-subnav-btn" data-subtab="subtab-code">
+            💻 2. Sinh Câu Hỏi Từ Code
+          </button>
+          <button class="ai-subnav-btn" data-subtab="subtab-behavior">
+            🎯 3. Thích Ứng Theo Hành Vi (Lỗ Hổng)
+          </button>
+          <button class="ai-subnav-btn" data-subtab="subtab-vision">
+            🖼️ 4. Thị Giác & Xử Lý Ảnh (Vision)
+          </button>
+          <button class="ai-subnav-btn" data-subtab="subtab-bank">
+            📚 5. Kho Câu Hỏi AI Động & Luyện Tập
+          </button>
+          <button class="ai-subnav-btn" data-subtab="subtab-notebooklm" style="border-color: rgba(0, 240, 255, 0.5); color: #00f0ff;">
+            📓 6. NotebookLM Knowledge Bridge (Mới)
+          </button>
+        </div>
+
+        <!-- SUBPANEL 1: STACK OVERFLOW HARVESTER -->
+        <div id="subtab-so" class="ai-subpanel active">
+          <div class="so-search-box">
+            <input type="text" id="so-search-input" class="so-search-input" placeholder="🔍 Tìm kiếm bài toán thực tế trên Stack Overflow (vd: aliasing, onnxruntime, jitter, librosa, rt60)...">
+            <button class="btn-primary" id="btn-so-search" style="padding: 0.7rem 1.4rem;">
+              Quét Stack Overflow
+            </button>
+          </div>
+
+          <div class="so-quick-tags-bar">
+            <span style="font-size: 0.8rem; color: #8b9bb4; font-family: var(--font-mono);">Thẻ gợi ý:</span>
+            <button class="so-quick-tag active" data-tag="">Tất Cả Thẻ</button>
+            <button class="so-quick-tag" data-tag="audio">#audio</button>
+            <button class="so-quick-tag" data-tag="signal-processing">#signal-processing</button>
+            <button class="so-quick-tag" data-tag="onnxruntime">#onnxruntime</button>
+            <button class="so-quick-tag" data-tag="acoustics">#acoustics</button>
+            <button class="so-quick-tag" data-tag="webrtc">#webrtc</button>
+            <button class="so-quick-tag" data-tag="c++">#c++</button>
+            <button class="so-quick-tag" data-tag="security">#security</button>
+          </div>
+
+          <div id="so-results-list">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </div>
+
+        <!-- SUBPANEL 2: CODE-TO-QUESTION GENERATOR -->
+        <div id="subtab-code" class="ai-subpanel">
+          <div class="code-controls-bar">
+            <div style="flex: 1; min-width: 260px;">
+              <label style="font-size: 0.8rem; color: #8b9bb4; font-family: var(--font-mono); display: block; margin-bottom: 0.3rem;">Chọn Mẫu Mã Nguồn Dự Án:</label>
+              <select id="code-preset-select" style="width: 100%; padding: 0.6rem 1rem; background: #070c18; border: 1px solid var(--border-glow-cyan); color: #00f0ff; border-radius: 6px; font-size: 0.85rem; font-family: var(--font-mono);">
+                <!-- Populated via JS -->
+              </select>
+            </div>
+
+            <div style="flex: 1; min-width: 260px;">
+              <label style="font-size: 0.8rem; color: #8b9bb4; font-family: var(--font-mono); display: block; margin-bottom: 0.3rem;">Mục Tiêu Soi Bẫy Của AI:</label>
+              <select id="code-goal-select" style="width: 100%; padding: 0.6rem 1rem; background: #070c18; border: 1px solid var(--border-subtle); color: #fff; border-radius: 6px; font-size: 0.85rem; font-family: var(--font-mono);">
+                <option value="bugs">Lỗi Logic, Răng Cưa Aliasing & Tràn Bộ Nhớ Heap</option>
+                <option value="security">Lỗ Hổng Bảo Mật & Đòn Giả Mạo Liveness Spoofing</option>
+                <option value="latency">Vi Phạm Ngân Sách Độ Trễ 350ms & Buffer Underrun</option>
+                <option value="defense">Vấn Đáp Phản Biện Chuyên Sâu Hội Đồng Bảo Vệ</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="code-editor-wrapper">
+            <div class="code-editor-header">
+              <span>TRÌNH BIÊN TẬP & AUDIT SOURCE CODE THỜI GIAN THỰC</span>
+              <span>Hỗ trợ C++, Python, CUDA, PyTorch</span>
+            </div>
+            <textarea id="code-editor-textarea" class="code-textarea" spellcheck="false" placeholder="// Dán mã nguồn C++ hoặc Python của bạn vào đây để AI audit và sinh câu hỏi bẫy..."></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <span style="font-size: 0.85rem; color: #8b9bb4;">AI sẽ quét từng dòng code, tìm ra điểm nghẽn hoặc vi phạm nguyên lý vật lý và sinh đề thi trắc nghiệm.</span>
+            <button class="btn-primary" id="btn-generate-from-code" style="padding: 0.7rem 1.6rem; font-weight: 700;">
+              ⚡ Phân Tích AST & Sinh Bẫy Logic Từ Code
+            </button>
+          </div>
+
+          <div id="code-generated-preview" style="display: none;"></div>
+        </div>
+
+        <!-- SUBPANEL 3: BEHAVIOR-ADAPTIVE WEAKNESS ENGINE -->
+        <div id="subtab-behavior" class="ai-subpanel">
+          <div id="behavior-dashboard-area">
+            <!-- Dynamically populated with Radar, Mastery Bars, and 1-Click Remediation -->
+          </div>
+        </div>
+
+        <!-- SUBPANEL 4: MULTIMODAL VISION LAB -->
+        <div id="subtab-vision" class="ai-subpanel">
+          <div class="vision-workspace-grid">
+            <!-- Left Column: Controls & Presets -->
+            <div>
+              <div class="vision-dropzone" id="vision-dropzone">
+                <input type="file" id="vision-file-input" accept="image/*" style="display: none;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📁</div>
+                <strong style="color: #00f0ff; font-size: 0.9rem;">Kéo & Thả Ảnh Vào Đây</strong>
+                <p style="font-size: 0.78rem; color: #8b9bb4; margin: 0.4rem 0;">Hoặc nhấn để chọn file ảnh từ máy</p>
+                <span class="badge" style="background: rgba(181,95,230,0.15); color: #b55fe6; font-size: 0.72rem;">Hỗ trợ dán trực tiếp Ctrl+V</span>
+              </div>
+
+              <div style="margin-top: 1.2rem;">
+                <label style="font-size: 0.8rem; color: #8b9bb4; font-family: var(--font-mono); display: block; margin-bottom: 0.5rem;">Thư Viện Ảnh Bằng Chứng Pháp Y Có Sẵn:</label>
+                <div class="vision-presets-list" id="vision-preset-thumbnails">
+                  <!-- Rendered via JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Visual Preview & Multimodal Generator -->
+            <div class="vision-preview-card" id="vision-preview-container">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                <div>
+                  <h4 id="vision-img-title" style="color: #fff; font-size: 1.05rem;">Tiêu Đề Ảnh Giám Định</h4>
+                  <p id="vision-img-desc" style="font-size: 0.8rem; color: #8b9bb4; margin-top: 0.2rem;">Mô tả chi tiết bằng chứng quang phổ.</p>
+                </div>
+                <div style="display: flex; gap: 0.6rem;">
+                  <button class="btn-secondary" id="btn-vision-inspect" style="font-size: 0.8rem; padding: 0.4rem 0.9rem;">
+                    🔍 Phóng To & Soi Chi Tiết (Lightbox)
+                  </button>
+                  <button class="btn-primary" id="btn-vision-generate" style="font-size: 0.8rem; padding: 0.4rem 1.1rem; background: linear-gradient(135deg, #00ff9d, #00f0ff); color: #040711; font-weight: 700;">
+                    ⚡ AI Vision Sinh Bẫy Từ Ảnh Này
+                  </button>
+                </div>
+              </div>
+
+              <div class="vision-main-display">
+                <img id="vision-preview-img" src="" alt="Forensic Preview" />
+              </div>
+
+              <div id="vision-generated-preview" style="display: none;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBPANEL 5: DYNAMIC BANK & LIVE INTEGRATION -->
+        <div id="subtab-bank" class="ai-subpanel">
+          <div class="ai-bank-controls-bar">
+            <div>
+              <strong style="color: #fff; font-size: 1.1rem;">NGÂN HÀNG CÂU HỎI AI ĐÃ SINH: </strong>
+              <span id="ai-bank-total-count" style="color: #00ff9d; font-family: var(--font-mono); font-weight: 700; margin-left: 6px;">0 câu hỏi</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+              <button class="btn-primary" id="btn-inject-all-quiz" style="background: linear-gradient(135deg, #ff3366, #ffb700); color: #fff; font-weight: 700; border: none; padding: 0.6rem 1.2rem;">
+                🔥 Đưa Tất Cả Vào Trắc Nghiệm Bẫy Sâu & Bắt Đầu Làm Bài
+              </button>
+              <button class="btn-secondary" id="btn-export-bank-json" style="font-size: 0.8rem; padding: 0.5rem 0.9rem;">
+                📥 Xuất File JSON
+              </button>
+              <button class="btn-secondary" id="btn-import-bank-json" style="font-size: 0.8rem; padding: 0.5rem 0.9rem;">
+                📤 Nhập File JSON
+              </button>
+              <input type="file" id="input-import-bank-file" accept=".json" style="display: none;">
+            </div>
+          </div>
+
+          <div id="ai-bank-items-container">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </div>
+
+        <!-- SUBPANEL 6: NOTEBOOKLM KNOWLEDGE BRIDGE (MỚI) -->
+        <div id="subtab-notebooklm" class="ai-subpanel">
+          <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: var(--radius-md); padding: 1.2rem; margin-bottom: 1.2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <span style="font-size: 1.4rem;">📓</span>
+                <div>
+                  <strong style="color: #00f0ff; font-size: 1.1rem; font-family: var(--font-heading);">GOOGLE NOTEBOOKLM MCP KNOWLEDGE BRIDGE</strong>
+                  <div style="font-size: 0.8rem; color: #8b9bb4;">Trích xuất tri thức từ Sổ tay nghiên cứu & Sinh câu hỏi thực chiến chuẩn Grounding (Có trích dẫn nguồn)</div>
+                </div>
+              </div>
+              <div class="status-pill green-glow" style="margin: 0;">
+                <span class="pulse-dot"></span>
+                <span>MCP Server: Đã Kết Nối & Xác Thực</span>
+              </div>
+            </div>
+
+            <!-- Preset Knowledge Templates -->
+            <div style="margin-bottom: 1rem;">
+              <span style="font-size: 0.8rem; color: #8b9bb4; font-family: var(--font-mono); display: block; margin-bottom: 0.4rem;">Sổ Tay Tri Thức Đã Chuẩn Bị Sẵn (Chọn để nạp nhanh):</span>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button class="btn-secondary notebooklm-preset-btn" data-preset="forensics" style="font-size: 0.8rem; padding: 0.45rem 0.9rem;">
+                  🔬 Sổ Tay Âm Học Pháp Y (ISO 3382 / ITU-T G.711)
+                </button>
+                <button class="btn-secondary notebooklm-preset-btn" data-preset="vectordb" style="font-size: 0.8rem; padding: 0.45rem 0.9rem;">
+                  ⚡ Sổ Tay Vector DB & Cosine HNSW (Milvus / pgvector)
+                </button>
+                <button class="btn-secondary notebooklm-preset-btn" data-preset="bankcase" style="font-size: 0.8rem; padding: 0.45rem 0.9rem;">
+                  ⚖️ Sổ Tay Án Lệ Ngân Hàng & Chuỗi Bảo Quản FIPS
+                </button>
+                <button class="btn-secondary notebooklm-preset-btn" data-preset="vocabulary" style="font-size: 0.8rem; padding: 0.45rem 0.9rem;">
+                  📖 Sổ Tay Từ Vựng & Thuật Ngữ Hệ Thống (Mới)
+                </button>
+              </div>
+            </div>
+
+            <!-- Custom Notebook Input Box -->
+            <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+              <div>
+                <label style="font-size: 0.8rem; color: #cbd5e1; font-family: var(--font-mono); display: block; margin-bottom: 0.3rem;">
+                  Nhập Ghi Chú / Trích Dẫn / Đường dẫn Sổ tay NotebookLM của bạn:
+                </label>
+                <textarea id="notebooklm-content-input" rows="4" style="width: 100%; background: #070c18; border: 1px solid var(--border-glow-cyan); border-radius: 6px; padding: 0.8rem; color: #fff; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.5;" placeholder="Dán nội dung ghi chú, tóm tắt tài liệu hoặc liên kết chia sẻ từ Google NotebookLM tại đây..."></textarea>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
+                <span style="font-size: 0.8rem; color: #8b9bb4;">
+                  ✨ Hệ thống sẽ tự động đối chiếu tài liệu và trích xuất câu hỏi trắc nghiệm kèm trích dẫn (Citations).
+                </span>
+                <button class="btn-primary" id="btn-forge-from-notebooklm" style="background: linear-gradient(135deg, #00f0ff, #00ff9d); color: #040711; font-weight: 700; padding: 0.7rem 1.5rem; border: none;">
+                  🚀 Trích Xuất & Sinh Câu Hỏi Chuẩn Grounding
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Generated Questions Container -->
+          <div id="notebooklm-results-list">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 11: HỌC LẬP TRÌNH & CƠ SỞ DỮ LIỆU THĂNG TIẾN (PROGRESSIVE ACADEMY) -->
+    <section id="progressive-academy" class="tab-panel">
+      <div class="academy-container">
+        <!-- Header -->
+        <div class="view-header" style="margin-bottom: 0;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h2>🌱➔🚀 HỌC LẬP TRÌNH & CƠ SỞ DỮ LIỆU THĂNG TIẾN (PROGRESSIVE ACADEMY)</h2>
+              <p class="view-desc">
+                Lộ trình học tập leo thang tri thức thích ứng: Bắt đầu từ tư duy lập trình căn bản cho người mới (25 câu), tiến lên nền tảng Cơ sở dữ liệu & SQL (24 câu), và tự động nâng cấp sang kiến trúc CSDL Pháp y & Vector DB chuyên sâu của DeepGuard (20 câu) — Tổng cộng 69 câu hỏi kèm tài liệu chuẩn đọc thêm!
+              </p>
+            </div>
+            <div>
+              <button class="btn-secondary" id="btn-open-doc-library" style="border-color: #00ff9d; color: #00ff9d; font-weight: 700; padding: 0.6rem 1.2rem; font-size: 0.85rem; box-shadow: 0 0 15px rgba(0, 255, 157, 0.2);">
+                📚 Xem Thư Viện 69 Tài Liệu Chuẩn & Link Bài Học
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Top Stats -->
+        <div class="academy-dashboard-bar">
+          <div class="acad-stat-box">
+            <span class="acad-stat-label">ĐIỂM KINH NGHIỆM (EXP):</span>
+            <span class="acad-stat-val text-green" id="academy-exp-val">0 EXP</span>
+          </div>
+          <div class="acad-stat-box">
+            <span class="acad-stat-label">CHUỖI ĐÚNG LIÊN TIẾP:</span>
+            <span class="acad-stat-val text-cyan" id="academy-streak-val">🔥 0</span>
+          </div>
+          <div class="acad-stat-box">
+            <span class="acad-stat-label">TỶ LỆ CHÍNH XÁC:</span>
+            <span class="acad-stat-val text-amber" id="academy-acc-val">0%</span>
+          </div>
+          <div class="acad-stat-box">
+            <span class="acad-stat-label">CÂU HỎI HIỆN TẠI:</span>
+            <span class="acad-stat-val" id="academy-q-progress" style="color: #fff; font-size: 1.25rem;">Câu 1 / 25</span>
+          </div>
+
+          <div class="academy-progress-wrapper">
+            <div class="acad-progress-header">
+              <span id="academy-current-level-name" style="color: #00ff9d; font-weight: 700;">CẤP ĐỘ 1: NHẬP MÔN LẬP TRÌNH & TƯ DUY CODE (25 CÂU)</span>
+              <span style="color: #8b9bb4;">Tiến độ thăng cấp</span>
+            </div>
+            <div class="acad-progress-track">
+              <div class="acad-progress-fill" id="academy-exp-bar-fill" style="width: 4%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tier Navigation Cards -->
+        <div class="academy-tier-nav">
+          <div class="academy-tier-pill active" data-tier="1">
+            <div class="tier-top-row">
+              <span class="badge" style="background: rgba(0, 255, 157, 0.15); color: #00ff9d;">CHẶNG 1: KHỞI ĐỘNG</span>
+              <span class="tier-lock-icon" style="color: #00ff9d; font-weight: 700;">✓ MỞ KHÓA</span>
+            </div>
+            <div class="tier-title-main">🌱 Nhập Môn Lập Trình & Logic (25 Câu)</div>
+            <p class="tier-desc-text">Dành riêng cho người mới tiếp xúc code: Biến số, Toán tử so sánh, Vòng lặp, Mảng index 0, Hàm, Stack/Heap, Debug, Đệ quy, Bảng băm, Cây nhị phân và Bất đồng bộ.</p>
+          </div>
+
+          <div class="academy-tier-pill locked" data-tier="2">
+            <div class="tier-top-row">
+              <span class="badge" style="background: rgba(0, 240, 255, 0.15); color: #00f0ff;">CHẶNG 2: TĂNG TỐC</span>
+              <span class="tier-lock-icon" style="color: #8b9bb4; font-weight: 700;">🔒 KHÓA</span>
+            </div>
+            <div class="tier-title-main">🗄️ Nền Tảng Cơ Sở Dữ Liệu & SQL (24 Câu)</div>
+            <p class="tier-desc-text">Dành cho người tìm hiểu CSDL: Bảng, PK, FK, SQL CRUD, JOIN, ACID, Index B-Tree, GROUP BY, SQL Injection, CTE, View, Deadlock, EXPLAIN, Window Functions và Partitioning.</p>
+          </div>
+
+          <div class="academy-tier-pill locked" data-tier="3">
+            <div class="tier-top-row">
+              <span class="badge" style="background: rgba(181, 95, 230, 0.15); color: #b55fe6;">CHẶNG 3: BẬC THẦY</span>
+              <span class="tier-lock-icon" style="color: #8b9bb4; font-weight: 700;">🔒 KHÓA</span>
+            </div>
+            <div class="tier-title-main">🛡️ CSDL Chuyên Sâu DeepGuard (20 Câu)</div>
+            <p class="tier-desc-text">Kiến trúc CSDL pháp y ngân hàng: Vector DB pgvector/Milvus 512-dim, HNSW &lt;5ms, ClickHouse Sparse Index, Merkle DAG FIPS, Redis 350ms, ZKP, CQRS, WAL và NotebookLM Grounding RAG.</p>
+          </div>
+        </div>
+
+        <!-- Question Container -->
+        <div id="academy-question-container">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Academy Level-Up Celebratory Modal -->
+  <div id="academy-levelup-modal" class="academy-levelup-modal">
+    <div class="levelup-modal-card">
+      <div class="levelup-trophy-icon">🏆</div>
+      <div id="levelup-badge" class="levelup-badge badge-tier2">CẤP ĐỘ MỚI ĐÃ MỞ KHÓA!</div>
+      <h3 class="levelup-title" id="levelup-title">XUẤT SẮC! BẠN ĐÃ THĂNG HẠNG TRI THỨC!</h3>
+      <p class="levelup-desc" id="levelup-desc">
+        Hệ thống tự động nâng bậc câu hỏi của bạn sang cấp độ tiếp theo.
+      </p>
+      <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem; flex-wrap: wrap; justify-content: center; width: 100%;">
+        <button class="btn-primary" id="levelup-proceed-btn" style="background: linear-gradient(135deg, #00ff9d, #00f0ff); color: #040711; font-weight: 700; padding: 0.8rem 1.6rem; font-size: 0.95rem; border: none; flex: 1; min-width: 200px;">
+          🚀 Chuyển Sang Cấp Tiếp Theo Ngay
+        </button>
+        <button class="btn-secondary" id="levelup-close-btn" style="padding: 0.8rem 1.4rem; font-size: 0.9rem; flex: 1; min-width: 200px;">
+          Tiếp Tục Luyện Cấp Hiện Tại
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Forensic Image Lightbox Zoom Modal -->
+  <div id="image-lightbox-modal" class="image-lightbox-modal">
+    <div class="lightbox-modal-content">
+      <div class="lightbox-modal-header">
+        <span class="lightbox-modal-title">🔍 GIÁM ĐỊNH BẰNG CHỨNG HÌNH ẢNH TRỰC QUAN (FORENSIC EVIDENCE INSPECTOR)</span>
+        <div class="lightbox-modal-controls">
+          <button id="lightbox-zoom-in" title="Phóng to (Phím +)">➕ Phóng To</button>
+          <button id="lightbox-zoom-out" title="Thu nhỏ (Phím -)">➖ Thu Nhỏ</button>
+          <button id="lightbox-zoom-reset" title="Tỷ lệ 100% (Phím 0)">↺ Reset</button>
+          <button id="lightbox-close" title="Đóng (Phím Esc)">✕ Đóng</button>
+        </div>
+      </div>
+      <div class="lightbox-modal-body">
+        <div class="lightbox-image-wrapper">
+          <img id="lightbox-img" src="" alt="Bằng chứng giám định" draggable="false" />
+        </div>
+      </div>
+      <div class="lightbox-modal-caption" id="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <!-- Full Reference Library Modal (69 Authentic Sources) -->
+  <div id="academy-doc-modal" class="academy-doc-modal">
+    <div class="doc-modal-card">
+      <div class="doc-modal-header">
+        <h3>📚 THƯ VIỆN 69 TÀI LIỆU CHUẨN & LINK BÀI HỌC THỰC TẾ</h3>
+        <button id="doc-modal-close-btn" class="btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">✕ Đóng</button>
+      </div>
+      <div class="doc-modal-body" id="doc-modal-body">
+        <!-- Dynamically rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <div class="footer-content">
+      <span>DeepGuard AI Enterprise &copy; 2026 - Nền Tảng Giám Định Pháp Y Âm Thanh Đa Tầng</span>
+      <span class="footer-divider">|</span>
+      <span>Hệ thống tuân thủ ISO 3382 & ISO 19790 FIPS 140-3</span>
+      <span class="footer-divider">|</span>
+      <span class="text-glow-green">Phòng Thí Nghiệm Đang Kích Hoạt</span>
+    </div>
+  </footer>
+
+  <script src="master_questions_data.js"></script>
+  <script src="app.js"></script>
+  <script src="ai_forge_engine.js"></script>
+  <script src="progressive_db_academy.js"></script>
+</body>
+</html>
