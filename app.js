@@ -278,773 +278,1762 @@ Làm thế nào để Canvas 2D render Spectrogram và Waveform đạt 60 FPS m�
 // =====================================================================
 // 2. DATA REPOSITORY: 4 JUDGES & 8 HARSH DEFENSE QUESTIONS (MODE 2)
 // =====================================================================
+// 2. DATA REPOSITORY: 4 JUDGES & 20 HARSH DEFENSE QUESTIONS (MODE 2)
 const JUDGES = [
   {
-    id: "judge_1",
-    name: "GS. Trần Đình Khải",
-    role: "Chủ tịch Hội đồng Pháp y Âm thanh & Tín hiệu Quốc gia",
-    avatar: "👨‍⚖️",
-    threat: "THREAT: CỰC KỲ KHẮC NGHIỆT",
-    threatClass: "threat-extreme",
-    questions: [
+    "id": "judge_1",
+    "name": "GS. Trần Đình Khải",
+    "role": "Chủ tịch Hội đồng Pháp y Âm thanh & Tín hiệu Quốc gia",
+    "avatar": "👨‍⚖️",
+    "threat": "THREAT: CỰC KỲ KHẮC NGHIỆT",
+    "threatClass": "threat-extreme",
+    "questions": [
       {
-        qId: 101,
-        title: "Bắt bẻ về suy hao băng thông G.711 thoại bàn (300-3400Hz)",
-        content: `"Anh/chị khẳng định bóc tách được Micro-Jitter và Glottal Stop trên kênh thoại 8kHz. Nhưng trong thực tế viễn thông G.711, thuật toán lượng tử hóa A-law/Mu-law 8-bit và bộ lọc thông dải 300-3400Hz làm suy hao nghiêm trọng các hài âm bậc cao. 
-Làm thế nào anh/chị chứng minh hệ thống không bị báo động giả (False Positive) khi người dùng dùng điện thoại bàn đời cũ nói thanh Ngã?"`,
-        rubric: [
+        "qId": 101,
+        "title": "Bắt bẻ về suy hao băng thông G.711 thoại bàn (300-3400Hz)",
+        "content": "\"Anh/chị khẳng định bóc tách được Micro-Jitter và Glottal Stop trên kênh thoại 8kHz. Nhưng trong thực tế viễn thông G.711, thuật toán lượng tử hóa A-law/Mu-law 8-bit và bộ lọc thông dải 300-3400Hz làm suy hao nghiêm trọng các hài âm bậc cao. Làm thế nào chứng minh hệ thống không bị báo động giả (False Positive) khi người dùng dùng điện thoại bàn đời cũ nói thanh Ngã?\"",
+        "rubric": [
           "Tần số cơ bản F0 tiếng Việt (100-300Hz) hoàn toàn nằm trong dải thông 300-3400Hz hoặc bóc tách được qua chu kỳ tự tương quan NAFE.",
           "Glottal Stop Mining dựa trên độ sụt năng lượng RMS toàn cục (Delta E < -12dB), không phụ thuộc vào hài âm cao > 3400Hz.",
           "Cổng động thích ứng kênh truyền tự động hạ trọng số CNN xuống 0.10 và tăng trọng số Ngữ âm lên 0.65."
         ]
       },
       {
-        qId: 102,
-        title: "Thách thức về người bị ốm, viêm họng hay nghẹt mũi",
-        content: `"Một khách hàng VIP của ngân hàng bị viêm thanh quản hạt hoặc cảm cúm nặng, giọng bị khàn và đứt hơi. Lúc này Jitter sinh học của họ có thể vọt lên 4.5% và đường F0 bị biến dạng. 
-Hệ thống của anh/chị có nhầm họ thành kẻ tấn công RVC Deepfake và khóa tài khoản của họ không?"`,
-        rubric: [
-          "Người bị viêm thanh quản có Shimmer (biến thiên biên độ) tăng nhưng RT60 âm học phòng vẫn nằm trong dải bình thường (0.2s - 0.5s).",
-          "Viêm thanh quản làm tăng jitter nhưng vẫn giữ được vi cấu trúc âm đục tự nhiên (vô thanh hóa cục bộ), không có hiện tượng lượng tử hóa bước nhảy pha của RVC v2.",
-          "Chính sách Tri-Band đưa trường hợp này vào dải Vàng [0.3 - 0.8) để kích hoạt Step-up Auth (OTP khuôn mặt/SMS) chứ không bao giờ chặn cứng."
+        "qId": 102,
+        "title": "Thách thức về người bị ốm, viêm họng hay nghẹt mũi",
+        "content": "\"Một khách hàng VIP của ngân hàng bị viêm thanh quản hạt hoặc cảm cúm nặng, giọng bị khàn và đứt hơi. Lúc này Jitter sinh học của họ có thể vọt lên 4.5% và đường F0 bị biến dạng. Hệ thống của anh/chị có nhầm họ thành kẻ tấn công RVC Deepfake và khóa tài khoản của họ không?\"",
+        "rubric": [
+          "Người bị viêm thanh quản có Shimmer tăng nhưng RT60 âm học phòng vẫn nằm trong dải bình thường (0.2s - 0.5s).",
+          "Viêm thanh quản làm tăng jitter nhưng vẫn giữ được vi cấu trúc âm đục tự nhiên, không có hiện tượng lượng tử hóa bước nhảy pha của RVC v2.",
+          "Chính sách Tri-Band đưa trường hợp này vào dải Vàng [0.3 - 0.8) để kích hoạt Step-up Auth (OTP âm thanh) chứ không bao giờ chặn cứng."
+        ]
+      },
+      {
+        "qId": 103,
+        "title": "Bẫy Aliasing & Spectral Leakage trong Polyphase Filtering",
+        "content": "\"Tại sao trong pipeline DSP anh/chị lại chọn Polyphase Filtering với cửa sổ Kaiser thay vì FFT Resampling tiêu chuẩn của thư viện Scipy? Nếu một luồng audio 44.1kHz chứa sóng hài 21kHz bị hạ mẫu tuyến tính (Linear Interpolation) về 16kHz, hiện tượng vật lý gì sẽ xảy ra và làm hỏng mô hình MelCNN như thế nào?\"",
+        "rubric": [
+          "Nội suy tuyến tính không có bộ lọc Anti-aliasing, khiến tần số 21kHz bị gấp phổ (Aliasing) phản chiếu ngược lại dải 11kHz và 5kHz trong không gian 16kHz.",
+          "Hài âm phản chiếu này làm sai lệch tỷ số Log-Mel ở các dải tần cao, khiến mô hình MelCNN nhầm lẫn giữa tiếng xì tự nhiên và artifacts của Vocoder.",
+          "Polyphase Filtering chia nhỏ bộ lọc FIR thành đa pha, triệt tiêu Spectral Leakage với suy hao dải chặn > 80dB mà tiết kiệm 75% chi phí tính toán."
+        ]
+      },
+      {
+        "qId": 104,
+        "title": "Phản biện về giới hạn phòng thu câm (Anechoic Chamber) & RT60",
+        "content": "\"Hệ thống của anh/chị đặt ngưỡng phòng câm là RT60 < 0.15s để bắt Deepfake. Vậy nếu khách hàng VIP gọi điện từ trong xe hơi hạng sang có cách âm cao cấp hoặc phòng thu âm chuyên nghiệp lót mút cách âm, RT60 thực tế cũng có thể rơi xuống 0.12s. Làm sao hệ thống phân biệt được một phòng thu thật với một mạng neural vocoder tổng hợp toán học?\"",
+        "rubric": [
+          "Phòng thu thật lót mút dù tiêu âm tốt vẫn có độ phản xạ tần số trầm (dưới 200Hz) do bước sóng dài không thể bị triệt tiêu hoàn toàn bởi mút xốp mỏng.",
+          "Neural Vocoder toán học (như HiFi-GAN) hoàn toàn không có pha dội âm ở mọi dải tần, đường cong Schroeder suy giảm thẳng đứng như bậc thang số.",
+          "Hệ thống kết hợp kiểm tra độ phân tán phổ Spectral Flatness: Phòng thật có nhiễu nền vật lý (Thermal/Mic noise) khác biệt với ma trận số của AI."
+        ]
+      },
+      {
+        "qId": 105,
+        "title": "Định lý Heisenberg-Gabor & Đánh đổi Cửa sổ STFT Hann 1024",
+        "content": "\"Tại sao bắt buộc phải dùng cửa sổ Hann 1024 mẫu với hop_length 256 mẫu tại 16kHz? Tại sao không dùng cửa sổ 512 để phản ứng nhanh hơn, hoặc cửa sổ 2048 để phân giải tần số nét hơn? Hãy giải thích dưới góc độ định lý bất định thời gian - tần số Heisenberg-Gabor!\"",
+        "rubric": [
+          "Định lý Heisenberg-Gabor: Delta t * Delta f >= 1 / (4 * pi). Không thể có cùng lúc độ nét thời gian và độ nét tần số cực đại.",
+          "N = 1024 tại 16kHz cho Delta f = 15.625 Hz, đủ hẹp để phân giải tần số cơ bản F0 (100-300Hz) và khoảng cách giữa các hài âm formant.",
+          "Hop = 256 (16ms) tương thích với chu kỳ chuyển động cơ học của dây thanh và nắp thanh môn (10-25ms). Cửa sổ 512 sẽ làm nhòe F0, cửa sổ 2048 sẽ làm trễ 128ms phá vỡ chuẩn 350ms."
         ]
       }
     ]
   },
   {
-    id: "judge_2",
-    name: "Bà Vũ Phương Nga",
-    role: "Giám đốc Quản trị Rủi ro & Gian lận Ngân hàng VPBank",
-    avatar: "👩‍💼",
-    threat: "THREAT: CỰC KỲ NGUY HIỂM",
-    threatClass: "threat-extreme",
-    questions: [
+    "id": "judge_2",
+    "name": "Bà Vũ Phương Nga",
+    "role": "Giám đốc Quản trị Rủi ro & Gian lận Ngân hàng VPBank",
+    "avatar": "👩‍💼",
+    "threat": "THREAT: CỰC KỲ NGUY HIỂM",
+    "threatClass": "threat-extreme",
+    "questions": [
       {
-        qId: 201,
-        title: "Bài toán 200.000 cuộc gọi mỗi ngày và tỷ lệ báo động giả FPR < 0.05%",
-        content: `"Mỗi ngày ngân hàng chúng tôi tiếp nhận 200.000 cuộc gọi xác thực chuyển tiền. Nếu tỷ lệ báo động giả (False Positive Rate) của hệ thống là 1%, tức là mỗi ngày có 2.000 khách hàng VIP bị chặn oan và chửi bới tổng đài. 
-Hệ thống của anh/chị có cam kết ép FPR < 0.05% được không? Cơ chế Tri-Band Policy giải quyết bài toán trải nghiệm khách hàng như thế nào?"`,
-        rubric: [
+        "qId": 201,
+        "title": "Bài toán 200.000 cuộc gọi mỗi ngày và tỷ lệ báo động giả FPR < 0.05%",
+        "content": "\"Mỗi ngày ngân hàng chúng tôi tiếp nhận 200.000 cuộc gọi xác thực chuyển tiền. Nếu tỷ lệ báo động giả (False Positive Rate) của hệ thống là 1%, tức là mỗi ngày có 2.000 khách hàng VIP bị chặn oan và chửi bới tổng đài. Hệ thống của anh/chị có cam kết ép FPR < 0.05% được không? Cơ chế Tri-Band Policy giải quyết bài toán trải nghiệm khách hàng như thế nào?\"",
+        "rubric": [
           "Chính sách phân vùng 3 dải (Tri-Band Policy): Dải xanh [0.0 - 0.3) thông qua 100%, Dải đỏ [0.8 - 1.0] chặn cứng.",
           "Vùng vàng [0.3 - 0.8) không chặn khách hàng mà kích hoạt Step-up Auth (Xác thực tăng cường: OTP âm thanh động chứa thanh Ngã/Nặng).",
           "FPR thực tế của dải chặn cứng được ép xuống < 0.03% nhờ cơ chế đồng thuận đa tầng."
         ]
       },
       {
-        qId: 202,
-        title: "Thời gian hòa vốn và chi phí phần cứng CPU vs GPU",
-        content: `"Ban lãnh đạo ngân hàng từ chối chi 50.000 USD mua cụm máy chủ GPU Nvidia A100 chỉ để chạy mô hình AI Deepfake. 
-Hệ thống của anh/chị chứng minh khả năng chạy 100% trên CPU phổ thông như thế nào? Chi phí vận hành trên mỗi triệu cuộc gọi là bao nhiêu?"`,
-        rubric: [
+        "qId": 202,
+        "title": "Thời gian hòa vốn và chi phí phần cứng CPU vs GPU",
+        "content": "\"Ban lãnh đạo ngân hàng từ chối chi 50.000 USD mua cụm máy chủ GPU Nvidia A100 chỉ để chạy mô hình AI Deepfake. Hệ thống của anh/chị chứng minh khả năng chạy 100% trên CPU phổ thông như thế nào? Chi phí vận hành trên mỗi triệu cuộc gọi là bao nhiêu?\"",
+        "rubric": [
           "Mô hình MelCNN 2D chỉ có 1.2M tham số, xuất sang ONNX Runtime Opset 14 với FP32 hoặc INT8 quantization.",
           "Thời gian suy luận 6.8ms trên CPU thông thường (Intel Xeon 4 cores), tiêu tốn < 85MB RAM.",
-          "Một máy chủ CPU thông thường trị giá 2.000 USD xử lý được 150-200 luồng đồng thời, chi phí vận hành < 0.0001 USD/cuộc gọi."
+          "Chi phí hạ tầng điện toán đám mây giảm tới 85% so với giải pháp chạy GPU độc quyền."
+        ]
+      },
+      {
+        "qId": 203,
+        "title": "Chuỗi bảo quản chứng cứ điện tử (Chain of Custody) FIPS 140-3",
+        "content": "\"Nếu kẻ gian kiện ngược lại ngân hàng vì bị khóa tài khoản, hoặc ngân hàng phải nộp file ghi âm giám định sang Cơ quan Cảnh sát Điều tra, làm thế nào anh/chị chứng minh tệp âm thanh telemetry không bị can thiệp, chỉnh sửa hay làm giả trong hệ thống nội bộ?\"",
+        "rubric": [
+          "Ngay khi gói tin RTP đến Ingress Gateway, mã băm SHA-256 được tính toán song song và ký số HMAC bằng khóa bí mật lưu trong HSM đạt chuẩn FIPS 140-3 Level 3.",
+          "Mỗi báo cáo giám định được gửi sang máy chủ TSA để lấy dấu thời gian số RFC 3161 (Trusted Timestamp), tạo bằng chứng không thể chối bỏ (Non-repudiation).",
+          "Mọi thao tác đọc, ghi đều được ghi nhận vào nhật ký kiểm toán bất biến (Immutable Audit Log) trên cụm ClickHouse."
+        ]
+      },
+      {
+        "qId": 204,
+        "title": "Chiến lược dự phòng (Fall-back Strategy) khi mạng neural bị tấn công đối nghịch",
+        "content": "\"Nếu kẻ gian là một hacker chuyên nghiệp, hắn tiêm nhiễu đối nghịch FGSM vào cuộc gọi khiến mô hình AI chấm 99% là người thật. Lúc này ngân hàng sẽ mất trắng hàng chục tỷ đồng. Hệ thống có cơ chế nào để cứu vãn giao dịch này?\"",
+        "rubric": [
+          "Quyền phủ quyết cứng (Hard Veto): Bất kể AI chấm điểm bao nhiêu, nếu Micro-Jitter vi phạm dải sinh học (Jitter < 0.35%) hoặc RT60 vi phạm dải phòng thực, hệ thống lập tức cưỡng chế chặn.",
+          "Nhiễu đối nghịch chỉ đánh lừa được ma trận trọng số mạng nơ-ron, không thể biến đổi được quán tính cơ học của dây thanh quản hay thời gian dội âm phòng vật lý.",
+          "Hệ thống tự động kích hoạt chế độ Fall-back hạ điểm tin cậy và chuyển cuộc gọi sang Chuyên viên Giám định cấp cao."
+        ]
+      },
+      {
+        "qId": 205,
+        "title": "Tối ưu hóa ma trận chi phí rủi ro tài chính (Cost-Sensitive Matrix)",
+        "content": "\"Trong an toàn tài chính, chi phí của một vụ False Negative (kẻ lừa đảo lọt qua cuỗm 10 tỷ) lớn hơn gấp 10.000 lần so với chi phí của False Positive (khách hàng phải đọc thêm 1 mã OTP 6 số). Anh/chị đã thiết kế hàm mất mát (Loss Function) và ngưỡng quyết định như thế nào để phản ánh đúng thực tế kinh doanh này?\"",
+        "rubric": [
+          "Áp dụng hàm mất mát Focal Loss có trọng số phạt bất đối xứng: C(FN) = 1000 * C(FP).",
+          "Hạ ngưỡng dải đỏ xuống 0.80 và mở rộng dải vàng [0.30 - 0.80) để bao trùm toàn bộ các trường hợp nghi vấn.",
+          "Thiết kế luồng xác thực Step-up Auth thân thiện: Khách hàng chỉ mất 3 giây đọc một cụm từ tiếng Việt ngẫu nhiên chứ không bị khóa thẻ đột ngột."
         ]
       }
     ]
   },
   {
-    id: "judge_3",
-    name: "TS. Lê Hoàng Nam",
-    role: "Chuyên gia Tín hiệu Viễn thông & Mạng tế bào Viettel",
-    avatar: "👨‍🔬",
-    threat: "THREAT: CAO CẤP",
-    threatClass: "threat-high",
-    questions: [
+    "id": "judge_3",
+    "name": "KS. Đặng Quốc Toàn",
+    "role": "Chuyên gia Mạng Viễn thông & Giao thức VoIP",
+    "avatar": "👨‍💻",
+    "threat": "THREAT: NGUY HIỂM KỸ THUẬT",
+    "threatClass": "threat-high",
+    "questions": [
       {
-        qId: 301,
-        title: "Hiện tượng rớt gói 5% và bù khung âm thanh (PLC) gây nhiễu",
-        content: `"Mạng di động 4G/VoLTE hay bị hiện tượng rớt gói (Packet Loss 3-5%) và jitter buffer nén giãn âm thanh. Khi đó, hiện tượng mất khung âm thanh (Packet Loss Concealment - PLC) sẽ tạo ra các điểm đứt gãy năng lượng nhân tạo. 
-Làm sao bộ phát hiện Audio Splicing (>9.5dB) và Glottal Stop của anh/chị không nhầm lẫn PLC của mạng viễn thông với tấn công cắt ghép Deepfake?"`,
-        rubric: [
-          "Bộ phát hiện PLC kiểm tra tính lặp chu kỳ dạng sóng nội suy (Pitch Period Repetition) đặc thù của bộ giải mã AMR-WB.",
-          "Splicing thật sự có bước nhảy nền nhiễu phổ (Spectral Noise Floor Jump) không đồng nhất giữa hai bên điểm cắt.",
-          "PLC viễn thông làm mờ đường F0 nhưng không thay đổi cấu trúc nền nhiễu môi trường xung quanh."
+        "qId": 301,
+        "title": "Thuật toán che giấu mất gói tin (Packet Loss Concealment - PLC)",
+        "content": "\"Khi cuộc gọi di động đi qua vùng sóng yếu, mạng VoIP bị mất gói tin RTP 10%. Thuật toán PLC của tổng đài tự động lặp lại khung âm thanh trước đó (Pitch Period Replication). Hiện tượng này làm đường bao phổ bị lặp nhân tạo và F0 đi ngang. Hệ thống của anh/chị có bị nhầm lẫn hiện tượng PLC này thành Deepfake TTS không?\"",
+        "rubric": [
+          "Hệ thống giám sát cờ Sequence Number và Timestamp trong tiêu đề gói tin RTP để nhận diện chính xác các khung bị mất gói tin.",
+          "Khi phát hiện khung được sinh bởi thuật toán PLC, hệ thống gắn cờ 'PLC_FRAME' và loại trừ khung này khỏi phép tính Micro-Jitter.",
+          "Chỉ đánh giá các chỉ số sinh học trên các đoạn âm thanh liên tục có tối thiểu 8 khung RTP không bị mất gói."
         ]
       },
       {
-        qId: 302,
-        title: "Tấn công phát lại qua thiết bị giả lập phần cứng điện thoại (Audio Injector)",
-        content: `"Nếu kẻ tấn công không phát âm thanh qua loa ngoài mà dùng jack 3.5mm hoặc phần mềm giả lập card âm thanh (Virtual Audio Cable) để bơm thẳng luồng số vào điện thoại, lúc đó không có dội âm loa ngoài. 
-Làm thế nào hệ thống của anh/chị chặn được?"`,
-        rubric: [
-          "Khi bơm trực tiếp âm thanh số (Direct Line Injection), RT60 rơi xuống mức phòng vô trùng số < 0.15s (Anechoic Vocoder).",
-          "Hệ thống kích hoạt Hard Veto: Âm thanh người thật gọi điện bắt buộc phải có dội âm môi trường thực tế (0.2s - 0.6s).",
-          "Nếu RT60 < 0.15s kèm Jitter < 0.35%, hệ thống kết án FAKE ngay lập tức."
+        "qId": 302,
+        "title": "Bộ đệm Jitter mạng IP (IP Jitter Buffer) vs Micro-Jitter sinh học",
+        "content": "\"Hai khái niệm này đều có chữ 'Jitter'. Một kỹ sư mạng non tay có thể nhầm rằng Jitter mạng (độ biến thiên trễ gói tin IP 20-50ms) sẽ phá hủy phép đo Jitter sinh học dây thanh. Hãy giải thích tường tận sự khác biệt bản chất và cách hệ thống cô lập hai đại lượng này!\"",
+        "rubric": [
+          "IP Jitter Buffer thuộc tầng mạng (Network Layer 3/4), là sự sai lệch thời gian đến của các gói tin UDP/RTP.",
+          "Micro-Jitter sinh học thuộc tầng ứng dụng âm sinh học (Acoustic Domain), là độ sai lệch chu kỳ rung vi mô tính bằng micro-giây giữa các đỉnh sóng thanh môn bên trong nội dung PCM sau giải mã.",
+          "Jitter buffer phần cứng/phần mềm sắp xếp lại các gói tin theo đúng thứ tự trước khi đưa vào Forensic DSP Pipeline, triệt tiêu hoàn toàn ảnh hưởng của mạng."
+        ]
+      },
+      {
+        "qId": 303,
+        "title": "Giao thức truyền tải SIP/RTP & Điểm cắm bóc tách payload",
+        "content": "\"Trong kiến trúc tổng đài ngân hàng (Avaya, Cisco CallManager, FreeSWITCH), anh/chị cắm module DeepGuard vào đâu? Tại sao không nhận file sau khi cuộc gọi kết thúc (Post-Call Analysis) mà bắt buộc phải can thiệp luồng thời gian thực qua WebRTC / SIP Forking?\"",
+        "rubric": [
+          "Post-call analysis không có giá trị ngăn chặn gian lận thời gian thực vì tiền đã bị chuyển mất.",
+          "DeepGuard sử dụng cơ chế SIP Media Forking (hoặc WebRTC Media Server / FreeSWITCH ESL mod_audio_fork), nhân đôi luồng RTP thô và truyền trực tiếp về Forensic Pipeline qua gRPC streaming.",
+          "Cho phép gửi tín hiệu SIP INFO hoặc SIP BYE để tự động ngắt kết nối cuộc gọi trong vòng 350ms khi phát hiện Hard Veto."
+        ]
+      },
+      {
+        "qId": 304,
+        "title": "Tối ưu hóa độ trễ luồng T_E2E < 350ms trên mạng băng thông thấp",
+        "content": "\"Nếu khách hàng dùng mạng 3G/4G chập chờn, độ trễ RTT mạng đã là 180ms. Ngân sách 350ms của anh/chị chỉ còn lại chưa đầy 170ms cho xử lý. Hãy phân tích chi tiết từng mili-giây xử lý nội bộ để chứng minh hệ thống không bị tràn bộ đệm (Buffer Overflow)!\"",
+        "rubric": [
+          "Kích thước chunk âm thanh 256ms (4096 mẫu tại 16kHz) được đẩy theo cơ chế trượt gối đầu (Sliding Window Hop 64ms).",
+          "Tiền xử lý Polyphase STFT: 12ms | F0 NAFE & Glottal Miner: 15ms | ISO 3382 Schroeder: 18ms | MelCNN ONNX Inference: 6.8ms | Fusion: 0.8ms -> Tổng xử lý nội bộ: 52.6 ms.",
+          "52.6ms xử lý nội bộ + 180ms RTT mạng + 15ms ngắt SIP = 247.6ms, hoàn toàn nằm trong ngưỡng an toàn 350ms."
+        ]
+      },
+      {
+        "qId": 305,
+        "title": "Giả mạo số gọi đến (Caller ID Spoofing) kết hợp Voice Clone",
+        "content": "\"Kẻ gian dùng dịch vụ VoIP quốc tế đổi Caller ID thành đúng số hotline của ngân hàng hoặc người thân, đồng thời dùng Voice Clone nói chuyện. Hệ thống của anh/chị có bị phụ thuộc vào số điện thoại người gọi đến để nạp profile không?\"",
+        "rubric": [
+          "DeepGuard hoàn toàn không tin cậy Caller ID do lỗ hổng giao thức SIP INVITE cho phép sửa đổi trường 'From' tùy ý.",
+          "Hệ thống giám sát liveness phi danh tính (Zero-Trust Voice Verification): Dù cuộc gọi xuất phát từ số nào, các bất biến vật lý (Jitter, Glottal Stop, Dội âm RT60) vẫn được tính toán độc lập.",
+          "Kết hợp kiểm tra chữ ký định danh cuộc gọi STIR/SHAKEN (RFC 8224/8588) để phát hiện số bị giả mạo ở tầng viễn thông."
         ]
       }
     ]
   },
   {
-    id: "judge_4",
-    name: "KS. Nguyễn Minh Trí",
-    role: "Trưởng nhóm AI Engineering & Triển khai Hệ thống",
-    avatar: "👨‍💻",
-    threat: "THREAT: CAO CẤP",
-    threatClass: "threat-high",
-    questions: [
+    "id": "judge_4",
+    "name": "TS. Alex Mercer",
+    "role": "Trưởng nhóm Nghiên cứu Sinh trắc học & Voice Anti-Spoofing",
+    "avatar": "🧑‍🔬",
+    "threat": "THREAT: CHUYÊN SÂU AI & HỌC SÂU",
+    "threatClass": "threat-high",
+    "questions": [
       {
-        qId: 401,
-        title: "Bảo vệ mô hình trước các cuộc tấn công đối nghịch (Adversarial Attacks)",
-        content: `"Nếu hacker dùng thuật toán FGSM hoặc PGD chèn một lượng nhiễu vô hình (Adversarial Perturbation) vào ma trận phổ Mel để đánh lừa MelCNN phân loại thành người thật, hệ thống phòng vệ của anh/chị sẽ sụp đổ thế nào?"`,
-        rubric: [
-          "MelCNN không phải là điểm quyết định duy nhất (No Single Point of Failure).",
-          "Nhiễu đối nghịch chỉ đánh lừa được mạng nơ-ron nhưng không thể sửa đổi được các tham số vật lý: Micro-Jitter NAFE và Tích phân Schroeder ISO 3382.",
-          "Hard Physics Veto hoạt động hoàn toàn độc lập với gradient của mạng nơ-ron, vô hiệu hóa hoàn toàn Adversarial Perturbation."
+        "qId": 401,
+        "title": "Phân ly không gian trực giao (Orthogonal Subspace Projection)",
+        "content": "\"Nếu anh/chị chỉ dùng chung một mô hình Deep Learning để nhận diện người nói và phát hiện Deepfake, mô hình sẽ bị thiên lệch: Giọng của Giám đốc tài chính được chấm điểm tương đồng danh tính rất cao, dẫn tới hệ thống bỏ qua các lỗi liveness nhỏ. Anh/chị đã giải quyết mâu thuẫn này bằng toán học như thế nào?\"",
+        "rubric": [
+          "Áp dụng phép chiếu trực giao không gian con (Orthogonal Subspace Projection).",
+          "Tách không gian vector thành: Không gian định danh V_id (x-vector 192 chiều) và Không gian sinh trắc liveness V_live.",
+          "Triệt tiêu hoàn toàn thành phần định danh khỏi vector liveness: V_live_clean = V_total - Proj_{V_id}(V_total)."
         ]
       },
       {
-        qId: 402,
-        title: "Đa luồng CPU (intra_op=4) và hiện tượng nghẽn cổ chai (Lock Contention)",
-        content: `"Tại sao lại cấu hình intra_op_num_threads=4 và inter_op_num_threads=1 trong ONNX Runtime? Nếu hàng nghìn request gửi đến đồng thời, việc cạnh tranh CPU thread có gây ra nghẽn cổ chai phá vỡ độ trễ 350ms không?"`,
-        rubric: [
+        "qId": 402,
+        "title": "Đa luồng CPU (intra_op=4) và hiện tượng nghẽn cổ chai (Lock Contention)",
+        "content": "\"Tại sao lại cấu hình intra_op_num_threads=4 và inter_op_num_threads=1 trong ONNX Runtime? Nếu hàng nghìn request gửi đến đồng thời, việc cạnh tranh CPU thread có gây ra nghẽn cổ chai phá vỡ độ trễ 350ms không?\"",
+        "rubric": [
           "intra_op=4 tối ưu hóa việc phân chia phép nhân ma trận trên 4 core vật lý cho 1 tensor.",
           "inter_op=1 ngăn chặn hiện tượng context switching hỗn loạn giữa các node trong đồ thị tính toán.",
-          "Ở quy mô hàng nghìn request, hệ thống scale ngang (Horizontal Pod Autoscaling) qua Docker Compose và Nginx load balancer phân tải."
+          "Ở quy mô hàng nghìn request, hệ thống scale ngang qua Docker Compose và Nginx load balancer phân tải."
+        ]
+      },
+      {
+        "qId": 403,
+        "title": "So sánh kiến trúc MelCNN 2D (1.2M) với WavLM (95M) / Whisper Encoder",
+        "content": "\"Hiện nay các mô hình nền tảng như WavLM, RawNet3 hay Whisper có hàng chục đến hàng trăm triệu tham số, đạt EER cực thấp trên tập kiểm thử tĩnh. Tại sao DeepGuard lại đi ngược xu thế, chọn kiến trúc MelCNN 2D chỉ có 1.2M tham số? Có phải vì anh/chị không đủ tài nguyên huấn luyện?\"",
+        "rubric": [
+          "WavLM (95M tham số) tiêu tốn > 400ms và đòi hỏi GPU VRAM > 2GB, hoàn toàn bất khả thi cho xử lý thời gian thực 350ms trên tổng đài thoại hàng nghìn kênh.",
+          "MelCNN 1.2M tham số tập trung chuyên biệt vào việc bóc tách các bất thường phổ Log-Mel và artifacts của neural vocoder, suy luận chỉ mất 6.8ms trên CPU.",
+          "Điểm cốt lõi: Sức mạnh của DeepGuard nằm ở cơ chế Dung hợp Bằng chứng Vật lý (Glottal Stop + ISO 3382), không cần dồn toàn bộ gánh nặng lên một mô hình AI khổng lồ dễ bị tấn công đối nghịch."
+        ]
+      },
+      {
+        "qId": 404,
+        "title": "Lượng tử hóa INT8 Dynamic Quantization & Hiện tượng trôi độ chính xác",
+        "content": "\"Khi chuyển đổi mô hình từ FP32 (32-bit float) sang INT8 (8-bit integer) trên ONNX Runtime, phạm vi biểu diễn số học bị thu hẹp đáng kể. Hiện tượng lượng tử hóa này có làm mất đi các artifacts vi mô ở dải tần cao không? Tỷ lệ suy giảm EER (Equal Error Rate) là bao nhiêu?\"",
+        "rubric": [
+          "Áp dụng kỹ thuật Dynamic Quantization với Calibration trên tập âm thanh tiếng Việt thực tế, giữ nguyên độ chính xác FP32 ở các lớp nhạy cảm (First Conv và Output Layer).",
+          "Độ suy giảm EER chỉ ở mức 0.12% (từ EER 1.85% lên 1.97%), trong khi tốc độ tăng 2.3 lần và dung lượng giảm từ 4.8MB xuống 1.3MB.",
+          "Các đặc trưng vi mô cực nhỏ đã được bảo toàn bởi module vật lý (NAFE Jitter và Schroeder) chạy độc lập bằng số học dấu phẩy động 64-bit."
+        ]
+      },
+      {
+        "qId": 405,
+        "title": "Hiện tượng Overfitting đối với các mô hình sinh mã mới (Diffusion Vocoders)",
+        "content": "\"Nếu hacker sử dụng các mô hình tổng hợp giọng nói hoàn toàn mới vừa ra mắt tuần trước (như Vocos, BigVGAN v2, F5-TTS) mà tập dữ liệu huấn luyện của anh/chị chưa từng gặp, mạng MelCNN chắc chắn sẽ bị Overfitting và cho điểm sai. Hệ thống đối phó với các đợt tấn công Zero-Day này như thế nào?\"",
+        "rubric": [
+          "Đây chính là lý do DeepGuard thiết lập Quyền Phủ Quyết Cứng (Hard Veto): Dù mô hình AI mới đến đâu, khi phát âm thanh Ngã vẫn bắt buộc phải đóng nắp thanh môn (-12dB) và dây thanh người thật bắt buộc phải có micro-jitter (0.6% - 2.5%).",
+          "Mô hình Diffusion tổng hợp từ không gian nhiễu toán học trong môi trường vô trùng số luôn có RT60 < 0.12s, bị bắt dính ngay lập tức bởi bộ lọc âm học ISO 3382.",
+          "Cơ chế Zero-Trust Vật lý đảm bảo tính phòng thủ bền vững trước mọi cuộc tấn công Zero-Day chưa từng biết."
         ]
       }
     ]
   }
 ];
 
-// =====================================================================
-// 3. DATA REPOSITORY: 6 REAL FORENSIC CASE STUDIES (MODE 3)
-// =====================================================================
+// 3. DATA REPOSITORY: 10 REAL FORENSIC CASE STUDIES (MODE 3)
 const FORENSIC_CASES = [
   {
-    id: "CASE-VN-2026-081",
-    title: "Vụ Án Lừa Đảo Chuyển Tiền CEO Ngân Hàng A",
-    category: "Voice Clone TTS",
-    audioProfile: "Kênh G.711 thoại bàn (8kHz), giọng đọc mệnh lệnh yêu cầu kế toán trưởng giải ngân 15 tỷ đồng khẩn cấp.",
-    telemetry: {
-      jitter: "0.22% (Ngưỡng sinh học: 0.6% - 2.5%)",
-      glottal: "ΔE = -4.1 dB (Thanh Ngã 'Nguyễn' trơn tuột, không ngắt)",
-      rt60: "0.09s (Phòng câm hoàn toàn - Anechoic Vocoder)",
-      f0Span: "42 Hz (Bẹp cao độ nghiêm trọng)",
-      noiseJump: "1.2 dB"
+    "id": "CASE-VN-2026-081",
+    "title": "Vụ Án Lừa Đảo Chuyển Tiền CEO Ngân Hàng A",
+    "category": "Voice Clone TTS",
+    "audioProfile": "Kênh G.711 thoại bàn (8kHz), giọng đọc mệnh lệnh yêu cầu kế toán trưởng giải ngân 15 tỷ đồng khẩn cấp.",
+    "telemetry": {
+      "jitter": "0.22% (Ngưỡng sinh học: 0.6% - 2.5%)",
+      "glottal": "ΔE = -4.1 dB (Thanh Ngã 'Nguyễn' trơn tuột, không ngắt)",
+      "rt60": "0.09s (Phòng câm hoàn toàn - Anechoic Vocoder)",
+      "f0Span": "42 Hz (Bẹp cao độ nghiêm trọng)",
+      "noiseJump": "1.2 dB"
     },
-    suspectModel: "ElevenLabs Latent Diffusion (Tiếng Việt tổng hợp)",
-    groundTruth: "FAKE",
-    verdict: "KẾT LUẬN: DEEPFAKE XÁC XUẤT 99.8% (PHỦ QUYẾT BỞI HARD VETO JITTER & GLOTTAL STOP)",
-    analysisText: `Mẫu âm thanh có đường F0 mượt mà bất thường. Khi người nói phát âm từ 'Nguyễn', năng lượng chỉ giảm nhẹ 4.1dB thay vì có khoảng lặng thanh môn -14dB đặc trưng của người Việt. 
-Đồng thời Micro-Jitter đo được chỉ 0.22% tố giác hàm mất mát nội suy của neural vocoder. Phòng thu âm hoàn toàn không có dội âm (RT60 = 0.09s).`
+    "suspectModel": "ElevenLabs Latent Diffusion (Tiếng Việt tổng hợp)",
+    "groundTruth": "FAKE",
+    "verdict": "KẾT LUẬN: DEEPFAKE XÁC XUẤT 99.8% (PHỦ QUYẾT BỞI HARD VETO JITTER & GLOTTAL STOP)",
+    "analysisText": "Mẫu âm thanh có đường F0 mượt mà bất thường. Khi người nói phát âm từ 'Nguyễn', năng lượng chỉ giảm nhẹ 4.1dB thay vì có khoảng lặng thanh môn -14dB đặc trưng của người Việt. Đồng thời Micro-Jitter đo được chỉ 0.22% tố giác hàm mất mát nội suy của neural vocoder. Phòng thu âm hoàn toàn không có dội âm (RT60 = 0.09s)."
   },
   {
-    id: "CASE-VN-2026-104",
-    title: "Tấn Công Replay Giao Dịch Chuyển Khoản Qua Loa Ngoài",
-    category: "Loudspeaker Replay Attack",
-    audioProfile: "Âm thanh ghi âm trộm từ phòng họp của nạn nhân, sau đó phát lại qua loa Bluetooth trước micro điện thoại.",
-    telemetry: {
-      jitter: "1.15% (Sinh học chuẩn người thật)",
-      glottal: "ΔE = -14.8 dB (Thanh Ngã chuẩn người thật)",
-      rt60: "0.96s (Vượt ngưỡng 0.85s - Dội âm phòng kép)",
-      f0Span: "128 Hz (Dải âm vực phong phú)",
-      noiseJump: "11.4 dB (Vết cắt ghép giữa các file audio)"
+    "id": "CASE-VN-2026-104",
+    "title": "Tấn Công Replay Giao Dịch Chuyển Khoản Qua Loa Ngoài",
+    "category": "Loudspeaker Replay Attack",
+    "audioProfile": "Âm thanh ghi âm trộm từ phòng họp của nạn nhân, sau đó phát lại qua loa Bluetooth trước micro điện thoại.",
+    "telemetry": {
+      "jitter": "1.15% (Sinh học chuẩn người thật)",
+      "glottal": "ΔE = -14.8 dB (Thanh Ngã chuẩn người thật)",
+      "rt60": "0.96s (Vượt ngưỡng 0.85s - Dội âm phòng kép)",
+      "f0Span": "128 Hz (Dải âm vực phong phú)",
+      "noiseJump": "11.4 dB (Vết cắt ghép giữa các file audio)"
     },
-    suspectModel: "Replay Attack (Phát lại qua màng loa vật lý + Cắt ghép nối)",
-    groundTruth: "FAKE",
-    verdict: "KẾT LUẬN: GIAN LẬN REPLAY & CẮT GHÉP (PHỦ QUYẾT BỞI HARD VETO ISO 3382 RT60 > 0.85s)",
-    analysisText: `Mặc dù Micro-Jitter và Glottal Stop hoàn toàn đạt chuẩn sinh học (do là giọng người thật bị ghi âm trộm), nhưng phân tích tích phân lùi Schroeder phát hiện thời gian dội âm RT60 lên tới 0.96s. 
-Đáp ứng xung phòng bị nhân đôi tích chập (Phòng họp gốc * Phòng phát lại). Trên phổ xuất hiện rõ các rãnh lọc lược (Comb-filtering) do giao thoa phản xạ màng loa.`
+    "suspectModel": "Replay Attack (Phát lại qua màng loa vật lý + Cắt ghép nối)",
+    "groundTruth": "FAKE",
+    "verdict": "KẾT LUẬN: GIAN LẬN REPLAY & CẮT GHÉP (PHỦ QUYẾT BỞI HARD VETO ISO 3382 RT60 > 0.85s)",
+    "analysisText": "Mặc dù Micro-Jitter và Glottal Stop hoàn toàn đạt chuẩn sinh học (do là giọng người thật bị ghi âm trộm), nhưng phân tích tích phân lùi Schroeder phát hiện thời gian dội âm RT60 lên tới 0.96s. Đáp ứng xung phòng bị nhân đôi tích chập (Phòng họp gốc * Phòng phát lại). Trên phổ xuất hiện rõ các rãnh lọc lược (Comb-filtering) do giao thoa phản xạ màng loa."
   },
   {
-    id: "CASE-VN-2026-159",
-    title: "Mạo Danh RVC v2 Trực Tiếp Trong Cuộc Gọi Khách Hàng",
-    category: "Realtime Voice Conversion",
-    audioProfile: "Kẻ tấn công nói trực tiếp vào micro qua phần mềm RVC v2 đổi giọng thành người thân của nạn nhân.",
-    telemetry: {
-      jitter: "5.45% (Vượt ngưỡng sinh học > 4.8%)",
-      glottal: "ΔE = -7.3 dB",
-      rt60: "0.32s (Phòng ngủ thông thường)",
-      f0Span: "145 Hz",
-      noiseJump: "2.1 dB"
+    "id": "CASE-VN-2026-159",
+    "title": "Mạo Danh RVC v2 Trực Tiếp Trong Cuộc Gọi Khách Hàng",
+    "category": "Realtime Voice Conversion",
+    "audioProfile": "Kẻ tấn công nói trực tiếp vào micro qua phần mềm RVC v2 đổi giọng thành người thân của nạn nhân.",
+    "telemetry": {
+      "jitter": "5.45% (Vượt ngưỡng sinh học > 4.8%)",
+      "glottal": "ΔE = -7.3 dB",
+      "rt60": "0.32s (Phòng ngủ thông thường)",
+      "f0Span": "145 Hz",
+      "noiseJump": "2.1 dB"
     },
-    suspectModel: "RVC v2 (Harvest F0 + VITS Decoder)",
-    groundTruth: "FAKE",
-    verdict: "KẾT LUẬN: REALTIME DEEPFAKE VOICE CONVERSION (PHỦ QUYẾT BỞI PHASE JITTER DISCONTINUITY)",
-    analysisText: `Mô hình RVC v2 khi nội suy giọng nói thời gian thực gặp hiện tượng trượt pha (Phase Slip) giữa các khung STFT, khiến độ biến thiên chu kỳ giật cục vọt lên 5.45%. 
-Đây là vết hằn vật lý đặc trưng của thuật toán Harvest F0 khi xử lý tiếng Việt có dấu biến thiên cao độ liên tục.`
+    "suspectModel": "RVC v2 (Harvest F0 + VITS Decoder)",
+    "groundTruth": "FAKE",
+    "verdict": "KẾT LUẬN: REALTIME DEEPFAKE VOICE CONVERSION (PHỦ QUYẾT BỞI PHASE JITTER DISCONTINUITY)",
+    "analysisText": "Mô hình RVC v2 khi nội suy giọng nói thời gian thực gặp hiện tượng trượt pha (Phase Slip) giữa các khung STFT, khiến độ biến thiên chu kỳ giật cục vọt lên 5.45%. Đây là vết hằn vật lý đặc trưng của thuật toán Harvest F0 khi xử lý tiếng Việt có dấu biến thiên cao độ liên tục."
   },
   {
-    id: "CASE-VN-2026-210",
-    title: "Mạo Danh Cơ Quan Điều Tra Qua Tổng Đài Ảo (Zalo/FPT AI)",
-    category: "Acoustic Compression TTS",
-    audioProfile: "Cuộc gọi giả danh công an đe dọa rửa tiền, giọng đọc đanh thép nhưng đều đều như robot đọc văn bản.",
-    telemetry: {
-      jitter: "0.19% (Siêu mịn)",
-      glottal: "ΔE = -5.2 dB (Không ngắt nắp thanh môn)",
-      rt60: "0.07s (Phòng câm hoàn toàn)",
-      f0Span: "38 Hz (Bẹp cao độ cực đoan)",
-      noiseJump: "0.8 dB"
+    "id": "CASE-VN-2026-210",
+    "title": "Mạo Danh Cơ Quan Điều Tra Qua Tổng Đài Ảo (Zalo/FPT AI)",
+    "category": "Autoregressive TTS",
+    "audioProfile": "Cuộc gọi giả danh công an đe dọa nạn nhân dính líu đến đường dây rửa tiền, yêu cầu chuyển tiền vào tài khoản tạm giữ.",
+    "telemetry": {
+      "jitter": "0.28% (Quá mượt, phi tự nhiên)",
+      "glottal": "ΔE = -3.8 dB",
+      "rt60": "0.11s (Môi trường câm số)",
+      "f0Span": "58 Hz (Âm điệu đều đều, thiếu cảm xúc sinh học)",
+      "noiseJump": "0.8 dB"
     },
-    suspectModel: "FastSpeech2 + HiFi-GAN (Việt hóa thương mại)",
-    groundTruth: "FAKE",
-    verdict: "KẾT LUẬN: BOT TỔNG ĐÀI LỪA ĐẢO TỔNG HỢP FASTSPEECH2 (PHỦ QUYẾT TOÀN DIỆN)",
-    analysisText: `Dải cao độ F0 bị nén bẹp dưới 38Hz. Toàn bộ các thanh Ngã và Nặng không có hiện tượng co thắt thanh môn. Thời gian dội âm RT60 chỉ 0.07s chứng minh âm thanh sinh ra từ card âm thanh ảo trong server.`
+    "suspectModel": "VALL-E / VITS Tiếng Việt tổng hợp",
+    "groundTruth": "FAKE",
+    "verdict": "KẾT LUẬN: CUỘC GỌI MẠO DANH ĐIỀU TRA (PHỦ QUYẾT TOÀN DIỆN BỞI PROSODY & ACOUSTICS)",
+    "analysisText": "Mô hình TTS tự hồi quy tạo ra chuỗi âm thanh có đường F0 rất giả tạo (dải biến thiên chỉ 58Hz). Thanh Ngã bị làm phẳng hoàn toàn, thiếu đi độ rung thanh âm đặc trưng của người Việt khi nói giọng miền Bắc/Trung. Hệ thống tự động kích hoạt chặn cứng."
   },
   {
-    id: "CASE-VN-2026-277",
-    title: "Tấn Công Cắt Ghép Nối Âm Thanh (Audio Splicing Attack)",
-    category: "Audio Splicing / Re-assembly",
-    audioProfile: "Kẻ gian cắt các từ 'Đồng ý', 'Chuyển tiền', 'Một trăm triệu' từ các video TikTok của nạn nhân rồi ghép lại thành câu lệnh thoại hoàn chỉnh.",
-    telemetry: {
-      jitter: "1.32% (Sinh học chuẩn người thật)",
-      glottal: "ΔE = -13.5 dB (Thanh Ngã người thật)",
-      rt60: "0.41s (Bình thường)",
-      f0Span: "115 Hz",
-      noiseJump: "12.8 dB (Vết nhảy sàn nhiễu vượt ngưỡng 9.5dB)"
+    "id": "CASE-VN-2026-278",
+    "title": "Cuộc Gọi Xác Thực Chuyển Khoản Người Thật Bị Bệnh Lý Khàn Giọng",
+    "category": "Liveness False-Positive Test",
+    "audioProfile": "Chủ tài khoản thật gọi điện xác nhận giao dịch trong lúc bị cảm cúm, giọng nghẹt và khàn đặc.",
+    "telemetry": {
+      "jitter": "2.10% (Trong ngưỡng sinh học 0.6% - 2.5%)",
+      "glottal": "ΔE = -13.1 dB (Thanh môn đóng tự nhiên)",
+      "rt60": "0.38s (Phòng ngủ chuẩn người thật)",
+      "f0Span": "95 Hz",
+      "noiseJump": "1.5 dB"
     },
-    suspectModel: "Manual Audio Editing / Cut & Paste Splicing",
-    groundTruth: "FAKE",
-    verdict: "KẾT LUẬN: TẤN CÔNG CẮT GHÉP ÂM THANH (PHỦ QUYẾT BỞI NOISE FLOOR DISCONTINUITY > 9.5dB)",
-    analysisText: `Mỗi đoạn âm thanh được thu trong các môi trường âm học khác nhau (ngoài đường, trong nhà, trong ô tô). Khi ghép nối, mức năng lượng của sàn nhiễu nền (Noise Floor) nhảy vọt 12.8dB tại điểm nối từ, tố giác việc biên tập cơ học.`
+    "suspectModel": "Người Sống Thật (Khách Hàng VIP Có Bệnh Lý Khàn Tiếng)",
+    "groundTruth": "REAL",
+    "verdict": "KẾT LUẬN: NGƯỜI SỐNG HỢP LỆ (LIVENESS PASSED - KHÔNG PHỦ QUYẾT)",
+    "analysisText": "Mặc dù giọng bị khàn do viêm thanh quản, các chỉ số bất biến vật lý hoàn toàn nằm trong dải sinh học: Jitter 2.10%, Glottal Stop -13.1dB và dội âm phòng 0.38s. Hệ thống không bị đánh lừa bởi cảm xúc, xác thực hợp lệ."
   },
   {
-    id: "CASE-VN-2026-305",
-    title: "Khách Hàng VIP Gọi Điện Trong Tình Trạng Viêm Họng & Ốm",
-    category: "Liveness False-Positive Test",
-    audioProfile: "Chủ tài khoản thật gọi điện xác nhận giao dịch trong lúc bị cảm cúm, giọng nghẹt và khàn đặc.",
-    telemetry: {
-      jitter: "2.10% (Trong ngưỡng sinh học 0.6% - 2.5%)",
-      glottal: "ΔE = -13.1 dB (Thanh môn đóng tự nhiên)",
-      rt60: "0.38s (Phòng ngủ chuẩn người thật)",
-      f0Span: "95 Hz",
-      noiseJump: "1.5 dB"
+    "id": "CASE-VN-2026-299",
+    "title": "Khách Hàng Nói Chuyện Trong Môi Trường Ồn Quán Cà Phê",
+    "category": "Environmental Noise Challenge",
+    "audioProfile": "Cuộc gọi từ quán cà phê đông người, có tiếng nhạc nền và tiếng người nói chuyện ồn ào xung quanh.",
+    "telemetry": {
+      "jitter": "1.45% (Sinh học chuẩn người thật)",
+      "glottal": "ΔE = -12.4 dB (Khối thanh môn đóng rõ rệt)",
+      "rt60": "0.52s (Dội âm không gian quán chuẩn thực tế)",
+      "f0Span": "115 Hz",
+      "noiseJump": "1.8 dB"
     },
-    suspectModel: "Người Sống Thật (Khách Hàng VIP Có Bệnh Lý Khàn Tiếng)",
-    groundTruth: "REAL",
-    verdict: "KẾT LUẬN: NGƯỜI SỐNG HỢP LỆ (LIVENESS PASSED - KHÔNG PHỦ QUYẾT)",
-    analysisText: `Mặc dù giọng bị khàn do viêm thanh quản, các chỉ số bất biến vật lý hoàn toàn nằm trong dải sinh học: Jitter 2.10%, Glottal Stop -13.1dB và dội âm phòng 0.38s. Hệ thống không bị đánh lừa bởi cảm xúc, xác thực hợp lệ.`
+    "suspectModel": "Người Sống Thật (Có Nhiễu Âm Môi Trường Phức Tạp)",
+    "groundTruth": "REAL",
+    "verdict": "KẾT LUẬN: NGƯỜI THẬT HỢP LỆ (LỌC NHIỄU PHỔ THÀNH CÔNG)",
+    "analysisText": "Mặc dù tỷ lệ tín hiệu trên nhiễu SNR thấp (~12dB) do tiếng ồn nền quán cà phê, bộ lọc Polyphase và thuật toán NAFE vẫn tách lọc chính xác đường cao độ F0 của người nói chính. Thanh Ngã và Jitter đều nằm trong giới hạn sinh lý người bình thường."
+  },
+  {
+    "id": "CASE-VN-2026-302",
+    "title": "Tấn Công Neural Vocoder Thế Hệ Mới (Vocos / BigVGAN Diffusion)",
+    "category": "Advanced Neural Vocoder",
+    "audioProfile": "Cuộc gọi nén Opus 16kbps giả mạo giọng nói con trai yêu cầu mẹ chuyển tiền viện phí gấp.",
+    "telemetry": {
+      "jitter": "0.26% (Dưới ngưỡng sinh học 0.6%)",
+      "glottal": "ΔE = -4.8 dB (Thanh Ngã 'Mỹ' bị trượt qua)",
+      "rt60": "0.08s (Phòng câm toán học cực đoan)",
+      "f0Span": "72 Hz",
+      "noiseJump": "0.6 dB"
+    },
+    "suspectModel": "BigVGAN v2 / Vocos Pretrained on CommonVoice",
+    "groundTruth": "FAKE",
+    "verdict": "KẾT LUẬN: DEEPFAKE THẾ HỆ MỚI (PHỦ QUYẾT BỞI ANCHOIC ROOM & GLOTTAL CLOSURE)",
+    "analysisText": "Kẻ gian sử dụng BigVGAN v2 cho chất lượng âm thanh trong trẻo đánh lừa màng nhĩ người nghe. Tuy nhiên phân tích Schroeder cho thấy RT60 chỉ 0.08s - bằng chứng của việc tổng hợp từ ma trận số không phản xạ phòng. Thêm vào đó, từ 'Mỹ' hoàn toàn thiếu khoảng lặng thanh môn -12dB đặc trưng."
+  },
+  {
+    "id": "CASE-VN-2026-345",
+    "title": "Gian Lận Qua Tai Nghe Chống Ồn Chủ Động (ANC Artifacts Test)",
+    "category": "Acoustic Artifacts Edge Case",
+    "audioProfile": "Khách hàng sử dụng tai nghe AirPods Pro chống ồn chủ động bật mode ANC trong phòng kín.",
+    "telemetry": {
+      "jitter": "1.12% (Sinh học chuẩn người thật)",
+      "glottal": "ΔE = -14.2 dB (Thanh môn đóng rất sâu)",
+      "rt60": "0.28s (Phòng ngủ chuẩn)",
+      "f0Span": "102 Hz",
+      "noiseJump": "2.3 dB (Do mạch DSP khử ồn của tai nghe)"
+    },
+    "suspectModel": "Người Sống Thật (Sử Dụng Thiết Bị Có Mạch Lọc DSP Khử Ồn)",
+    "groundTruth": "REAL",
+    "verdict": "KẾT LUẬN: NGƯỜI SỐNG HỢP LỆ (HỆ THỐNG KHÔNG MẮC BẪY MẠCH LỌC TAI NGHE)",
+    "analysisText": "Mạch lọc ANC tạo ra một vệt cắt nhẹ ở dải tần 1kHz-2kHz nhưng không làm biến dạng chu kỳ rung dây thanh. Jitter 1.12% và Glottal Stop -14.2dB hoàn toàn tự nhiên. Hệ thống xác định đây là người thật đang dùng thiết bị khử ồn."
+  },
+  {
+    "id": "CASE-VN-2026-401",
+    "title": "Cắt Ghép Nối Âm Tiết Từ Livestream (Concatenative Voice Splicing)",
+    "category": "Audio Splicing Fraud",
+    "audioProfile": "Kẻ gian tải video livestream bán hàng của nạn nhân, cắt từng từ đơn lẻ ghép thành câu lệnh chuyển khoản.",
+    "telemetry": {
+      "jitter": "1.32% (Âm tiết gốc là người thật)",
+      "glottal": "ΔE = -11.5 dB",
+      "rt60": "0.45s",
+      "f0Span": "135 Hz",
+      "noiseJump": "13.8 dB (Vết cắt biên độ cực lớn giữa các từ)"
+    },
+    "suspectModel": "Concatenative Audio Splicer (Ghép nối file âm thanh thô)",
+    "groundTruth": "FAKE",
+    "verdict": "KẾT LUẬN: CẮT GHÉP NỐI ÂM THANH TRÁI PHÉP (PHỦ QUYẾT BỞI NOISE FLOOR DISCONTINUITY > 9.5dB)",
+    "analysisText": "Dù từng từ riêng lẻ có đặc trưng giọng của nạn nhân, nhưng sự chênh lệch nền nhiễu Delta Noise Floor giữa từ 'Chuyển' và từ 'Khoản' lên tới 13.8dB, kèm bước nhảy pha không liên tục. Đây là bằng chứng không thể chối cãi của việc cắt dán file ghi âm."
+  },
+  {
+    "id": "CASE-VN-2026-520",
+    "title": "Chủ Tài Khoản Lớn Tuổi Có Chứng Run Giọng Sinh Lý (Vocal Tremor)",
+    "category": "Physiological Vocal Tremor",
+    "audioProfile": "Bà cụ 76 tuổi gọi điện cho tổng đài ngân hàng hỏi số dư tiết kiệm, giọng run rẩy do tuổi già.",
+    "telemetry": {
+      "jitter": "2.38% (Cận trên dải sinh lý người già 0.6% - 2.5%)",
+      "glottal": "ΔE = -12.9 dB",
+      "rt60": "0.35s (Phòng khách gia đình)",
+      "f0Span": "88 Hz (Dao động tuần hoàn chậm theo nhịp tim)",
+      "noiseJump": "1.1 dB"
+    },
+    "suspectModel": "Người Sống Thật (Bệnh Lý Run Giọng Tuổi Già Tuần Hoàn Chậm)",
+    "groundTruth": "REAL",
+    "verdict": "KẾT LUẬN: NGƯỜI SỐNG HỢP LỆ (RUN GIỌNG SINH LÝ KHÁC BIỆT VỚI RVC TRƯỢT PHA)",
+    "analysisText": "Chứng run giọng người già (Tremor) tạo ra biến thiên F0 tuần hoàn chậm (4-7Hz, theo nhịp cơ thể). Ngược lại, Deepfake RVC tạo ra hiện tượng trượt pha ngẫu nhiên không tuần hoàn. Hệ thống phân biệt chính xác và xác nhận người thật hợp lệ."
   }
 ];
 
-// =====================================================================
-// 4. DATA REPOSITORY: 16 DEEP TRAP QUIZ QUESTIONS (MODE 4)
-// =====================================================================
+// 4. DATA REPOSITORY: 45 DEEP TRAP QUIZ QUESTIONS (MODE 4 & TAB 5)
 const QUIZ_QUESTIONS = [
-  // --- DSP & RESAMPLING (dsp) ---
   {
-    cat: "dsp",
-    q: "Tại sao trong tiền xử lý DSP của DeepGuard, việc Resampling từ 44.1kHz về 16kHz bắt buộc phải dùng Polyphase Resampling thay vì Linear Interpolation?",
-    opts: [
+    "cat": "dsp",
+    "q": "Tại sao trong tiền xử lý DSP của DeepGuard, việc Resampling từ 44.1kHz về 16kHz bắt buộc phải dùng Polyphase Resampling thay vì Linear Interpolation?",
+    "opts": [
       "Để giảm thiểu độ phức tạp thời gian từ O(N^2) về O(N log N).",
       "Để ngăn chặn hiện tượng răng cưa tần số (Aliasing) và rò rỉ phổ (Spectral Leakage) làm sai lệch đặc trưng formant.",
       "Vì chuẩn định dạng ONNX Runtime bắt buộc ma trận đầu vào phải là số chẵn.",
       "Để làm mịn tín hiệu âm thanh giúp mô hình học sâu hội tụ nhanh hơn."
     ],
-    ans: 1,
-    exp: "Polyphase Filtering áp dụng bộ lọc thông thấp FIR Kaiser-window đạt chuẩn Nyquist trước khi hạ mẫu, loại bỏ hoàn toàn các tần số phản chiếu gây biến dạng phổ Log-Mel."
+    "ans": 1,
+    "exp": "Polyphase Filtering áp dụng bộ lọc thông thấp FIR Kaiser-window đạt chuẩn Nyquist trước khi hạ mẫu, loại bỏ hoàn toàn các tần số phản chiếu gây biến dạng phổ Log-Mel."
   },
   {
-    cat: "dsp",
-    q: "Khi tính toán Log-Mel Spectrogram với 80 bins từ 100Hz đến 8000Hz, tại sao thang đo Mel lại phân bố dải lọc dày đặc ở tần số thấp và thưa dần ở tần số cao?",
-    opts: [
+    "cat": "dsp",
+    "q": "Khi tính toán Log-Mel Spectrogram với 80 bins từ 100Hz đến 8000Hz, tại sao thang đo Mel lại phân bố dải lọc dày đặc ở tần số thấp và thưa dần ở tần số cao?",
+    "opts": [
       "Vì tần số thấp chứa ít năng lượng hơn nên cần lọc nhiều hơn.",
       "Mô phỏng cơ chế cảm nhận thính giác sinh học của màng đáy ốc tai người (Basilar Membrane), vốn nhạy bén cao với các biến đổi cao độ F0 ở dải trầm.",
       "Để giảm kích thước bộ nhớ RAM của GPU.",
       "Vì các hàm toán học trong thư viện Librosa chỉ hỗ trợ dạng phân bố này."
     ],
-    ans: 1,
-    exp: "Ốc tai người phân giải cao độ theo thang logarit phi tuyến (Mel Scale). Dải trầm dưới 1000Hz có độ phân giải thính giác rất tinh tế (khoảng cách 1 Bark hẹp), trong khi dải cao phân giải thô hơn."
+    "ans": 1,
+    "exp": "Ốc tai người phân giải cao độ theo thang logarit phi tuyến (Mel Scale). Dải trầm dưới 1000Hz có độ phân giải thính giác rất tinh tế (khoảng cách 1 Bark hẹp), trong khi dải cao phân giải thô hơn."
   },
   {
-    cat: "dsp",
-    q: "Độ dài bước nhảy hop_length = 256 mẫu tại tần số 16kHz tương ứng với bao nhiêu mili-giây và có độ chồng lấn (overlap) là bao nhiêu phần trăm với cửa sổ Hann 1024 mẫu?",
-    opts: [
+    "cat": "dsp",
+    "q": "Độ dài bước nhảy hop_length = 256 mẫu tại tần số 16kHz tương ứng với bao nhiêu mili-giây và có độ chồng lấn (overlap) là bao nhiêu phần trăm với cửa sổ Hann 1024 mẫu?",
+    "opts": [
       "8ms và chồng lấn 50%.",
       "16ms và chồng lấn 75%.",
       "32ms và chồng lấn 25%.",
       "64ms và không có chồng lấn."
     ],
-    ans: 1,
-    exp: "Delta t = 256 / 16000 = 0.016s = 16ms. Độ chồng lấn Overlap = (1024 - 256) / 1024 = 768 / 1024 = 75%. Cấu hình này bảo đảm tính liên tục của đường bao phổ mà không tạo lỗ hổng thời gian."
+    "ans": 1,
+    "exp": "Delta t = 256 / 16000 = 0.016s = 16ms. Độ chồng lấn Overlap = (1024 - 256) / 1024 = 768 / 1024 = 75%. Cấu hình này bảo đảm tính liên tục của đường bao phổ mà không tạo lỗ hổng thời gian."
   },
   {
-    cat: "dsp",
-    q: "Spectral Flatness (Độ phẳng phổ) đo lường điều gì và có giá trị như thế nào đối với âm thanh hữu thanh (Voiced Speech) của con người?",
-    opts: [
-      "Đo âm lượng tuyệt đối; luôn bằng 1.0 với giọng người.",
-      "Đo tỷ lệ giữa trung bình nhân và trung bình cộng của phổ; tiến gần 0 đối với giọng nói hữu thanh có cấu trúc hài âm hài hòa.",
-      "Đo tần số cao nhất trong tín hiệu; luôn lớn hơn 4000Hz.",
-      "Đo tốc độ phát âm từ ngữ."
+    "cat": "dsp",
+    "q": "Độ phân giải tần số Delta f của biến đổi Fourier thời gian ngắn (STFT) với cửa sổ N = 1024 mẫu tại f_s = 16,000Hz là bao nhiêu?",
+    "opts": [
+      "7.8125 Hz.",
+      "15.625 Hz.",
+      "31.25 Hz.",
+      "62.5 Hz."
     ],
-    ans: 1,
-    exp: "Spectral Flatness = exp(mean(ln(S))) / mean(S). Với nhiễu trắng (Flat spectrum), Flatness ≈ 1. Với giọng nói hữu thanh người thật có các đỉnh Formant nhọn (Resonance peaks), Flatness rất thấp tiến gần về 0."
+    "ans": 1,
+    "exp": "Delta f = f_s / N = 16,000 / 1024 = 15.625 Hz. Độ phân giải này đủ mịn để tách bạch các vạch hài âm của thanh điệu tiếng Việt (F0 trong khoảng 100-300Hz)."
   },
-
-  // --- ÂM HỌC ISO 3382 & REPLAY (acoustics) ---
   {
-    cat: "acoustics",
-    q: "Theo chuẩn âm học phòng ISO 3382, phương pháp nào được DeepGuard ứng dụng để ước lượng RT60 mà không cần phát tín hiệu quét sin (chirp) chủ động?",
-    opts: [
-      "Biến đổi Wavelet liên tục trên toàn bộ tín hiệu.",
-      "Tích phân năng lượng lùi Schroeder trên các đoạn rơi âm đuôi tự nhiên (Speech Offset Tails).",
-      "Phân tích chuỗi Fourier nhanh trên các đoạn âm vô thanh.",
-      "Đo tỷ lệ tín hiệu trên tạp âm (SNR) của micro thu âm."
+    "cat": "dsp",
+    "q": "Chỉ số Spectral Flatness (Độ phẳng phổ) được tính bằng tỷ số nào và có ý nghĩa gì trong giám định âm thanh?",
+    "opts": [
+      "Tỷ số giữa năng lượng dải cao và dải thấp; Flatness cao là tiếng thì thầm.",
+      "Tỷ số giữa trung bình nhân và trung bình cộng của phổ công suất; Flatness gần 1 là nhiễu trắng, gần 0 là âm thanh thuần/dây thanh.",
+      "Tỷ số giữa biên độ đỉnh và biên độ hiệu dụng RMS; dùng để đo độ méo tiếng.",
+      "Tỷ số giữa tần số cơ bản F0 và Formant F1; dùng để phân biệt nam và nữ."
     ],
-    ans: 1,
-    exp: "Tích phân lùi Schroeder trên các Speech Offset Tails cho phép trích xuất đáp ứng suy giảm năng lượng tự nhiên của phòng từ -5dB đến -25dB (T20) và nhân 3 để tính RT60 mà không làm phiền người dùng."
+    "ans": 1,
+    "exp": "Spectral Flatness = exp(mean(ln S(f))) / mean(S(f)). Giá trị xấp xỉ 1 phản ánh phổ phẳng đồng đều (nhiễu trắng, ma sát vô thanh), trong khi giá trị tiến tới 0 đại diện cho phổ có các đỉnh cộng hưởng sắc nét của dây thanh người."
   },
   {
-    cat: "acoustics",
-    q: "Đặc điểm nhận diện đặc thù của cuộc gọi Loudspeaker Replay Attack trên miền tần số (Frequency Domain) là gì?",
-    opts: [
-      "Xuất hiện hiện tượng lọc lược (Comb-filtering) với các đỉnh và rãnh suy hao lặp lại tuần hoàn do giao thoa phản xạ màng loa.",
-      "Dải tần số từ 0 đến 1000Hz bị triệt tiêu hoàn toàn.",
-      "Phổ âm thanh biến thành xung Dirac đơn lẻ.",
-      "Xuất hiện sóng siêu âm trên 20kHz do loa phát ra."
+    "cat": "dsp",
+    "q": "Hiện tượng rò rỉ phổ (Spectral Leakage) trong phép biến đổi FFT được khắc phục chủ yếu bằng phương pháp nào?",
+    "opts": [
+      "Tăng tần số lấy mẫu lên gấp 10 lần (Over-sampling).",
+      "Nhân tín hiệu trong miền thời gian với hàm cửa sổ mượt (như Hann, Hamming, Blackman) trước khi tính FFT.",
+      "Cắt bỏ phần ảo (Imaginary part) của số phức sau khi tính FFT.",
+      "Áp dụng thuật toán nén âm thanh MP3."
     ],
-    ans: 0,
-    exp: "Hiện tượng giao thoa sóng âm giữa đường truyền trực tiếp từ màng loa và các đường phản xạ từ mặt bàn/tường tạo nên hiệu ứng lọc lược (Comb-filtering) với các rãnh suy hao cách đều nhau Delta f = 1 / Delta t."
+    "ans": 1,
+    "exp": "Cửa sổ Hann ép hai đầu mút của khung thời gian về 0 mượt mà, triệt tiêu sự gián đoạn biên giới gây phát sinh các tần số giả tạo rò rỉ sang các bin lân cận."
   },
   {
-    cat: "acoustics",
-    q: "Khi phân tích RT60 của một file âm thanh, giá trị đo được là RT60 = 0.08 giây. Kết luận pháp y vật lý chính xác nhất là gì?",
-    opts: [
-      "Âm thanh được thu trong một nhà hát thính phòng tiêu chuẩn cao.",
-      "Phòng vô trùng số (Anechoic Vocoder): Âm thanh được tổng hợp thuần túy bằng thuật toán AI trong môi trường không gian ảo, không có dội âm thực tế.",
-      "Người nói đang dùng tai nghe chống ồn chủ động ANC.",
-      "Micro thu âm bị hỏng màng rung."
+    "cat": "dsp",
+    "q": "Trọng tâm phổ (Spectral Centroid) của một đoạn âm thanh biểu thị tính chất vật lý nào của âm thanh?",
+    "opts": [
+      "Độ to (Loudness) của âm thanh.",
+      "Độ 'sáng' (Brightness) của âm sắc, tương ứng với trọng tâm khối lượng phân bố năng lượng theo tần số.",
+      "Thời gian dội âm của phòng.",
+      "Khoảng cách vật lý từ miệng người nói đến micro."
     ],
-    ans: 1,
-    exp: "Trong tự nhiên, một căn phòng sinh hoạt thông thường có RT60 từ 0.25s đến 0.65s. Chỉ có phòng câm tiêu âm chuyên dụng hoặc card âm thanh ảo trong server AI (Vocoder synthesis) mới có RT60 < 0.15s."
+    "ans": 1,
+    "exp": "Centroid = SUM(f * S(f)) / SUM(S(f)). Âm thanh có nhiều hài âm cao (như âm xuýt /s/, tiếng kim loại) có Centroid cao, trong khi âm trầm có Centroid thấp."
   },
   {
-    cat: "acoustics",
-    q: "Thuật toán Audio Splicing Detection (Dò cắt ghép âm thanh) kích hoạt còi báo động Hard Veto khi phát hiện dấu hiệu vật lý nào?",
-    opts: [
-      "Khi người nói ngừng nói quá 2 giây.",
-      "Khi mức sàn nhiễu nền (Noise Floor) nhảy vọt bất thường Delta Noise Floor > 9.5dB giữa các ranh giới từ nối ghép.",
-      "Khi tốc độ phát âm vượt quá 300 từ mỗi phút.",
-      "Khi âm lượng vượt quá 90dB."
+    "cat": "dsp",
+    "q": "Tại sao trong quy chuẩn tiền xử lý âm thanh pháp y của DeepGuard, tần số lấy mẫu lại chọn 16kHz thay vì 8kHz chuẩn điện thoại thoại bàn?",
+    "opts": [
+      "Vì card âm thanh của máy tính không thể phát âm thanh 8kHz.",
+      "Tần số 16kHz bảo toàn dải tần số lên đến 8000Hz (Nyquist), giữ trọn vẹn Formant F2, F3 và các đặc trưng vi mô của nắp thanh môn cần thiết cho chống Deepfake.",
+      "Vì chuẩn nén MP3 chỉ hỗ trợ 16kHz.",
+      "Để tương thích với chuẩn kết nối HDMI trên tivi."
     ],
-    ans: 1,
-    exp: "Các đoạn ghi âm cắt dán từ nhiều nguồn khác nhau (ngoài đường, trong xe hơi, trong phòng) luôn có mức năng lượng nhiễu nền không đồng nhất. Bước nhảy > 9.5dB là bằng chứng không thể chối cãi của việc cắt ghép cơ học."
+    "ans": 1,
+    "exp": "Ở 8kHz (Nyquist 4kHz), Formant F3 (2500-3500Hz) và các artifacts dải cao của Neural Vocoder bị mất mát nghiêm trọng. 16kHz là điểm ngọt (Sweet Spot) giữa chi phí tính toán và bảo toàn chứng cứ pháp y."
   },
-
-  // --- NGỮ ÂM HỌC & THANH NGÃ (prosody) ---
   {
-    cat: "prosody",
-    q: "Đặc điểm nào dưới đây là 'bất biến vật lý' để phân định giữa thanh Ngã do người thật phát âm và mô hình TTS tổng hợp (ElevenLabs/Bark)?",
-    opts: [
-      "Người thật luôn có cao độ F0 cao hơn 300Hz khi nói thanh Ngã.",
-      "Người thật luôn có hiện tượng ngắt/nén nắp thanh môn với mức giảm năng lượng ΔE < -12dB trong 20-60ms kèm đứt gãy F0.",
-      "Mô hình TTS luôn phát âm thanh Ngã thành thanh Hỏi do lỗi từ điển phát âm.",
-      "Mô hình TTS có thời gian phát âm thanh Ngã dài hơn người thật ít nhất 150ms."
+    "cat": "acoustics",
+    "q": "Phương pháp tích phân lùi Schroeder (Schroeder Backward Integration) tính toán đại lượng nào để suy ra thời gian dội âm RT60?",
+    "opts": [
+      "Tích phân năng lượng tức thời từ thời điểm 0 đến t.",
+      "Tích phân năng lượng suy giảm tích lũy từ thời điểm t đến vô cùng: E(t) = INTEGRAL_t^INF h^2(tau) dtau.",
+      "Đạo hàm bậc một của biên độ sóng âm theo thời gian.",
+      "Biến đổi Z của đáp ứng xung phòng h(t)."
     ],
-    ans: 1,
-    exp: "Thanh Ngã trong ngữ âm học tiếng Việt là thanh gãy thanh môn (glottalized broken tone). Cơ nắp thanh môn siết chặt tạo cú sụt áp năng lượng >12dB và gián đoạn F0, điều mà các hàm mất mát L1/L2 trơn hóa của TTS không thể tái tạo."
+    "ans": 1,
+    "exp": "Tích phân ngược dòng thời gian từ vô cùng về t triệt tiêu hoàn toàn sự dao động pha ngẫu nhiên, tạo ra đường cong suy giảm năng lượng mượt mà đơn điệu để xác định chính xác độ dốc T20/RT60."
   },
   {
-    cat: "prosody",
-    q: "Tại sao các mô hình Voice Conversion như RVC v2 lại có Micro-Jitter vọt lên > 4.8% trong khi Neural Vocoder như HiFi-GAN lại < 0.35%?",
-    opts: [
-      "Vì RVC v2 bị lỗi phần cứng trong quá trình xuất file âm thanh.",
-      "Vì RVC v2 dùng thuật toán Harvest/PM bóc tách F0 rồi ghép nối pha (Phase Discontinuity) gây giật nảy bước sóng, còn HiFi-GAN bị hàm mất mát L1 trơn hóa quá mức.",
-      "Vì RVC v2 chỉ hoạt động ở tần số 8kHz còn HiFi-GAN chạy ở 48kHz.",
-      "Vì RVC v2 thêm tiếng ồn trắng nhân tạo để đánh lừa bộ phân loại."
+    "cat": "acoustics",
+    "q": "Theo tiêu chuẩn ISO 3382, thời gian dội âm RT60 được suy ra từ độ dốc suy giảm năng lượng T20 như thế nào?",
+    "opts": [
+      "RT60 = T20 / 3.",
+      "RT60 = 3 * T20 (Đo thời gian suy giảm từ -5dB xuống -25dB và ngoại suy ra 60dB).",
+      "RT60 = 2 * T20.",
+      "RT60 = T20^2."
     ],
-    ans: 1,
-    exp: "RVC v2 tái tạo F0 qua thuật toán ước lượng Harvest và bộ dao động sóng Sine. Sự bù pha không liên tục giữa các khung STFT tạo ra các bước nhảy pha (Phase Glitches), khiến Jitter tăng vọt bất thường."
+    "ans": 1,
+    "exp": "T20 đo khoảng thời gian năng lượng âm thanh giảm 20dB (từ -5dB xuống -25dB). Do giả định suy giảm hàm mũ tuyến tính trong thang dB, RT60 (suy giảm 60dB) bằng đúng 3 lần T20."
   },
   {
-    cat: "prosody",
-    q: "Thuật toán NAFE (Normalized Autocorrelation F0 Estimation) vượt trội hơn thuật toán FFT cơ bản khi bóc tách F0 ở điểm nào?",
-    opts: [
-      "NAFE chạy nhanh hơn FFT 100 lần trên vi điều khiển.",
-      "NAFE đo trực tiếp chu kỳ tuần hoàn trên miền thời gian, miễn nhiễm với hiện tượng mất tần số cơ bản (Missing Fundamental) của kênh thoại hẹp.",
-      "NAFE không cần tín hiệu đầu vào vẫn tính được F0.",
-      "NAFE tự động loại bỏ toàn bộ tiếng ồn giao thông."
+    "cat": "acoustics",
+    "q": "Tại sao thời gian dội âm RT60 < 0.15s trên các đoạn rơi năng lượng tiếng nói lại bị coi là dấu hiệu bất thường của Deepfake?",
+    "opts": [
+      "Vì tai người không thể nghe được âm thanh có RT60 dưới 0.15s.",
+      "Đặc trưng của môi trường phòng câm toán học (Anechoic): Các mô hình TTS/Vocoder tổng hợp từ mạng neural trong môi trường vô trùng số không có dội âm thực tế.",
+      "Vì sóng âm bị hấp thụ bởi khí CO2 trong phòng.",
+      "Vì chuẩn viễn thông SIP bắt buộc RT60 phải trên 0.5s."
     ],
-    ans: 1,
-    exp: "Kênh thoại G.711 cắt cụt tần số dưới 300Hz, làm biến mất đỉnh F0 gốc trên phổ FFT. NAFE tìm cực đại của hàm tự tương quan chuẩn hóa R_x(tau), bóc tách chính xác chu kỳ rung dây thanh dựa trên khoảng cách giữa các hài âm còn lại."
+    "ans": 1,
+    "exp": "Mọi căn phòng thực tế trong đời sống (phòng ngủ, phòng khách, văn phòng) đều có phản xạ tường với RT60 từ 0.2s đến 0.7s. RT60 < 0.15s chỉ tồn tại trong phòng thí nghiệm câm đặc biệt hoặc âm thanh do AI tổng hợp."
   },
   {
-    cat: "prosody",
-    q: "Hiện tượng bẹp dải cao độ (Monotonic F0 Compression) thường gặp ở các bot Deepfake tiếng Việt giá rẻ biểu hiện định lượng như thế nào?",
-    opts: [
-      "Dải biến thiên cao độ Delta F0 = F0_max - F0_min < 55Hz xuyên suốt cả 6 thanh điệu.",
-      "Tần số F0 luôn cố định chính xác ở 100Hz.",
-      "F0 biến thiên ngẫu nhiên từ 50Hz đến 1000Hz.",
-      "Mọi âm tiết đều biến thành thanh Huyền."
+    "cat": "acoustics",
+    "q": "Hiện tượng lọc lược (Comb-Filtering) xuất hiện trên phổ âm thanh là bằng chứng vật lý của loại tấn công nào?",
+    "opts": [
+      "Tấn công từ chối dịch vụ DoS vào tổng đài.",
+      "Tấn công phát lại qua loa ngoài (Loudspeaker Replay Attack) do sự giao thoa pha giữa âm thanh trực tiếp và phản xạ màng loa.",
+      "Tấn công nghe lén đường truyền Man-in-the-Middle.",
+      "Tấn công đổi giọng nói trực tiếp RVC."
     ],
-    ans: 0,
-    exp: "Người Việt khi phát âm bình thường qua 6 thanh điệu (Ngang, Huyền, Sắc, Hỏi, Ngã, Nặng) luôn có dải cao độ phong phú Delta F0 > 110Hz. Giọng bot tổng hợp thô sơ bị nén bẹp dưới 55Hz, nghe đều đều vô cảm."
+    "ans": 1,
+    "exp": "Khi âm thanh được phát qua loa và thu lại bằng micro, sóng trực tiếp cộng với sóng trễ tạo ra hàm truyền đạt H(f) = 1 + alpha * e^{-j 2 pi f Delta t}, tạo thành các rãnh răng lược triệt tiêu tuần hoàn trên phổ."
   },
-
-  // --- MelCNN & ONNX RUNTIME (onnx) ---
   {
-    cat: "onnx",
-    q: "Lớp AdaptiveAvgPool2d((1, 1)) ở cuối kiến trúc MelCNN 2D giải quyết bài toán cốt tử nào trong xử lý streaming audio?",
-    opts: [
-      "Loại bỏ toàn bộ các giá trị âm trong tensor.",
-      "Nén ma trận đặc trưng về kích thước cố định (256, 1, 1), cho phép mô hình tiếp nhận bất kỳ độ dài âm thanh T nào mà không cần cắt cúp hay chèn padding 0.",
-      "Tăng tốc độ xung nhịp CPU lên 4.5GHz.",
-      "Tự động dịch giọng nói sang tiếng Anh."
+    "cat": "acoustics",
+    "q": "Khi kẻ gian thực hiện tấn công Replay qua loa ngoài, thời gian dội âm RT60 đo được có xu hướng biến đổi như thế nào?",
+    "opts": [
+      "Giảm xuống dưới 0.05s do loa ngoài triệt tiêu âm học phòng.",
+      "Tăng cao đột biến vượt ngưỡng 0.85s do hiệu ứng tích chập 2 lần phản xạ phòng (Phòng ghi âm gốc * Phòng phát lại).",
+      "Không thay đổi vì RT60 là bất biến vật lý không thể sao chép.",
+      "Biến đổi ngẫu nhiên thành tần số vô tuyến."
     ],
-    ans: 1,
-    exp: "Adaptive Average Pooling tính trung bình toàn cục không gian (Global Average Pooling), chuyển đổi tensor (Batch, 256, 5, T/16) thành (Batch, 256, 1, 1), giúp mạng hoàn toàn bất biến trước độ dài thời gian của audio chunk."
+    "ans": 1,
+    "exp": "Đáp ứng xung tổng hợp là tích chập h_total(t) = h_rec(t) * h_play(t) * h_speaker(t). Hiệu ứng dội âm kép kéo dài đuôi suy giảm năng lượng, đẩy RT60 lên trên 0.85s - 1.2s."
   },
   {
-    cat: "onnx",
-    q: "Kỹ thuật Node Fusion trong ONNX Runtime Opset 14 tối ưu hóa hiệu năng thực thi của MelCNN như thế nào?",
-    opts: [
-      "Xóa bỏ hoàn toàn lớp BatchNorm khỏi mô hình.",
-      "Gộp các toán tử liên tiếp Conv2D + BatchNorm + ReLU thành một kernel C++ hợp nhất duy nhất (FusedConv), giữ dữ liệu trong L1/L2 Cache của CPU.",
-      "Chuyển đổi toàn bộ code Python sang ngôn ngữ Java.",
-      "Giảm độ phân giải của ma trận âm thanh xuống 4-bit."
+    "cat": "acoustics",
+    "q": "Chỉ số Delta Noise Floor > 9.5 dB giữa hai từ hoặc cụm từ liền kề trong file ghi âm tố giác hành vi gì?",
+    "opts": [
+      "Người nói đang vừa đi vừa nói chuyện.",
+      "Hành vi cắt ghép nối âm thanh đa nguồn (Audio Splicing) từ các bản ghi âm ở các môi trường hoặc thiết bị khác nhau.",
+      "Micro của nạn nhân sắp hết pin.",
+      "Hiện tượng trễ gói tin trên mạng viễn thông."
     ],
-    ans: 1,
-    exp: "Node Fusion loại bỏ việc đọc/ghi dữ liệu trung gian ra RAM giữa các lớp, giữ trọn vẹn dữ liệu trong thanh ghi CPU Cache, cắt giảm hơn 65% độ trễ suy luận (từ 28ms xuống 6.8ms)."
+    "ans": 1,
+    "exp": "Mỗi môi trường và thiết bị có mức nhiễu nền vật lý cố định. Việc ghép nối các đoạn ghi âm cắt rời làm thay đổi đột ngột biên độ nhiễu nền tại điểm nối (Splicing Boundary), tạo ra bước nhảy > 9.5dB."
   },
   {
-    cat: "onnx",
-    q: "Tại sao trong cấu hình SessionOptions của ONNX Runtime lại đặt intra_op_num_threads=4 và inter_op_num_threads=1?",
-    opts: [
-      "Vì hệ thống chỉ có tối đa 4 file âm thanh.",
-      "intra_op=4 tận dụng 4 core CPU tính toán song song phép nhân ma trận cho 1 tensor, trong khi inter_op=1 ngăn chặn hiện tượng tranh chấp khóa (Lock Contention) giữa các node.",
-      "Vì ONNX không hỗ trợ giá trị lớn hơn 4.",
-      "Để ép mô hình chạy ở chế độ tiết kiệm pin."
+    "cat": "acoustics",
+    "q": "Đoạn rơi năng lượng tiếng nói (Speech Offset Tail) được chọn để tính Schroeder phải thỏa mãn điều kiện nào?",
+    "opts": [
+      "Nằm ở giữa một nguyên âm kéo dài có cường độ lớn nhất.",
+      "Là đoạn năng lượng suy giảm tự do ngay sau khi người nói đột ngột ngắt giọng ở cuối âm tiết, không có âm thanh kích thích tiếp theo trong tối thiểu 150ms.",
+      "Là đoạn micro hoàn toàn không có tín hiệu (Digital Mute).",
+      "Là đoạn có tiếng cười hoặc tiếng vỗ tay."
     ],
-    ans: 1,
-    exp: "Mô hình MelCNN có đồ thị tính toán dạng tuần tự (Sequential Graph). intra_op=4 song song hóa tối đa bên trong phép nhân ma trận tích chập. inter_op=1 giữ luồng điều phối tuần tự ổn định, triệt tiêu context-switching overhead."
+    "ans": 1,
+    "exp": "Chỉ khi nguồn âm ngắt đột ngột, năng lượng còn lại trong không gian mới hoàn toàn là do sóng dội âm phản xạ từ tường phòng suy hao theo thời gian."
   },
-
-  // --- FUSION ENGINE & HARD VETO (fusion) ---
   {
-    cat: "fusion",
-    q: "Tấn công Out-of-Distribution (OOD) là gì và tại sao Hard Physics Veto là giải pháp duy nhất triệt tiêu nó?",
-    opts: [
-      "Là cuộc tấn công DDoS làm sập máy chủ web.",
-      "Là khi kẻ tấn công dùng mô hình AI mới lạ chưa từng xuất hiện trong tập huấn luyện khiến CNN cho điểm giả mạo thấp, nhưng Hard Veto chặn dựa trên quy luật vật lý không đổi.",
-      "Là cuộc tấn công đánh cắp mật khẩu cơ sở dữ liệu SQLite3.",
-      "Là việc người dùng cố tình nói giọng địa phương khác vùng miền."
+    "cat": "acoustics",
+    "q": "Tại sao trước khi tính tích phân Schroeder, bắt buộc phải thực hiện bước trừ mức nhiễu nền (Noise Floor Subtraction)?",
+    "opts": [
+      "Để giảm kích thước tệp tin âm thanh.",
+      "Vì nếu không trừ nhiễu nền, tích phân sẽ tích lũy năng lượng nhiễu vô hạn khiến đường cong Schroeder bị bẹt ở đuôi và tính sai hoàn toàn T20.",
+      "Để loại bỏ tần số cơ bản F0 của người nói.",
+      "Để phù hợp với chuẩn định dạng MP3."
     ],
-    ans: 1,
-    exp: "Mô hình học sâu chỉ đáng tin cậy trong miền phân phối đã học. Kẻ tấn công dùng kiến trúc TTS mới sẽ qua mặt CNN. Tuy nhiên, quy luật vật lý (dây thanh phải rung có vi nhiễu, phòng phải có dội âm) là bất biến và không thể qua mặt Hard Veto."
+    "ans": 1,
+    "exp": "Nhiễu nền luôn tồn tại với năng lượng sigma_noise^2 > 0. Nếu không trừ đi mức này, đường cong suy giảm sẽ tiệm cận về đường nằm ngang thay vì dốc xuống -60dB, dẫn đến đánh giá sai thời gian dội âm."
   },
   {
-    cat: "fusion",
-    q: "Trong cơ chế Cổng Động Thích Ứng Kênh Truyền (Context-Aware Gated Weights), khi phát hiện cuộc gọi qua kênh hẹp viễn thông G.711 (8kHz), hệ thống sẽ điều chỉnh trọng số như thế nào?",
-    opts: [
-      "Tăng trọng số CNN lên 0.80 vì phổ G.711 rất đặc thù.",
-      "Hạ trọng số CNN xuống 0.10, đồng thời tăng trọng số Ngữ âm (Prosody) lên 0.65 và Âm học lên 0.25.",
-      "Tắt toàn bộ hệ thống vì G.711 không đủ điều kiện pháp y.",
-      "Chuyển đổi tín hiệu G.711 sang 48kHz bằng AI trước khi phân tích."
+    "cat": "prosody",
+    "q": "Hiện tượng thắt nắp thanh môn (Glottal Stop) xảy ra đặc trưng ở thanh điệu nào trong 6 thanh điệu tiếng Việt?",
+    "opts": [
+      "Thanh Ngang (Không dấu).",
+      "Thanh Ngã (và một phần thanh Nặng trong phương ngữ Bắc Bộ).",
+      "Thanh Huyền.",
+      "Thanh Sắc."
     ],
-    ans: 1,
-    exp: "Kênh G.711 cắt cụt toàn bộ tần số trên 3.4kHz, làm mất các đặc trưng formant cao của CNN. Do đó, hệ thống hạ tỷ trọng CNN xuống 0.10 và dựa chủ yếu vào F0, Jitter và năng lượng thanh môn trong dải thoại."
+    "ans": 1,
+    "exp": "Về mặt ngữ âm học tiếng Việt, thanh Ngã là thanh gãy (broken tone): nắp thanh môn ép chặt làm tắt nghẽn luồng khí hoàn toàn trong khoảng 20-50ms trước khi bật mở lại ở cao độ cao hơn."
   },
   {
-    cat: "fusion",
-    q: "Khi hệ thống rơi vào trạng thái mâu thuẫn AMBIGUOUS_SUSPICIOUS (Điểm số rơi vào vùng tranh chấp 0.3 - 0.8), hành động phòng vệ nào được kích hoạt?",
-    opts: [
-      "Tự động khóa vĩnh viễn tài khoản của người dùng.",
-      "Kích hoạt thử thách động (Dynamic Challenge-Response): Yêu cầu đọc cụm từ OTP tiếng Việt chứa nhiều thanh Ngã và thanh Nặng đặc thù để ép AI bộc lộ khuyết tật.",
-      "Chuyển cuộc gọi cho nhân viên bảo vệ ngân hàng nghe thử.",
-      "Hạ điểm số về 0.0 để cho qua giao dịch."
+    "cat": "prosody",
+    "q": "Trong giám định pháp y tiếng Việt, tiêu chí nào xác định một hiện tượng Glottal Stop hợp lệ của người thật?",
+    "opts": [
+      "Độ sụt năng lượng RMS Delta E < -12.0 dB kèm trạng thái hữu thanh (Voiced) trước và sau khoảng lặng trong khung 20-50ms.",
+      "Tần số F0 tăng vọt lên trên 1000Hz.",
+      "Âm lượng tăng đột ngột +20dB.",
+      "Micro bị mất tín hiệu hoàn toàn trong 2 giây."
     ],
-    ans: 1,
-    exp: "Dynamic Challenge-Response yêu cầu người dùng đọc câu thoại chứa các thanh điệu gãy (VD: 'Kỹ sư Nguyễn Vĩ Viết vẽ tranh bão lũ'). Kẻ tấn công dùng TTS thời gian thực sẽ không thể nội suy kịp hoặc làm bẹp F0 thanh Ngã, lập tức bị lộ."
+    "ans": 0,
+    "exp": "Glottal Stop của thanh Ngã đòi hỏi độ tụt năng lượng sâu (Delta E < -12dB) do dây thanh ngừng rung cơ học, nhưng hai bên khoảng lặng phải là nguyên âm hữu thanh (F0 > 0)."
   },
-
-  // --- SINH TRẮC 1:1, PHÁP Y & NGÂN HÀNG (security) ---
   {
-    cat: "security",
-    q: "Trong bài toán Voice Biometrics 1:1, phân ly không gian trực giao (Orthogonal Subspace Projection) có ý nghĩa cốt lõi gì?",
-    opts: [
-      "Để nén kích thước file âm thanh từ MP3 về WAV.",
-      "Để tách biệt hoàn toàn đặc trưng định danh chủ tài khoản (Identity) khỏi đặc trưng tính sống cơ học (Liveness), tránh nhầm lẫn giữa clone của chủ và người lạ nói thật.",
-      "Để tăng tốc độ tính toán ma trận trên GPU.",
-      "Để xóa bỏ toàn bộ tạp âm môi trường xung quanh."
+    "cat": "prosody",
+    "q": "Dải Micro-Jitter sinh học chuẩn của người nói bình thường nằm trong khoảng bao nhiêu phần trăm?",
+    "opts": [
+      "0.01% - 0.10%.",
+      "0.60% - 2.50%.",
+      "5.00% - 10.00%.",
+      "15.00% - 30.00%."
     ],
-    ans: 1,
-    exp: "Bằng cách chiếu vector đặc trưng thành 2 không gian con trực giao S_ID vuông góc S_Live, hệ thống có thể kết luận chính xác trạng thái 'Voice Clone Attack' khi Identity khớp chủ (>=0.75) nhưng Liveness bị âm tính (<0.40)."
+    "ans": 1,
+    "exp": "Do cơ cấu sinh học của thanh quản người, các chu kỳ dao động liền kề của dây thanh luôn có sự sai lệch tự nhiên từ 0.6% đến 2.5%. Dưới 0.35% là dấu hiệu AI tổng hợp quá mịn; trên 4.8% là dấu hiệu AI chuyển giọng bị trượt pha."
   },
   {
-    cat: "security",
-    q: "Chính sách phân vùng 3 dải (Tri-Band Policy) trong giám định gian lận ngân hàng xử lý dải Vàng [0.3 - 0.8) như thế nào?",
-    opts: [
-      "Chặn ngay lập tức và chuyển hồ sơ sang cơ quan công an.",
-      "Bỏ qua và cho phép giao dịch như người thật.",
-      "Không chặn khách hàng mà kích hoạt xác thực tăng cường (Step-up Auth) với OTP âm thanh động chứa thanh Ngã/Nặng.",
-      "Tự động trừ 10% phí bảo hiểm rủi ro tài khoản."
+    "cat": "prosody",
+    "q": "Tại sao các mô hình Voice Conversion thời gian thực (như RVC v2) thường có chỉ số Jitter tăng vọt bất thường > 4.8%?",
+    "opts": [
+      "Vì phần mềm cố tình thêm nhiễu vào để đánh lừa ngân hàng.",
+      "Hiện tượng trượt pha (Phase Discontinuity / Phase Slip) giữa các khung STFT khi thuật toán nội suy F0 (Harvest/Crepe) xử lý tiếng Việt có dấu.",
+      "Do tốc độ mạng Internet quá chậm.",
+      "Vì người dùng nói quá to làm rè micro."
     ],
-    ans: 2,
-    exp: "Dải Vàng là vùng nghi ngờ/mâu thuẫn. Để đảm bảo FPR < 0.05% không làm gián đoạn khách hàng thật, ngân hàng yêu cầu đọc câu thách thức động (Challenge-Response) chứa nhiều thanh Ngã để ép AI bộc lộ khuyết tật."
+    "ans": 1,
+    "exp": "Voice conversion phải bóc tách pitch và ghép vào vocal timbre mới trong thời gian thực. Sự gián đoạn pha tại ranh giới giữa các khung biến đổi tạo ra các xung đột biên độ vi mô, đẩy Jitter lên cao bất thường."
   },
   {
-    cat: "security",
-    q: "Một file âm thanh có mã băm SHA-256 hoàn toàn hợp lệ và khớp với biên bản thu thập. Điều này CHỨNG MINH ĐƯỢC điều gì trước tòa án?",
-    opts: [
-      "Chứng minh file âm thanh chắc chắn được phát ra từ người sống, không phải do AI tạo ra.",
-      "Chứng minh file âm thanh không bị sửa đổi hay can thiệp bit nào kể từ lúc băm và bảo đảm tính tái lập kết quả giám định.",
-      "Chứng minh file âm thanh được thu vào đúng thời điểm xảy ra vụ việc lừa đảo.",
-      "Chứng minh giọng nói trong file thuộc quyền sở hữu của nạn nhân."
+    "cat": "prosody",
+    "q": "Thuật toán NAFE (Normalized Autocorrelation F0 Estimation) được ưu tiên dùng để bóc tách F0 tiếng Việt vì ưu điểm gì?",
+    "opts": [
+      "Tốc độ chạy nhanh gấp 1000 lần mạng nơ-ron và chuẩn hóa năng lượng cục bộ, kháng tốt hiện tượng biến thiên biên độ (Shimmer).",
+      "Khả năng dự đoán tương lai người nói sẽ nói từ gì tiếp theo.",
+      "Tự động dịch tiếng Việt sang tiếng Anh.",
+      "Không cần dùng đến phép nhân toán học."
     ],
-    ans: 1,
-    exp: "SHA-256 chỉ bảo đảm tính toàn vẹn (Integrity) và tính tái lập (Reproducibility). Nó không thể chứng minh nguồn gốc sinh học (Provenance/Liveness) hay thời điểm tạo ra nếu không có chữ ký số PKI và dấu thời gian TSA."
+    "ans": 0,
+    "exp": "Tự tương quan chuẩn hóa chia cho căn bậc hai của tích năng lượng hai khung, loại bỏ ảnh hưởng của việc tăng giảm âm lượng đột ngột, giúp dò cực đại chu kỳ dây thanh cực kỳ ổn định trong dải 60-400Hz."
   },
   {
-    cat: "security",
-    q: "Bộ ba pháp lý hoàn chỉnh theo chuẩn FIPS 140-3 & RFC 3161 để một kết luận giám định Deepfake có giá trị tố tụng trước tòa án gồm những thành phần nào?",
-    opts: [
-      "Tên người giám định, số điện thoại và địa chỉ email.",
-      "Mã băm SHA-256 (Toàn vẹn bit) + Ký số bất đối xứng PKI Ed25519 (Định danh hệ thống) + Dấu thời gian RFC 3161 TSA (Chống gian lận thời gian UTC).",
-      "Ảnh chụp màn hình phần mềm và file nén ZIP.",
-      "Bản ghi âm lời khai của nạn nhân."
+    "cat": "prosody",
+    "q": "Tại sao kẻ tấn công Deepfake TTS (như ElevenLabs, VITS) thường thất bại trong việc tái tạo thanh Ngã tiếng Việt?",
+    "opts": [
+      "Vì các mô hình này chỉ được lập trình để nói tiếng Anh.",
+      "Hàm mất mát hồi quy (L1/L2/Mel-loss) của neural vocoder có xu hướng làm trơn đường bao phổ (Smoothing Effect), triệt tiêu khoảng lặng thanh môn sâu -12dB.",
+      "Vì tiếng Việt không có trên bảng mã Unicode.",
+      "Do máy chủ AI không đủ RAM để render thanh Ngã."
     ],
-    ans: 1,
-    exp: "Đây là tiêu chuẩn quốc tế FIPS 140-3 cho mật mã và RFC 3161 cho Time-Stamp Protocol, bảo đảm chuỗi bảo quản bằng chứng (Chain of Custody) không thể bị bác bỏ trước hội đồng xét xử."
+    "ans": 1,
+    "exp": "Các mạng học sâu tối ưu hóa hàm lỗi trung bình trên toàn phổ. Điểm ngắt thanh môn cực ngắn (30ms) thường bị mạng làm phẳng thành một chỗ trũng nông (-3dB đến -5dB) để tối ưu hàm lỗi, để lộ sơ hở vật lý."
   },
   {
-    cat: "security",
-    q: "Tại sao độ trễ toàn trình của DeepGuard được khống chế ở mức T_E2E ≈ 350ms?",
-    opts: [
+    "cat": "prosody",
+    "q": "Khái niệm Shimmer trong phân tích âm sinh học tiếng nói thể hiện đại lượng nào?",
+    "opts": [
+      "Độ biến thiên chu kỳ thời gian giữa các xung thanh môn.",
+      "Độ biến thiên biên độ (công suất) giữa các chu kỳ dao động dây thanh liền kề.",
+      "Tốc độ nói tính bằng số từ trên phút.",
+      "Tỷ số giữa nguyên âm và phụ âm."
+    ],
+    "ans": 1,
+    "exp": "Jitter đo độ bất đối xứng về thời gian (tần số), còn Shimmer đo độ bất đối xứng về biên độ đỉnh sóng giữa các chu kỳ dây thanh. Cả hai là cặp bài trùng trong giám định sinh trắc học thanh môn."
+  },
+  {
+    "cat": "prosody",
+    "q": "Dải tần số cơ bản F0 tự nhiên của giọng nam và giọng nữ trưởng thành ở người Việt Nam thường nằm trong khoảng nào?",
+    "opts": [
+      "20Hz - 50Hz.",
+      "Nam: 85Hz - 180Hz; Nữ: 165Hz - 255Hz (Tổng thể dải sinh học: 60Hz - 400Hz).",
+      "500Hz - 2000Hz.",
+      "5000Hz - 8000Hz."
+    ],
+    "ans": 1,
+    "exp": "Dây thanh nam dày và dài hơn nên dao động ở tần số thấp hơn (trung bình ~120Hz), nữ dao động cao hơn (~210Hz). Mọi giá trị F0 đo được ngoài khoảng 60-400Hz trong giọng thoại bình thường đều là lỗi thuật toán hoặc âm thanh tổng hợp."
+  },
+  {
+    "cat": "onnx",
+    "q": "Tại sao mô hình MelCNN của DeepGuard chỉ sử dụng 1.2M tham số thay vì các mô hình nền tảng như WavLM (95M) hay Whisper?",
+    "opts": [
+      "Vì tác giả không biết cách huấn luyện các mô hình lớn hơn.",
+      "Để đảm bảo thời gian suy luận dưới 7ms trên CPU thông thường và mức tiêu thụ RAM < 85MB, đáp ứng độ trễ 350ms cho hàng nghìn cuộc gọi đồng thời.",
+      "Vì ONNX Runtime không hỗ trợ mô hình trên 5 triệu tham số.",
+      "Để có thể nén vừa vào một đĩa mềm 1.44MB."
+    ],
+    "ans": 1,
+    "exp": "Trong môi trường tổng đài viễn thông với hàng trăm kênh thoại thời gian thực, mô hình 1.2M tham số chạy trên CPU với độ trễ 6.8ms là giải pháp tối ưu kinh tế và kỹ thuật, tránh gánh nặng cụm GPU đắt đỏ."
+  },
+  {
+    "cat": "onnx",
+    "q": "Kỹ thuật Hợp nhất toán tử (Operator Fusion) trong ONNX Runtime Opset 14 mang lại lợi ích kỹ thuật lớn nhất nào?",
+    "opts": [
+      "Giúp mô hình dự đoán chính xác hơn 50%.",
+      "Ghép nối các chuỗi toán tử Conv2D + BatchNorm + Mish thành một kernel thực thi duy nhất, giảm thiểu số lần ghi/đọc bộ nhớ đệm RAM và tăng tốc 35-40%.",
+      "Tự động xóa các file rác trên ổ cứng máy chủ.",
+      "Tự động sửa lỗi chính tả tiếng Việt."
+    ],
+    "ans": 1,
+    "exp": "Thay vì lưu kết quả trung gian của Conv ra RAM rồi đọc lại để tính BatchNorm và Activation, Operator Fusion giữ tensor trong thanh ghi CPU (L1/L2 Cache), triệt tiêu tắc nghẽn băng thông bộ nhớ."
+  },
+  {
+    "cat": "onnx",
+    "q": "Tại sao việc cấu hình intra_op_num_threads = 4 và inter_op_num_threads = 1 lại là tối ưu nhất trên CPU 4 core cho một worker?",
+    "opts": [
+      "Vì số 4 là số may mắn.",
+      "Tập trung toàn bộ 4 lõi tính toán song song ma trận cho 1 tensor (intra-op), đồng thời ngăn chặn hiện tượng tranh chấp luồng (Context Switching / Lock Contention) giữa các node.",
+      "Để ép CPU luôn chạy ở nhiệt độ dưới 40 độ C.",
+      "Vì hệ điều hành Linux bắt buộc cấu hình này."
+    ],
+    "ans": 1,
+    "exp": "Đồ thị MelCNN có cấu trúc tuần tự với các khối residual nhỏ. Việc chạy song song liên node (inter-op) chỉ gây overhead điều phối, trong khi dồn tài nguyên cho phép nhân ma trận nội bộ (intra-op) đạt hiệu suất cao nhất."
+  },
+  {
+    "cat": "onnx",
+    "q": "Kỹ thuật Dynamic Quantization từ FP32 xuống INT8 giúp giảm dung lượng mô hình MelCNN từ 4.8MB xuống còn bao nhiêu?",
+    "opts": [
+      "Khoảng 1.3 MB (giảm xấp xỉ 73%).",
+      "Khoảng 3.9 MB.",
+      "Khoảng 0.1 MB.",
+      "Không giảm dung lượng mà chỉ đổi tên file."
+    ],
+    "ans": 0,
+    "exp": "Trọng số 32-bit float được ánh xạ tuyến tính về số nguyên 8-bit có dấu, giảm dung lượng bộ nhớ xấp xỉ 4 lần (từ 4.8MB xuống 1.3MB) và tăng tốc độ tính toán nhờ tập lệnh vector VNNI/AVX-512 trên CPU Intel."
+  },
+  {
+    "cat": "onnx",
+    "q": "Mục đích của khối Squeeze-and-Excitation (SE-Block) trong kiến trúc mạng MelCNN là gì?",
+    "opts": [
+      "Nén file âm thanh đầu vào lại.",
+      "Tự động học và tái phân bổ trọng số cho các kênh đặc trưng tần số quan trọng, tập trung chú ý vào dải Formant và vết hằn Vocoder.",
+      "Tăng số lượng tham số của mô hình lên gấp đôi.",
+      "Chuyển đổi tín hiệu âm thanh thành văn bản."
+    ],
+    "ans": 1,
+    "exp": "SE-Block sử dụng cơ chế chú ý kênh (Channel Attention) để khuếch đại các kênh phổ chứa thông tin hữu ích và dập tắt các kênh chỉ chứa nhiễu nền hoặc khoảng lặng."
+  },
+  {
+    "cat": "onnx",
+    "q": "Hàm kích hoạt Mish được ưu tiên sử dụng thay cho ReLU truyền thống trong MelCNN vì lý do gì?",
+    "opts": [
+      "Vì Mish chạy nhanh hơn ReLU gấp 10 lần.",
+      "Mish là hàm trơn phi tuyến tính liên tục (f(x) = x * tanh(ln(1 + e^x))), không có điểm gãy tại 0, giúp đạo hàm lan truyền mượt mà và bảo toàn gradient âm nhỏ.",
+      "Vì Mish không cần dùng phép tính dấu phẩy động.",
+      "Vì thư viện PyTorch chỉ hỗ trợ hàm Mish."
+    ],
+    "ans": 1,
+    "exp": "Độ trơn của Mish giúp mô hình học sâu nắm bắt được các gradient biến thiên cực nhỏ của vi cấu trúc phổ âm thanh mà ReLU thường dập tắt về 0 (hiện tượng Dead ReLU)."
+  },
+  {
+    "cat": "onnx",
+    "q": "Tại sao trong mã nguồn backend của DeepGuard, việc khởi tạo `ort.InferenceSession` phải được thực hiện một lần lúc khởi động (Singleton) thay vì trong mỗi request?",
+    "opts": [
+      "Vì Python không cho phép khởi tạo đối tượng hai lần.",
+      "Việc tải mô hình và dịch đồ thị tính toán (Graph Compilation) mất 150-300ms; làm mỗi request sẽ gây quá tải RAM và phá vỡ ngân sách độ trễ 350ms.",
+      "Để tránh vi phạm bản quyền phần mềm ONNX.",
+      "Vì CPU chỉ có thể đọc file ONNX một lần duy nhất."
+    ],
+    "ans": 1,
+    "exp": "InferenceSession của ONNX tối ưu hóa đồ thị và cấp phát bộ nhớ cố định lúc init. Tái sử dụng session đảm bảo mỗi lần suy luận chỉ mất 6.8ms thuần túy cho tính toán ma trận."
+  },
+  {
+    "cat": "fusion",
+    "q": "Lý thuyết bằng chứng Dempster-Shafer (DST) giải quyết bài toán cốt lõi nào mà xác suất Bayes truyền thống gặp khó khăn?",
+    "opts": [
+      "Tăng tốc độ tính toán lên cấp số nhân.",
+      "Phân biệt rõ ràng giữa 'Sự thiếu hiểu biết/Không chắc chắn' (Uncertainty) và 'Mâu thuẫn bằng chứng' (Evidence Conflict).",
+      "Loại bỏ hoàn toàn sự cần thiết của dữ liệu huấn luyện.",
+      "Tự động sửa chữa phần cứng bị hỏng."
+    ],
+    "ans": 1,
+    "exp": "DST cho phép gán khối lượng niềm tin cho tập hợp các giả thuyết thay vì từng phần tử rời rạc, đồng thời cung cấp hệ số xung đột k để đo lường mức độ bất đồng giữa các nguồn bằng chứng độc lập."
+  },
+  {
+    "cat": "fusion",
+    "q": "Khi hệ số xung đột k trong Dempster-Shafer vượt ngưỡng 0.85 (ví dụ AI chấm 99% Real nhưng Jitter chỉ 0.20%), hệ thống sẽ phản ứng như thế nào?",
+    "opts": [
+      "Lấy trung bình cộng điểm số của các bên.",
+      "Bác bỏ phép dung hợp mềm và kích hoạt Quyền Phủ Quyết Cứng (Hard Veto): Khẳng định Deepfake vi phạm bất biến vật lý.",
+      "Tự động khởi động lại máy chủ.",
+      "Bỏ qua dữ liệu Jitter và tin hoàn toàn vào AI."
+    ],
+    "ans": 1,
+    "exp": "Khi xung đột cực đoan xảy ra, việc lấy trung bình sẽ tạo ra ảo giác điểm an toàn giả mạo. Các quy luật vật lý cơ học của dây thanh không thể bị đánh đổi bởi điểm số xác suất của mạng nơ-ron."
+  },
+  {
+    "cat": "fusion",
+    "q": "Chính sách phân vùng 3 dải (Tri-Band Policy) trong DeepGuard chia không gian điểm số thành các dải nào?",
+    "opts": [
+      "Dải Thấp (0-50), Dải Trung (50-80), Dải Cao (80-100).",
+      "Dải Xanh [0.0 - 0.30): Chấp thuận tức thì; Dải Vàng [0.30 - 0.80): Kích hoạt Step-up Auth (OTP âm thanh); Dải Đỏ [0.80 - 1.00]: Phong tỏa gian lận.",
+      "Dải Alpha, Dải Beta, Dải Gamma.",
+      "Dải Âm, Dải Bằng, Dải Dương."
+    ],
+    "ans": 1,
+    "exp": "Tri-Band Policy là trái tim của quản trị rủi ro ngân hàng: Tối đa hóa trải nghiệm người dùng ở dải xanh, bảo vệ tuyệt đối ở dải đỏ, và xử lý linh hoạt không gây gián đoạn kinh doanh ở dải vàng."
+  },
+  {
+    "cat": "fusion",
+    "q": "Trong điều kiện kênh thoại G.711 (băng thông 8kHz, nén 8-bit), Cổng động thích ứng kênh truyền điều chỉnh trọng số như thế nào?",
+    "opts": [
+      "Tăng trọng số CNN lên 0.90.",
+      "Hạ trọng số CNN xuống 0.10, tăng trọng số Ngữ âm tiếng Việt (NAFE Jitter/Glottal Stop) lên 0.65 và Âm học phòng lên 0.25.",
+      "Giữ nguyên trọng số 50-50.",
+      "Tắt toàn bộ hệ thống và chuyển cuộc gọi về analog."
+    ],
+    "ans": 1,
+    "exp": "Kênh G.711 làm biến dạng phổ tần số cao khiến mạng CNN dễ bị nhiễu. Ngược lại, tần số cơ bản F0 và nắp thanh môn của tiếng Việt nằm ở dải trầm được bảo toàn nguyên vẹn, cần được nâng tỷ trọng quyết định."
+  },
+  {
+    "cat": "fusion",
+    "q": "Điều kiện nào dưới đây KHÔNG kích hoạt Quyền Phủ Quyết Cứng (Hard Veto) trong DeepGuard?",
+    "opts": [
+      "Micro-Jitter đo được là 0.22% (< 0.35%).",
+      "Thời gian dội âm RT60 đo được là 0.08s (< 0.15s).",
+      "Thời gian dội âm RT60 đo được là 0.42s và Micro-Jitter là 1.25%.",
+      "Từ phát âm có thanh Ngã nhưng độ sụt năng lượng chỉ đạt Delta E = -3.5 dB."
+    ],
+    "ans": 2,
+    "exp": "RT60 = 0.42s và Jitter = 1.25% hoàn toàn nằm trong dải sinh học và âm học của người thật trong phòng làm việc bình thường, đây là trạng thái hợp lệ không kích hoạt phủ quyết."
+  },
+  {
+    "cat": "fusion",
+    "q": "Cơ chế Thử Thách OTP Âm Thanh Động (Dynamic Audio OTP) ở dải vàng yêu cầu khách hàng làm gì?",
+    "opts": [
+      "Chụp ảnh căn cước công dân gửi qua email.",
+      "Đọc to một cụm từ tiếng Việt ngẫu nhiên chứa các âm tiết có thanh Ngã hoặc thanh Nặng (ví dụ: 'Mỹ Nghệ', 'Sữa Chữa', 'Vững Chãi') do hệ thống sinh ra tức thời.",
+      "Nói liên tục trong 5 phút không nghỉ.",
+      "Gõ mật khẩu ngân hàng trên bàn phím điện thoại."
+    ],
+    "ans": 1,
+    "exp": "Kẻ gian dùng công cụ TTS chuẩn bị trước không thể đoán được cụm từ ngẫu nhiên. Đồng thời việc đọc từ có thanh Ngã ép kẻ gian phải tái tạo hiện tượng thắt nắp thanh môn trong thời gian thực, bộc lộ ngay sơ hở Deepfake."
+  },
+  {
+    "cat": "fusion",
+    "q": "Tại sao việc chỉ sử dụng một ngưỡng đơn lẻ (Single Threshold, ví dụ score > 0.5 là Deepfake) lại là sai lầm chết người trong an ninh ngân hàng?",
+    "opts": [
+      "Vì các kỹ sư ngân hàng thích dùng nhiều số hơn.",
+      "Ngưỡng đơn tạo ra sự đánh đổi không thể dung hòa: Đặt ngưỡng thấp thì báo động giả làm phiền hàng nghìn khách hàng thật (FPR cao), đặt ngưỡng cao thì bỏ lọt kẻ gian (FNR cao).",
+      "Vì chuẩn PCI-DSS cấm dùng ngưỡng 0.5.",
+      "Vì ngưỡng đơn làm máy chủ tốn điện hơn."
+    ],
+    "ans": 1,
+    "exp": "Vùng bất định giữa 0.3 và 0.8 là nơi các trường hợp giọng khàn, sóng yếu và tiếng ồn giao thoa. Phân vùng 3 dải cho phép cô lập vùng này để xác thực bổ sung mà không chặn nhầm khách hàng."
+  },
+  {
+    "cat": "security",
+    "q": "Mã băm toàn vẹn SHA-256 kèm khóa ký số HMAC trong hồ sơ giám định của DeepGuard nhằm mục đích pháp lý nào?",
+    "opts": [
+      "Tăng tốc độ truyền file qua mạng Internet.",
+      "Đảm bảo Chuỗi bảo quản chứng cứ số (Chain of Custody) không bị thay đổi, giả mạo hay xóa sửa trước khi trình lên Tòa án nhân dân.",
+      "Tự động dịch file âm thanh sang tiếng Anh.",
+      "Để file âm thanh phát ra âm lượng to hơn."
+    ],
+    "ans": 1,
+    "exp": "Bằng chứng số chỉ có giá trị pháp lý khi chứng minh được tính nguyên vẹn tuyệt đối từ lúc thu nhận gói tin RTP tại tổng đài cho đến khi in ra báo cáo giám định, tuân thủ FIPS 140-3 và Luật Giao dịch Điện tử."
+  },
+  {
+    "cat": "security",
+    "q": "Tiêu chuẩn RFC 3161 (Internet X.509 Public Key Infrastructure Time-Stamp Protocol) đóng vai trò gì trong hệ thống?",
+    "opts": [
+      "Quy định tốc độ quay của quạt làm mát CPU.",
+      "Cung cấp Dấu thời gian tin cậy (Trusted Timestamp) từ một Cơ quan cấp dấu thời gian (TSA) độc lập, tạo bằng chứng chống chối bỏ (Non-repudiation) về thời điểm xảy ra vụ việc.",
+      "Quy định chuẩn nén video 4K.",
+      "Định dạng màu sắc của giao diện người dùng."
+    ],
+    "ans": 1,
+    "exp": "Dấu thời gian RFC 3161 chứng minh chắc chắn rằng tệp âm thanh và kết quả phân tích đã tồn tại chính xác tại thời điểm giao dịch, ngân hàng hay khách hàng đều không thể ngụy tạo lùi ngày giờ."
+  },
+  {
+    "cat": "security",
+    "q": "Cấp độ FIPS 140-3 Level 3 quy định yêu cầu bảo mật phần cứng nghiêm ngặt nào đối với thiết bị lưu khóa ký số (HSM)?",
+    "opts": [
+      "Vỏ máy phải được sơn màu vàng chống rỉ sét.",
+      "Có cơ chế tự hủy dữ liệu khóa bí mật (Zeroization) ngay lập tức khi phát hiện có sự can thiệp vật lý vào vỏ bọc hoặc thay đổi điện áp/nhiệt độ bất thường.",
+      "Thiết bị phải chống nước ở độ sâu 50 mét.",
+      "Phải có màn hình cảm ứng OLED."
+    ],
+    "ans": 1,
+    "exp": "FIPS 140-3 Level 3 yêu cầu bảo vệ vật lý chống tấn công phần cứng: Mọi nỗ lực khoan, tháo nắp hoặc can thiệp vi mạch đều kích hoạt mạch xóa trắng khóa mã hóa trong micro-giây."
+  },
+  {
+    "cat": "security",
+    "q": "Tại sao độ trễ toàn trình của hệ thống DeepGuard được khống chế ở mức T_E2E ≈ 350ms?",
+    "opts": [
       "Để phù hợp với tốc độ mắt người nhìn trên màn hình 60 FPS.",
-      "Để đảm bảo cắt đứt cuộc gọi mạo danh ngay từ âm tiết đầu tiên trước khi nạn nhân kịp thực hiện thao tác tài chính.",
+      "Để ngắt cuộc gọi mạo danh ngay từ âm tiết đầu tiên trước khi nạn nhân kịp thực hiện thao tác tài chính chuyển tiền.",
       "Vì giao thức WebSocket không thể truyền dữ liệu nhanh hơn 350ms.",
       "Để dành thời gian cho mô hình Deep Learning chạy qua 5 vòng lặp kiểm tra."
     ],
-    ans: 1,
-    exp: "Khoảng thời gian một người nhận diện và phản ứng chuyển tiền là vài giây. Cắt cuộc gọi ở 350ms (ngay khi từ đầu tiên được phát hiện giả mạo) ngăn chặn hoàn toàn rủi ro gian lận thời gian thực."
+    "ans": 1,
+    "exp": "Khoảng thời gian một người nhận diện và phản ứng chuyển tiền là vài giây. Cắt cuộc gọi ở 350ms (ngay khi từ đầu tiên được phát hiện giả mạo) ngăn chặn hoàn toàn rủi ro gian lận thời gian thực."
+  },
+  {
+    "cat": "security",
+    "q": "Tỷ lệ báo động giả (False Positive Rate - FPR) được DeepGuard cam kết ở mức dưới bao nhiêu trong dải chặn cứng?",
+    "opts": [
+      "Dưới 10.0%.",
+      "Dưới 0.05% (tương đương tối đa 1 trên 2.000 cuộc gọi hợp lệ bị nghi vấn chặn).",
+      "Dưới 50.0%.",
+      "Tuyệt đối 0% trong mọi trường hợp."
+    ],
+    "ans": 1,
+    "exp": "Trong giao dịch ngân hàng thực tế, không có hệ thống nào đạt FPR = 0%. Cam kết FPR < 0.05% trên dải chặn cứng là chuẩn vàng quốc tế, bảo vệ danh tiếng và chất lượng phục vụ của ngân hàng."
+  },
+  {
+    "cat": "security",
+    "q": "Tại sao DeepGuard sử dụng cơ sở dữ liệu ClickHouse thay cho PostgreSQL hoặc MongoDB để lưu trữ dữ liệu giám định pháp y?",
+    "opts": [
+      "Vì ClickHouse là phần mềm miễn phí còn các phần mềm khác phải trả phí bản quyền đắt đỏ.",
+      "ClickHouse là CSDL cột (Column-oriented DBMS) tối ưu cho dữ liệu chuỗi thời gian lớn (Telemetry time-series), nén dữ liệu 10x và truy vấn hàng tỷ vector âm thanh trong vài mili-giây.",
+      "Vì ClickHouse chỉ chạy được trên hệ điều hành Windows.",
+      "Vì PostgreSQL không hỗ trợ lưu trữ số thập phân."
+    ],
+    "ans": 1,
+    "exp": "Mỗi cuộc gọi sinh ra hàng trăm bản ghi telemetry mỗi giây (F0, Jitter, Shimmer, RT60, Log-Mel). ClickHouse có khả năng ghi hàng trăm nghìn dòng mỗi giây và quét hàng tỷ bản ghi để vẽ biểu đồ gian lận tức thời."
+  },
+  {
+    "cat": "security",
+    "q": "Giao thức STIR/SHAKEN (RFC 8224 / RFC 8588) được triển khai trên tầng viễn thông nhằm ngăn chặn hình thức tấn công nào?",
+    "opts": [
+      "Tấn công nghe trộm cáp quang dưới biển.",
+      "Tấn công giả mạo số điện thoại người gọi đến (Caller ID Spoofing) bằng cách ký số định danh nhà mạng tại trạm chuyển mạch gốc.",
+      "Tấn công từ chối dịch vụ DDoS bằng botnet máy tính.",
+      "Tấn công lây nhiễm mã độc qua tin nhắn SMS."
+    ],
+    "ans": 1,
+    "exp": "STIR/SHAKEN gắn chữ ký số X.509 vào tiêu đề SIP INVITE (trường Identity). Khi cuộc gọi tới tổng đài ngân hàng, hệ thống xác thực xem số gọi đến có thực sự thuộc sở hữu của thuê bao đó hay bị nhà mạng ảo mạo danh."
   }
 ];
 
-// =====================================================================
-// 5. DATA REPOSITORY: 5 CORE BACKEND CODE MODULES (MODE 5)
-// =====================================================================
+// 4B. DATA REPOSITORY: 24 FLASHCARDS BẪY SÂU (MODE 4)
+const FLASHCARDS_DATA = [
+  {
+    "id": "FC-01",
+    "cat": "dsp",
+    "categoryLabel": "DSP & TIỀN XỬ LÝ",
+    "title": "Polyphase FIR Resampling vs Linear Interpolation",
+    "trapAlert": "BẪY: Nghĩ rằng dùng hàm nội suy tuyến tính (Linear Interpolation) sẽ nhanh hơn mà không làm mất mát chất lượng âm thanh.",
+    "frontQuestion": "Tại sao tuyệt đối không được dùng phép nội suy tuyến tính (Linear Interpolation) để hạ mẫu audio từ 44.1kHz về 16kHz trong giám định Deepfake?",
+    "backAnswer": "Nội suy tuyến tính không có bộ lọc Anti-Aliasing đạt chuẩn Nyquist. Các tần số trên 8kHz (như 21kHz) sẽ bị gấp phổ (Aliasing) phản chiếu ngược vào dải 0-8kHz, làm hỏng các formant F1-F3 và sinh ra các hài âm giả tạo đánh lừa mạng MelCNN.\n    \n    Chuẩn bắt buộc: Polyphase Resampling với bộ lọc FIR Kaiser-window có suy hao dải chặn > 80dB.",
+    "standardRef": "ITU-T P.862 PESQ, ANSI S1.11",
+    "tip": "Khi bị hội đồng hỏi, hãy vẽ đồ thị gấp phổ (Spectral Foldover) minh họa tần số f_alias = |f_orig - k * f_s|."
+  },
+  {
+    "id": "FC-02",
+    "cat": "acoustics",
+    "categoryLabel": "ÂM HỌC ISO 3382",
+    "title": "Phòng Câm Số (Anechoic) vs Phòng Cách Âm Thực Tế",
+    "trapAlert": "BẪY: Nhầm lẫn giữa phòng thu âm cao cấp lót mút cách âm và phòng câm toán học (RT60 < 0.15s) của Deepfake Vocoder.",
+    "frontQuestion": "Làm sao hệ thống phân biệt được một khách hàng VIP gọi từ phòng thu cách âm với một kẻ dùng neural vocoder (HiFi-GAN) tổng hợp giọng?",
+    "backAnswer": "Phòng thu âm thực tế dù lót mút tiêu âm vẫn có phản xạ ở dải tần số trầm (< 200Hz) do bước sóng âm dài không bị hấp thụ hoàn toàn bởi mút mỏng. Đường cong Schroeder vẫn có độ dốc vật lý.\n    \n    Ngược lại, mô hình AI tổng hợp trong môi trường câm số hoàn toàn không có phản xạ ở mọi dải tần (RT60 < 0.08s - 0.12s) và thiếu vắng nhiễu nền nhiệt màng rung micro.",
+    "standardRef": "ISO 3382-1 Room Acoustics",
+    "tip": "Nhấn mạnh vào chỉ số Spectral Flatness của nhiễu nền và phản xạ dải trầm dưới 200Hz."
+  },
+  {
+    "id": "FC-03",
+    "cat": "prosody",
+    "categoryLabel": "NGỮ ÂM HỌC TIẾNG VIỆT",
+    "title": "Glottal Stop Mining trong Thanh Ngã",
+    "trapAlert": "BẪY: Chỉ kiểm tra độ giảm âm lượng (RMS drop) mà không kiểm tra tính chất hữu thanh của nguyên âm hai bên.",
+    "frontQuestion": "Điều kiện cần và đủ để thuật toán kết luận một khoảng lặng là nắp thanh môn đóng (Glottal Stop) của thanh Ngã là gì?",
+    "backAnswer": "1. Độ sụt năng lượng: Delta E_RMS < -12.0 dB trong khoảng thời gian từ 20ms đến 50ms.\n2. Trạng thái hữu thanh (Voicing State): Tần số F0 phải tồn tại hợp lệ (F0 > 0) ở khung ngay trước và ngay sau khoảng lặng.\n    \nNếu không có điều kiện 2, hệ thống sẽ bắt nhầm phụ âm vô thanh (/p/, /t/, /k/) hoặc khoảng lặng giữa hai từ là thanh Ngã.",
+    "standardRef": "IPA for Vietnamese, ISO/IEC 19794-13",
+    "tip": "Nhấn mạnh giải phẫu thanh quản: Nắp thanh môn chỉ ép chặt tạm thời giữa hai giai đoạn rung của dây thanh."
+  },
+  {
+    "id": "FC-04",
+    "cat": "prosody",
+    "categoryLabel": "NGỮ ÂM HỌC TIẾNG VIỆT",
+    "title": "Micro-Jitter: Quá Mượt vs Giật Cục",
+    "trapAlert": "BẪY: Cho rằng Deepfake luôn luôn có giọng nói bị giật cục và rè méo.",
+    "frontQuestion": "Hai thái cực vi phạm bất biến sinh học của chỉ số Micro-Jitter dây thanh tố giác hai họ công nghệ Deepfake nào?",
+    "backAnswer": "1. Jitter < 0.35% (Quá mượt phi sinh học): Tố giác họ TTS Autoregressive / Diffusion (ElevenLabs, VITS) do hàm mất mát neural nội suy làm phẳng dao động vi mô.\n2. Jitter > 4.80% (Giật cục bất thường): Tố giác họ Voice Conversion (RVC v2) do hiện tượng trượt pha (Phase Discontinuity) giữa các khung STFT khi nội suy F0.\n    \nDải sinh học bình thường của con người: 0.60% <= Jitter <= 2.50%.",
+    "standardRef": "ASVspoof 5 Physical Invariants",
+    "tip": "Hội đồng rất thích thí sinh phân biệt được hai thái cực Jitter quá thấp và Jitter quá cao."
+  },
+  {
+    "id": "FC-05",
+    "cat": "onnx",
+    "categoryLabel": "MÔ HÌNH HỌC SÂU ONNX",
+    "title": "FusedConv Operator trong Opset 14",
+    "trapAlert": "BẪY: Xuất mô hình ONNX với Opset mặc định (Opset 11/12) không bật tối ưu hóa đồ thị.",
+    "frontQuestion": "Tại sao DeepGuard bắt buộc xuất mô hình MelCNN sang ONNX Runtime Opset 14 với Graph Optimization Enable All?",
+    "backAnswer": "Opset 14 hỗ trợ hợp nhất toán tử FusedConv: Gộp Conv2D + BatchNormalization + Mish Activation thành một lời gọi kernel duy nhất trên CPU.\n    \nLợi ích: Giảm 40% chi phí truy xuất RAM, giảm dung lượng bộ nhớ đệm L1/L2 Cache và tăng tốc độ suy luận xuống dưới 7ms / chunk.",
+    "standardRef": "ONNX Runtime Opset 14 Specification",
+    "tip": "Dẫn chứng con số cụ thể: Thời gian suy luận giảm từ 11.2ms xuống 6.8ms trên CPU Intel Xeon."
+  },
+  {
+    "id": "FC-06",
+    "cat": "fusion",
+    "categoryLabel": "FUSION & HARD VETO",
+    "title": "Dempster-Shafer Conflict Rule",
+    "trapAlert": "BẪY: Dùng phép trung bình cộng có trọng số (Weighted Soft Voting) cho toàn bộ các trường hợp.",
+    "frontQuestion": "Khi hệ số xung đột k trong Dempster-Shafer đạt giá trị bao nhiêu thì phép cộng xác suất truyền thống sụp đổ?",
+    "backAnswer": "Khi k > 0.85 (Xung đột cực đoan). Ví dụ: Mô hình AI chấm điểm Real = 0.99 (do bị đánh lừa bởi nhiễu đối nghịch), nhưng module vật lý đo được Jitter = 0.15% hoặc RT60 = 0.96s.\n    \nHệ thống kích hoạt Hard Veto Override: Điểm gian lận cưỡng chế bằng 0.99, khóa giao dịch ngay lập tức bất chấp AI nói gì.",
+    "standardRef": "Dempster-Shafer Evidence Theory (1976)",
+    "tip": "Hãy nhấn mạnh: 'Quy luật vật lý vũ trụ không thể bị bỏ phiếu đa số bởi mạng nơ-ron số'."
+  },
+  {
+    "id": "FC-07",
+    "cat": "security",
+    "categoryLabel": "PHÁP Y & CHUỖI BẢO QUẢN",
+    "title": "Dấu Thời Gian RFC 3161 & FIPS 140-3",
+    "trapAlert": "BẪY: Cho rằng chỉ cần lưu file mp3 vào cơ sở dữ liệu là đủ giá trị pháp lý trước tòa án.",
+    "frontQuestion": "Tại sao chứng cứ âm thanh trong các vụ kiện gian lận tài chính ngân hàng bắt buộc phải có dấu thời gian RFC 3161?",
+    "backAnswer": "Đồng hồ hệ thống của máy chủ nội bộ ngân hàng có thể bị điều chỉnh hoặc bị hacker thay đổi ngày giờ.\n    \nRFC 3161 yêu cầu gửi mã băm SHA-256 sang một Cơ quan cấp dấu thời gian (TSA) độc lập được nhà nước cấp phép để ký số xác thực. Điều này tạo ra bằng chứng không thể chối bỏ (Non-repudiation) về tính tồn tại và nguyên vẹn của file ghi âm tại đúng thời điểm giao dịch.",
+    "standardRef": "RFC 3161 PKI, FIPS 140-3 Level 3",
+    "tip": "Dẫn chứng điều khoản trong Luật Giao dịch Điện tử về giá trị pháp lý của thông điệp dữ liệu có dấu thời gian."
+  },
+  {
+    "id": "FC-08",
+    "cat": "acoustics",
+    "categoryLabel": "ÂM HỌC ISO 3382",
+    "title": "Hiệu Ứng Lọc Lược (Comb-Filtering) Loa Ngoài",
+    "trapAlert": "BẪY: Nghĩ rằng cuộc gọi phát lại qua loa Bluetooth chất lượng cao sẽ giống hệt người thật nói vào điện thoại.",
+    "frontQuestion": "Vết hằn quang phổ đặc trưng nào tố giác một cuộc gọi Replay phát lại qua loa ngoài?",
+    "backAnswer": "Hiệu ứng lọc lược (Comb-Filtering). Sóng âm từ màng loa phát ra truyền tới micro điện thoại theo nhiều đường: đường trực tiếp và các đường phản xạ từ mặt bàn/tường.\n    \nSự trễ pha Delta t tạo ra các rãnh suy giảm năng lượng tuần hoàn có chu kỳ Delta f = 1 / Delta t trên phổ tần số, đồng thời thời gian dội âm RT60 bị nhân đôi vượt ngưỡng 0.85s.",
+    "standardRef": "ISO 3382 Acoustics, ITU-R BS.1534",
+    "tip": "Mô tả hình ảnh: Trên phổ spectrogram xuất hiện các sọc ngang song song như răng của chiếc lược chải đầu."
+  },
+  {
+    "id": "FC-09",
+    "cat": "security",
+    "categoryLabel": "QUẢN TRỊ RỦI RO NGÂN HÀNG",
+    "title": "Tri-Band Policy: Kiểm Soát FPR < 0.05%",
+    "trapAlert": "BẪY: Thiết lập hệ thống chỉ có 2 trạng thái: Cho qua (Pass) hoặc Chặn luôn (Block).",
+    "frontQuestion": "Tại sao phân tầng Tri-Band [0.0-0.3) Xanh, [0.3-0.8) Vàng, [0.8-1.0] Đỏ là cứu tinh cho trải nghiệm khách hàng?",
+    "backAnswer": "Nếu chỉ có Pass/Block, ngân hàng sẽ đối mặt với 2 thảm họa:\n- Đặt ngưỡng chặn nhạy -> FPR cao -> Chặn nhầm hàng nghìn khách hàng VIP bị khàn giọng -> Khách hàng bỏ sang ngân hàng khác.\n- Đặt ngưỡng chặn lỏng -> FNR cao -> Kẻ lừa đảo lọt qua cuỗm hàng tỷ đồng.\n    \nVùng Vàng [0.3 - 0.8) cho phép ngân hàng không chặn khách hàng mà chỉ yêu cầu đọc thêm 1 câu OTP âm thanh chứa thanh Ngã, vừa an toàn 100% vừa không gây bức xúc.",
+    "standardRef": "NIST SP 800-63B Digital Identity",
+    "tip": "Đây là câu trả lời ghi điểm tuyệt đối với các giám khảo làm quản trị rủi ro thực tế tại ngân hàng."
+  },
+  {
+    "id": "FC-10",
+    "cat": "dsp",
+    "categoryLabel": "DSP & TIỀN XỬ LÝ",
+    "title": "Định Lý Heisenberg-Gabor Trong STFT",
+    "trapAlert": "BẪY: Cho rằng có thể tăng độ phân giải thời gian và tần số của biến đổi STFT lên cùng lúc.",
+    "frontQuestion": "Tại sao cấu hình cửa sổ Hann 1024 mẫu / hop 256 tại 16kHz là điểm cân bằng hoàn hảo theo định lý Heisenberg-Gabor?",
+    "backAnswer": "Định lý Heisenberg-Gabor: Delta t * Delta f >= 1 / (4 * pi).\n- N = 1024 -> Delta f = 15.625 Hz (Đủ mịn để phân giải cao độ F0 = 100-300Hz của tiếng Việt).\n- Hop = 256 -> Delta t = 16 ms (Overlap 75%, đủ nhanh để bắt kịp độ biến thiên của nắp thanh môn trong 20-50ms mà không làm trễ pipeline).\n    \nNếu dùng N = 512, Delta f = 31.25Hz sẽ làm nhòe F0. Nếu dùng N = 2048, Delta t = 128ms sẽ làm trễ vượt quá ngưỡng 350ms.",
+    "standardRef": "Gabor, D. (1946) Theory of Communication",
+    "tip": "Vẽ hình hộp chữ nhật biểu diễn ô lượng tử thời gian - tần số (Heisenberg Box)."
+  },
+  {
+    "id": "FC-11",
+    "cat": "prosody",
+    "categoryLabel": "NGỮ ÂM HỌC TIẾNG VIỆT",
+    "title": "Bệnh Lý Giọng Nói vs Deepfake Attack",
+    "trapAlert": "BẪY: Nhầm lẫn người bị viêm thanh quản khàn tiếng thành kẻ tấn công Deepfake.",
+    "frontQuestion": "Các chỉ số nào giúp hệ thống bảo vệ khách hàng bị viêm thanh quản hạt hoặc cảm cúm không bị khóa oan tài khoản?",
+    "backAnswer": "1. Người bị viêm thanh quản có Shimmer tăng và Jitter tăng nhẹ (lên 2.0% - 2.5%), nhưng KHÔNG vượt quá 4.5% như hiện tượng trượt pha RVC.\n2. Dội âm phòng RT60 của họ vẫn hoàn toàn bình thường (0.2s - 0.5s), không bị câm số (< 0.15s) như TTS.\n3. Thanh Ngã của họ vẫn có hiện tượng ngắt âm cơ học tự nhiên do nắp thanh môn vẫn đóng mở bình thường.",
+    "standardRef": "Voice Pathology Telemetry Standards",
+    "tip": "Nhắc lại: 'Bệnh lý xảy ra ở dây thanh âm, không làm thay đổi âm học căn phòng nơi khách hàng đang đứng'."
+  },
+  {
+    "id": "FC-12",
+    "cat": "onnx",
+    "categoryLabel": "MÔ HÌNH HỌC SÂU ONNX",
+    "title": "INT8 Dynamic Quantization vs FP32",
+    "trapAlert": "BẪY: Cho rằng lượng tử hóa INT8 sẽ làm giảm độ chính xác nhận diện Deepfake một cách nghiêm trọng.",
+    "frontQuestion": "Đánh đổi thực tế giữa độ chính xác và hiệu năng khi chuyển đổi mô hình MelCNN từ FP32 sang INT8 trên CPU là gì?",
+    "backAnswer": "1. Dung lượng: Giảm từ 4.8MB xuống 1.3MB (giảm 73%).\n2. Tốc độ suy luận: Tăng 2.3 lần trên CPU nhờ tập lệnh tính toán số nguyên AVX-512 VNNI.\n3. Suy giảm độ chính xác EER (Equal Error Rate): Chỉ giảm 0.12% (từ 1.85% lên 1.97%), hoàn toàn không ảnh hưởng tới quyết định an ninh tổng thể.\n    \nModule lượng tử hóa bảo vệ các lớp nhạy cảm (First Conv và Output) bằng cách giữ nguyên số thực FP32.",
+    "standardRef": "IEEE 754 Floating-Point Arithmetic",
+    "tip": "Nhấn mạnh con số: Tiết kiệm hàng chục nghìn USD tiền thuê máy chủ GPU mỗi năm cho ngân hàng."
+  },
+  {
+    "id": "FC-13",
+    "cat": "security",
+    "categoryLabel": "VIỄN THÔNG & VOIP G.711",
+    "title": "Packet Loss Concealment (PLC) & Khung Giả Mạo",
+    "trapAlert": "BẪY: Nhầm thuật toán che giấu mất gói tin PLC của tổng đài thành hiện tượng F0 đi ngang của Deepfake.",
+    "frontQuestion": "Làm thế nào để hệ thống giám định pháp y loại trừ sự can thiệp của thuật toán PLC trên mạng VoIP chập chờn?",
+    "backAnswer": "Thuật toán PLC khi mất gói tin IP thường lặp lại khung âm thanh trước đó (Pitch Period Replication), tạo ra đoạn tín hiệu có F0 phẳng lì nhân tạo.\n    \nGiải pháp: Hệ thống đọc Sequence Number và Timestamp trong tiêu đề gói tin RTP. Các khung bị mất và phục hồi bởi PLC được gắn cờ bỏ qua, không tính vào telemetry Micro-Jitter.",
+    "standardRef": "ITU-T G.711 Appendix I (PLC Algorithm), RFC 3550 RTP",
+    "tip": "Nhắc tới tiêu đề gói tin RTP: 'Chúng ta can thiệp từ tầng vận chuyển (Transport Layer) chứ không chỉ nhìn tín hiệu PCM mù'."
+  },
+  {
+    "id": "FC-14",
+    "cat": "fusion",
+    "categoryLabel": "FUSION & TRẢI NGHIỆM KHÁCH HÀNG",
+    "title": "Focal Loss & Chi Phí Bất Đối Xứng Trong Ngân Hàng",
+    "trapAlert": "BẪY: Dùng hàm mất mát Cross-Entropy chuẩn xem xét lỗi False Positive và False Negative có trọng số ngang nhau.",
+    "frontQuestion": "Tại sao trong mô hình giám định chuyển tiền ngân hàng, hàm mất mát phải có trọng số phạt bất đối xứng (Cost-Sensitive)?",
+    "backAnswer": "Một vụ False Negative (bỏ lọt kẻ gian chuyển tiền thành công) gây thiệt hại hàng chục tỷ đồng và rủi ro hình sự cho ngân hàng.\n    \nTrong khi đó, một vụ False Positive chỉ khiến khách hàng đọc thêm 1 mã OTP âm thanh. Hệ thống áp dụng hàm mất mát có trọng số C(FN) = 1000 * C(FP), ép mô hình cực kỳ nhạy bén trước các dấu hiệu gian lận tiềm ẩn.",
+    "standardRef": "Lin et al. Focal Loss for Dense Object Detection",
+    "tip": "Trình bày ma trận chi phí rủi ro (Risk Cost Matrix) để gây ấn tượng với các chuyên gia tài chính."
+  },
+  {
+    "id": "FC-15",
+    "cat": "acoustics",
+    "categoryLabel": "ÂM HỌC ISO 3382",
+    "title": "Vết Cắt Ghép Nối Âm Thanh (Audio Splicing Boundary)",
+    "trapAlert": "BẪY: Nghĩ rằng kẻ gian ghép các từ ghi âm của nạn nhân lại với nhau sẽ tạo thành câu nói hợp lệ.",
+    "frontQuestion": "Tại sao kẻ tấn công ghép các từ riêng lẻ từ video livestream của nạn nhân luôn bị DeepGuard phát hiện?",
+    "backAnswer": "1. Bước nhảy nền nhiễu Delta Noise Floor > 9.5 dB giữa hai âm tiết cắt ghép do khác biệt thiết bị và môi trường ghi âm gốc.\n2. Gián đoạn pha (Phase Discontinuity): Tại ranh giới cắt nối, dạng sóng sin bị đứt gãy đột ngột, sinh ra các vệt năng lượng cao tần bất thường trên phổ STFT.\n3. Nhịp điệu và ngữ điệu (Intonation Contour): Đường F0 bị đứt đoạn vô lý, không tuân theo quy luật ngữ điệu câu hỏi/câu khẳng định tiếng Việt.",
+    "standardRef": "AES Forensic Audio Guidelines, ISO 3382",
+    "tip": "Chỉ ra trên giao diện: Bật Spectrogram lên sẽ thấy ngay một vạch sáng thẳng đứng tại điểm cắt nối."
+  },
+  {
+    "id": "FC-16",
+    "cat": "dsp",
+    "categoryLabel": "DSP & TIỀN XỬ LÝ",
+    "title": "Zero Crossing Rate (ZCR) & Phân Biệt Hữu Thanh / Vô Thanh",
+    "trapAlert": "BẪY: Cho rằng chỉ cần năng lượng âm thanh lớn là âm thanh của người nói hợp lệ.",
+    "frontQuestion": "Chỉ số ZCR (Tỷ lệ đổi dấu qua điểm 0) kết hợp với RMS Energy bóc tách hai thành phần âm thanh cơ bản nào trong tiếng nói?",
+    "backAnswer": "1. Âm hữu thanh (Voiced - Nguyên âm, âm mũi): ZCR thấp (do tần số trầm F0 chi phối), RMS Energy cao -> Dây thanh đang rung động.\n2. Âm vô thanh (Unvoiced - Phụ âm bật, ma sát /s/, /f/, /t/): ZCR rất cao (sóng dao động ngẫu nhiên qua điểm 0), RMS Energy thấp -> Dây thanh không rung, âm sinh ra do luồng khí ma sát qua vòm miệng.\n    \nDeepfake Vocoder thế hệ cũ thường tổng hợp âm vô thanh quá yếu hoặc có chu kỳ giả tạo.",
+    "standardRef": "Rabiner & Schafer Digital Processing of Speech Signals",
+    "tip": "Nhắc lại: 'ZCR là bộ lọc sơ cấp rẻ nhất về tính toán để loại bỏ khoảng lặng và tiếng xì hơi'."
+  },
+  {
+    "id": "FC-17",
+    "cat": "onnx",
+    "categoryLabel": "MÔ HÌNH HỌC SÂU ONNX",
+    "title": "Chống Tấn Công Mẫu Đối Nghịch (Adversarial Robustness)",
+    "trapAlert": "BẪY: Nghĩ rằng chỉ cần huấn luyện mạng nơ-ron sâu hơn là sẽ miễn nhiễm với nhiễu đối nghịch FGSM.",
+    "frontQuestion": "Tại sao kiến trúc kết hợp Mạng Nơ-ron + Bất Biến Vật Lý của DeepGuard lại kháng được tấn công đối nghịch FGSM?",
+    "backAnswer": "Nhiễu đối nghịch FGSM (Fast Gradient Sign Method) tiêm nhiễu vi mô vào không gian số để làm sai lệch ma trận trọng số mạng nơ-ron (lừa MelCNN chấm điểm 0.99 Real).\n    \nTuy nhiên, nhiễu số không thể thay đổi được tính chất vật lý của sóng âm: Nó không thể tạo ra phản xạ dội âm của căn phòng thực tế (ISO 3382) và không thể giả lập cơ chế đóng cơ học của nắp thanh môn (-12dB). Module Hard Veto sẽ ngay lập tức bắt giữ cuộc gọi.",
+    "standardRef": "Goodfellow et al. Explaining and Harnessing Adversarial Examples",
+    "tip": "Nhấn mạnh luận điểm: 'Phòng thủ đa tầng dựa trên thực tại vật lý là khắc tinh của toán học đánh lừa'."
+  },
+  {
+    "id": "FC-18",
+    "cat": "security",
+    "categoryLabel": "KIẾN TRÚC & HẠ TẦNG DOANH NGHIỆP",
+    "title": "Bộ Đệm Vòng Khóa Không Chờ (Lock-Free Circular Ring Buffer)",
+    "trapAlert": "BẪY: Dùng mảng động JavaScript hoặc danh sách Python cấp phát mới liên tục trong luồng streaming.",
+    "frontQuestion": "Tại sao trong kiến trúc xử lý độ trễ thấp 350ms, bộ đệm vòng (Ring Buffer) cố định bộ nhớ lại là thành phần sống còn?",
+    "backAnswer": "Việc liên tục tạo mới mảng trong mỗi khung âm thanh (16ms) kích hoạt cơ chế thu gom rác tự động (Garbage Collection - GC) của runtime.\n    \nCác đợt dừng GC (GC Pause) làm đơ luồng xử lý từ 50-100ms một cách ngẫu nhiên, gây rớt gói tin và vọt độ trễ. Ring Buffer cấp phát 1 mảng tĩnh cố định (Zero-allocation), ghi đè tuần hoàn theo con trỏ write_pos, triệt tiêu 100% chi phí GC.",
+    "standardRef": "Twelve-Factor App & Real-Time Audio Systems",
+    "tip": "Dẫn chứng việc dùng TypedArray `Float32Array` trong JavaScript và con trỏ vòng trong C++."
+  },
+  {
+    "id": "FC-19",
+    "cat": "prosody",
+    "categoryLabel": "NGỮ ÂM HỌC TIẾNG VIỆT",
+    "title": "Phân Biệt Run Giọng Parkinson (Tremor) vs RVC Phase Discontinuity",
+    "trapAlert": "BẪY: Khóa tài khoản của người lớn tuổi bị run giọng tự nhiên vì nghi ngờ là Deepfake RVC.",
+    "frontQuestion": "Điểm khác biệt bản chất giữa chứng run giọng sinh lý (Vocal Tremor) và hiện tượng trượt pha Deepfake RVC là gì?",
+    "backAnswer": "1. Run giọng bệnh lý/người già (Tremor): Biến thiên tần số F0 diễn ra tuần hoàn chậm (tần số điều chế 4Hz - 7Hz theo nhịp cơ thể), biên độ dao động nhịp nhàng như hình sin mượt.\n2. Trượt pha RVC (Phase Discontinuity): Sự sai lệch xảy ra đột ngột, ngẫu nhiên ở cấp độ micro-giây giữa các khung STFT, không có tính chu kỳ sinh học.\n    \nThuật toán phân tích phổ điều chế (Modulation Spectrum) bóc tách chính xác hai trường hợp này.",
+    "standardRef": "Clinical Voice Assessment & Dysphonia Protocols",
+    "tip": "Nhắc lại: 'Hệ thống đo tần số điều chế của biến thiên F0 để phân định run sinh học vs lỗi thuật toán'."
+  },
+  {
+    "id": "FC-20",
+    "cat": "onnx",
+    "categoryLabel": "MÔ HÌNH HỌC SÂU ONNX",
+    "title": "Cổng Động Thích Ứng Kênh Truyền (Dynamic Gating Channel)",
+    "trapAlert": "BẪY: Áp dụng cùng một bộ trọng số cố định cho cả cuộc gọi HD Voice và cuộc gọi thoại bàn G.711.",
+    "frontQuestion": "Cơ chế Cổng động thích ứng kênh truyền tự động phát hiện loại kết nối và thay đổi trọng số như thế nào?",
+    "backAnswer": "Hệ thống đo lường băng thông hiệu dụng và tỷ lệ suy hao phổ dải cao (> 3400Hz).\n- Kênh HD Voice / WebRTC (16kHz đầy đủ): Phân bổ trọng số cân bằng: CNN = 0.50, Prosody = 0.30, Acoustics = 0.20.\n- Kênh Thoại Bàn G.711 (8kHz, cắt dải cao): Tự động chuyển dịch trọng số: CNN = 0.10, Prosody = 0.65, Acoustics = 0.25.\n    \nNgăn chặn hoàn toàn hiện tượng CNN bị mù dải cao dẫn tới đưa ra điểm số sai lệch.",
+    "standardRef": "Adaptive Gating Networks in Multimodal Processing",
+    "tip": "Chỉ cho hội đồng thấy thanh trượt trọng số tương tác trên tab Red-Team Sandbox."
+  },
+  {
+    "id": "FC-21",
+    "cat": "acoustics",
+    "categoryLabel": "ÂM HỌC ISO 3382",
+    "title": "Dội Âm Kép (Double Room Convolution) Trong Tấn Công Replay",
+    "trapAlert": "BẪY: Cho rằng một file audio người thật ghi âm lén đem phát lại sẽ hoàn hảo 100% như người thật gọi điện.",
+    "frontQuestion": "Công thức toán học giải thích tại sao tấn công Replay qua loa ngoài luôn bị phát hiện bởi bộ lọc dội âm ISO 3382?",
+    "backAnswer": "Đáp ứng xung phòng tổng hợp là tích chập:\nh_total(t) = h_room1(t) * h_speaker(t) * h_room2(t) * h_mic(t)\n    \nTrong đó h_room1 là phòng nơi nạn nhân bị ghi âm trộm, h_room2 là phòng nơi kẻ gian đang bật loa ngoài. Tích chập hai đáp ứng xung làm thời gian suy hao năng lượng kéo dài gấp đôi: RT60_total > RT60_1 + RT60_2, dễ dàng vượt ngưỡng chặn 0.85s.",
+    "standardRef": "ISO 3382-2 Reverberation Time in Ordinary Rooms",
+    "tip": "Vẽ sơ đồ hai phòng liên tiếp kết nối qua màng loa và micro."
+  },
+  {
+    "id": "FC-22",
+    "cat": "dsp",
+    "categoryLabel": "DSP & TIỀN XỬ LÝ",
+    "title": "Spectral Rolloff 85% & Băng Thông Thoại Hữu Ích",
+    "trapAlert": "BẪY: Bỏ qua kiểm tra giới hạn tần số trên của nguồn phát âm thanh.",
+    "frontQuestion": "Chỉ số Spectral Rolloff 85% có ý nghĩa gì trong việc bóc tách codec viễn thông và loa phát thanh?",
+    "backAnswer": "Spectral Rolloff 85% là tần số ngưỡng mà dưới đó chứa đúng 85% tổng công suất phổ của tín hiệu.\n- Giọng người thật nói vào micro chất lượng cao: Rolloff 85% thường nằm trong khoảng 3200Hz - 4200Hz.\n- Kênh G.711 thoại bàn: Bị cắt cụt ở 3400Hz (Rolloff giảm xuống ~2800Hz).\n- Loa ngoài rẻ tiền: Rolloff dồn về dải cộng hưởng màng loa 1500Hz - 2500Hz.\n    \nGiúp nhận diện ngay lập tức loại thiết bị truyền phát mà kẻ gian đang sử dụng.",
+    "standardRef": "MPEG-7 Audio Spectrum Rolloff Descriptor",
+    "tip": "Nhắc tới: 'Rolloff giúp hệ thống lập tức biết kẻ gian đang dùng điện thoại bàn, loa phóng thanh hay tai nghe'."
+  },
+  {
+    "id": "FC-23",
+    "cat": "security",
+    "categoryLabel": "PHÁP Y & AN NINH TÀI CHÍNH",
+    "title": "Zero-Trust Voice Architecture Trong Ngân Hàng",
+    "trapAlert": "BẪY: Cho rằng một cuộc gọi đến từ đúng số điện thoại của Giám đốc tài chính thì mặc nhiên an toàn.",
+    "frontQuestion": "Triết lý Zero-Trust Voice Verification được hiện thực hóa trong mã nguồn DeepGuard như thế nào?",
+    "backAnswer": "Không bao giờ tin tưởng Caller ID, số IMEI thiết bị hay giọng nói quen thuộc. Mọi luồng âm thanh đều là 'Untrusted Input'.\n    \n1. Tách biệt danh tính và sinh trắc qua Chiếu trực giao (Orthogonal Projection).\n2. Kiểm tra liveness liên tục trên từng chunk 256ms suốt chiều dài cuộc gọi chứ không chỉ kiểm tra lúc đầu.\n3. Bất cứ khi nào xuất hiện vi phạm vật lý (Jitter < 0.35% hoặc RT60 bất thường), lập tức ngắt phiên giao dịch.",
+    "standardRef": "NIST SP 800-207 Zero Trust Architecture",
+    "tip": "Đây là nguyên tắc vàng của an ninh mạng hiện đại: 'Never Trust, Always Verify'."
+  },
+  {
+    "id": "FC-24",
+    "cat": "fusion",
+    "categoryLabel": "FUSION & KIẾN TRÚC HỆ THỐNG",
+    "title": "Veto Matrix: Bảng Chân Lý Quyền Phủ Quyết Cứng",
+    "trapAlert": "BẪY: Để các chỉ số phụ (nhiễu nền, năng lượng) làm vô hiệu hóa quyền phủ quyết của chỉ số chính.",
+    "frontQuestion": "Bảng chân lý của Quyền Phủ Quyết Cứng (Hard Veto Matrix) trong DeepGuard quy định các điều kiện logic nào?",
+    "backAnswer": "FINAL_BLOCK = (Jitter < 0.35%) OR (RT60 < 0.15s) OR (RT60 > 0.85s) OR (IsGlottalTone AND GlottalDrop > -6.0dB) OR (DeltaNoiseFloor > 9.5dB)\n    \nChỉ cần DUY NHẤT một mệnh đề logic đúng, biến cờ HARD_VETO lập tức được gán TRUE, ghi đè toàn bộ điểm số của mạng CNN và gán Risk Score = 0.99 (Khóa giao dịch).",
+    "standardRef": "DeepGuard Enterprise Architectural Specification 2026",
+    "tip": "Khẳng định: 'Toán học logic Boolean phủ quyết toán học xác suất mờ khi bảo vệ tiền của khách hàng'."
+  }
+];
+
+// 4C. DATA REPOSITORY: 11 TRỤ CỘT TRI THỨC BẬC THẦY (TAB 3 & MODE KNOWLEDGE)
+const PILLARS_DATA = [
+  {
+    "num": 1,
+    "roman": "I",
+    "code": "import scipy.signal as signal\nimport numpy as np\n\ndef polyphase_resample_16k(audio, orig_sr):\n    gcd = np.gcd(orig_sr, 16000)\n    up = 16000 // gcd\n    down = orig_sr // gcd\n    return signal.resample_poly(audio, up, down, window=('kaiser', 5.0))",
+    "name": "Xử Lý Tín Hiệu Âm Thanh Số (DSP & Anti-Aliasing Pipeline)",
+    "tag": "dsp",
+    "subtitle": "Polyphase Resampling 16kHz, STFT Hann 1024/Hop 256, 80 Log-Mel Bins & Đặc Trưng Cổ Điển",
+    "summary": "Quy chuẩn tiền xử lý âm thanh pháp y chuẩn hóa toàn bộ luồng audio về 16kHz thông qua bộ lọc đa pha Polyphase FIR, triệt tiêu Spectral Leakage và Aliasing để bảo toàn Formant F1-F3 và tần số thanh môn.",
+    "theory": "1. Định lý Nyquist-Shannon: Tần số hữu ích của tiếng nói con người nằm dưới 8000Hz. Tần số lấy mẫu f_s = 16kHz đảm bảo bảo toàn toàn bộ năng lượng thanh môn mà không lãng phí tài nguyên CPU như 44.1kHz hoặc 48kHz.\n2. Bộ lọc Polyphase Resampling:\n   x_resampled[m] = SUM_{k} x[k] * h_sub[m * M - k * L]\n   Sử dụng cửa sổ Kaiser với suy hao dải chặn > 80dB, ngăn chặn hiện tượng gấp phổ (Spectral Foldover/Aliasing) vào dải thoại hữu ích.\n3. Cửa sổ STFT Hann 1024 / Hop 256:\n   - Delta f = 16000 / 1024 = 15.625 Hz (Đủ mịn để bóc tách F0 = 100-300Hz).\n   - Delta t = 256 / 16000 = 16 ms (Overlap 75%, tương thích với chu kỳ dịch chuyển thanh môn 10-25ms).\n4. Log-Mel Filterbank 80 dải:\n   m = 2595 * log10(1 + f / 700), ánh xạ ma trận S_mel = ln(W_mel * |X(t, f)|^2 + epsilon).",
+    "metrics": [
+      {
+        "name": "Tần số lấy mẫu chuẩn",
+        "val": "16,000 Hz (f_s)"
+      },
+      {
+        "name": "Độ phân giải tần số",
+        "val": "15.625 Hz"
+      },
+      {
+        "name": "Độ phân giải thời gian",
+        "val": "16 ms (Overlap 75%)"
+      },
+      {
+        "name": "Số dải lọc Mel",
+        "val": "80 dải (100Hz - 8000Hz)"
+      },
+      {
+        "name": "Suy hao dải chặn FIR",
+        "val": "> 80 dB (Kaiser window)"
+      }
+    ],
+    "standards": "ITU-T P.862 (PESQ), ITU-T G.711, ANSI S1.11, ISO/IEC 14496-3",
+    "traps": "Kinh điển: Dùng phép nội suy tuyến tính (Linear Interpolation) làm biến dạng Formant và rò rỉ hài âm bậc cao của neural vocoder."
+  },
+  {
+    "num": 2,
+    "roman": "II",
+    "code": "def schroeder_rt60(tail_audio, sr=16000):\n    energy = tail_audio[::-1] ** 2\n    curve = np.cumsum(energy)[::-1]\n    db_curve = 10 * np.log10(curve / np.max(curve) + 1e-10)\n    idx_5 = np.where(db_curve <= -5)[0][0]\n    idx_25 = np.where(db_curve <= -25)[0][0]\n    t20 = (idx_25 - idx_5) / sr\n    return 3.0 * t20",
+    "name": "Vật Lý Âm Học Phòng & Chuẩn ISO 3382 (Room Acoustics & Replay)",
+    "tag": "acoustics",
+    "subtitle": "Tích Phân Năng Lượng Lùi Schroeder, T20/RT60, Phòng Câm & Comb-Filtering Loa Ngoài",
+    "summary": "Bóc tách phản xạ âm học phòng vật lý thông qua tích phân lùi Schroeder trên các đoạn rơi năng lượng tiếng nói (Speech Offset Tails), phát hiện phòng thu câm số và tấn công phát lại qua loa ngoài.",
+    "theory": "1. Phương pháp Schroeder Backward Energy Integration:\n   E(t) = INTEGRAL_{t}^{INFINITY} h^2(tau) dtau\n   Đo năng lượng suy giảm tích lũy trên các đoạn Speech Offset Tails khi kết thúc nguyên âm.\n2. Quy đổi thời gian dội âm:\n   Xác định khoảng suy giảm từ -5dB đến -25dB trên đường cong Schroeder -> T20.\n   Thời gian dội âm tiêu chuẩn: RT60 = 3 * T20.\n3. Quy tắc phân định pháp y:\n   - RT60 < 0.15s: Phòng câm toán học (Anechoic Vocoder / ElevenLabs / VITS) - Dấu hiệu TTS nhân tạo.\n   - 0.15s <= RT60 <= 0.85s: Phòng sinh hoạt / văn phòng thực tế của người nói hợp lệ.\n   - RT60 > 0.85s: Tấn công phát lại qua loa ngoài (Loudspeaker Replay Attack) do tích chập 2 lần phòng (h_record * h_replay).\n4. Hiệu ứng lọc lược (Comb-Filtering):\n   H(f) = 1 + alpha * e^{-j 2 pi f Delta t}, tạo ra các rãnh triệt tiêu tuần hoàn trên phổ.",
+    "metrics": [
+      {
+        "name": "Ngưỡng phòng câm TTS",
+        "val": "RT60 < 0.15s"
+      },
+      {
+        "name": "Ngưỡng phòng sinh hoạt",
+        "val": "0.15s <= RT60 <= 0.85s"
+      },
+      {
+        "name": "Ngưỡng Replay loa ngoài",
+        "val": "RT60 > 0.85s"
+      },
+      {
+        "name": "Bước nhảy nhiễu ghép nối",
+        "val": "Delta Noise Floor > 9.5 dB"
+      }
+    ],
+    "standards": "ISO 3382-1 / ISO 3382-2 (Room Acoustic Parameters), ITU-R BS.1534",
+    "traps": "Kinh điển: Bỏ qua bước trừ mức nhiễu nền (Noise Floor Subtraction) khiến đường cong Schroeder không bao giờ hội tụ về âm vô cùng."
+  },
+  {
+    "num": 3,
+    "roman": "III",
+    "code": "def detect_glottal_stop(rms_frames, f0_contour):\n    for i in range(1, len(rms_frames) - 1):\n        delta_db = 20 * np.log10(rms_frames[i] / (rms_frames[i-1] + 1e-9))\n        if delta_db < -12.0 and f0_contour[i-1] > 0 and f0_contour[i+1] > 0:\n            return True, delta_db\n    return False, 0.0",
+    "name": "Ngữ Âm Học & 6 Thanh Điệu Tiếng Việt (Vietnamese Prosody & Glottal Stop)",
+    "tag": "prosody",
+    "subtitle": "NAFE F0 Tracking (60-400Hz), Micro-Jitter Chu Kỳ Dây Thanh & Khai Thác Thanh Ngã",
+    "summary": "Khai thác triệt để đặc tính thanh điệu tiếng Việt và giải phẫu thanh quản: Micro-Jitter sinh học dây thanh và hiện tượng đóng nắp thanh môn ngắt âm hoàn toàn trong thanh Ngã (Glottal Stop Mining).",
+    "theory": "1. Thuật toán tự tương quan chuẩn hóa NAFE (Normalized Autocorrelation F0 Estimation):\n   R_x(tau) = SUM x[n]x[n+tau] / sqrt(SUM x^2[n] * SUM x^2[n+tau])\n   Dò cực đại trong dải tần số cơ bản sinh học người: [60Hz, 400Hz].\n2. Micro-Jitter sinh học dây thanh:\n   Jitter_rel = (1/(N-1) * SUM |T_i - T_{i+1}|) / (1/N * SUM T_i) * 100%\n   - Người thật: 0.6% <= Jitter <= 2.5% do rung động cơ học bất đối xứng của nếp gấp thanh âm.\n   - TTS Vocoder (HiFi-GAN, WaveGlow): Jitter < 0.35% (Quá mượt, mất dao động vi mô tự nhiên).\n   - RVC Voice Conversion: Jitter > 4.8% (Trượt pha STFT do thuật toán Harvest F0).\n3. Hiện tượng nắp thanh môn trong thanh Ngã tiếng Việt (Glottal Stop):\n   - Khi phát âm từ có thanh Ngã (ví dụ: 'nghĩ', 'sữa', 'nguyễn'), nắp thanh môn ép chặt khiến dây thanh ngừng rung trong 20-50ms.\n   - Năng lượng sụt giảm sâu: Delta E_RMS < -12 dB kèm tần số F0 gián đoạn tức thời.\n   - Neural Vocoder tổng hợp thường làm trơn đường bao phổ, chỉ giảm nhẹ 3-5dB, lộ rõ vết tích Deepfake.",
+    "metrics": [
+      {
+        "name": "Jitter người thật",
+        "val": "0.60% - 2.50%"
+      },
+      {
+        "name": "Jitter TTS Vocoder",
+        "val": "< 0.35% (Quá mượt)"
+      },
+      {
+        "name": "Jitter RVC trượt pha",
+        "val": "> 4.80% (Giật cục)"
+      },
+      {
+        "name": "Độ sụt năng lượng thanh Ngã",
+        "val": "Delta E < -12.0 dB"
+      },
+      {
+        "name": "Thời gian ngắt thanh môn",
+        "val": "20ms - 50ms"
+      }
+    ],
+    "standards": "IPA (International Phonetic Alphabet) for Vietnamese, ISO 19794-4",
+    "traps": "Kinh điển: Bắt nhầm phụ âm vô thanh (/p/, /t/, /k/) là Glottal Stop do không kiểm tra trạng thái hữu thanh (Voicing State) trước và sau khoảng lặng."
+  },
+  {
+    "num": 4,
+    "roman": "IV",
+    "code": "import onnxruntime as ort\n\nopts = ort.SessionOptions()\nopts.intra_op_num_threads = 4\nopts.inter_op_num_threads = 1\nopts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL\nsession = ort.InferenceSession(\"model_melcnn_opt14.onnx\", opts, providers=['CPUExecutionProvider'])",
+    "name": "Mô Hình Học Sâu MelCNN & Tối Ưu Hóa Suy Luận ONNX Opset 14",
+    "tag": "onnx",
+    "subtitle": "Kiến Trúc Nhẹ 1.2M Tham Số, FusedConv Operator, FP16/INT8 Quantization & Latency < 7ms",
+    "summary": "Mạng nơ-ron tích chập MelCNN 2D bóc tách bất thường phổ thời gian thực, tối ưu hóa toàn diện trên CPU Intel Xeon thông qua ONNX Runtime Opset 14 với độ trễ suy luận chỉ 6.8ms.",
+    "theory": "1. Kiến trúc mạng MelCNN:\n   - 4 khối Residual Conv2D với Mish Activation và BatchNorm.\n   - Squeeze-and-Excitation (SE-Block) tái phân bổ trọng số các dải tần số quan trọng.\n   - Global Average Pooling (GAP) giảm thiểu số chiều, tổng số tham số chỉ 1.2M (nhỏ hơn 80 lần so với WavLM 95M).\n2. Tối ưu hóa suy luận ONNX Runtime Opset 14:\n   - Hợp nhất toán tử (Operator Fusion): Ghép Conv + BatchNorm + Mish thành 1 kernel FusedConv duy nhất, tiết kiệm 40% băng thông bộ nhớ RAM.\n   - Cấu hình đa luồng: intra_op_num_threads = 4 (tối ưu tính toán ma trận song song), inter_op_num_threads = 1 (tránh lock contention).\n3. Lượng tử hóa INT8 Dynamic Quantization:\n   - Giảm dung lượng mô hình từ 4.8MB (FP32) xuống 1.3MB (INT8).\n   - Tốc độ suy luận tăng 2.3 lần trên CPU không có card đồ họa GPU rời.",
+    "metrics": [
+      {
+        "name": "Số lượng tham số",
+        "val": "1.2 Triệu tham số (1.2M)"
+      },
+      {
+        "name": "Thời gian suy luận CPU",
+        "val": "6.8 ms / chunk 1 giây"
+      },
+      {
+        "name": "Dung lượng model ONNX",
+        "val": "1.3 MB (INT8 Quantized)"
+      },
+      {
+        "name": "Mức tiêu thụ bộ nhớ RAM",
+        "val": "< 85 MB"
+      }
+    ],
+    "standards": "ONNX Runtime Opset 14 Spec, IEEE 754-2019 (Floating Point Arithmetic)",
+    "traps": "Kinh điển: Tải mô hình lại trong mỗi request HTTP thay vì duy trì InferenceSession tĩnh, dẫn tới rò rỉ RAM và nghẽn CPU."
+  },
+  {
+    "num": 5,
+    "roman": "V",
+    "code": "def evaluate_hard_veto(cnn_score, jitter, rt60, glottal_delta):\n    if jitter < 0.35 or rt60 < 0.15 or rt60 > 0.85 or glottal_delta > -6.0:\n        return True, 0.99, \"HARD_VETO: Vi phạm bất biến vật lý\"\n    score = 0.50 * cnn_score + 0.30 * (1.0 - jitter / 2.5) + 0.20 * (rt60 / 0.5)\n    return False, score, \"NORMAL_FUSION\"",
+    "name": "Cơ Chế Dung Hợp Quyết Định & Xử Lý Mâu Thuẫn (Dempster-Shafer & Hard Veto)",
+    "tag": "fusion",
+    "subtitle": "Dung Hợp Bằng Chứng Đa Nguồn, Quyền Phủ Quyết Cứng Bất Biến Vật Lý & Tri-Band Policy",
+    "summary": "Dung hợp xác suất từ MelCNN, Ngữ âm NAFE và Âm học ISO 3382 qua lý thuyết Dempster-Shafer. Thiết lập quyền phủ quyết cứng (Hard Veto) khi phát hiện mâu thuẫn vật lý không thể hòa giải.",
+    "theory": "1. Lý thuyết Bằng chứng Dempster-Shafer (DST):\n   - Cho phép định lượng mức độ không chắc chắn (Uncertainty) và mâu thuẫn (Conflict factor k):\n     k = SUM_{A INTERSECT B = EMPTY} m_1(A) * m_2(B)\n   - Khi k > 0.85 (Mâu thuẫn cực đoan: ví dụ AI chấm Real 0.99 nhưng Jitter chỉ 0.15% hoặc dội âm phòng kép 0.96s), hệ thống bác bỏ trung bình cộng mềm (Soft Averaging).\n2. Quyền Phủ Quyết Cứng (Hard Veto Logic):\n   IF (Jitter < 0.35% OR RT60 < 0.15s OR RT60 > 0.85s OR (ThanhNgã == True AND DeltaE > -6.0dB)):\n       FINAL_DECISION = HARD_VETO_FRAUD (Score = 0.99)\n3. Chính sách phân vùng 3 dải (Tri-Band Policy):\n   - Dải Xanh [0.0 - 0.30): Hợp lệ 100%, thông qua giao dịch tức thì.\n   - Dải Vàng [0.30 - 0.80): Vùng nghi vấn, kích hoạt Step-up Auth (OTP âm thanh ngẫu nhiên chứa từ có thanh Ngã/Nặng).\n   - Dải Đỏ [0.80 - 1.00]: Gian lận nguy cơ cao, phong tỏa lệnh chuyển tiền khẩn cấp.",
+    "metrics": [
+      {
+        "name": "Hệ số xung đột tối đa",
+        "val": "k > 0.85 (Kích hoạt Veto)"
+      },
+      {
+        "name": "Dải xanh (Auto-Approve)",
+        "val": "[0.0 - 0.30)"
+      },
+      {
+        "name": "Dải vàng (Step-up Auth)",
+        "val": "[0.30 - 0.80)"
+      },
+      {
+        "name": "Dải đỏ (Hard Block)",
+        "val": "[0.80 - 1.00]"
+      }
+    ],
+    "standards": "Dempster-Shafer Evidence Theory (1976), NIST SP 800-63B Digital Identity",
+    "traps": "Kinh điển: Dùng trung bình cộng có trọng số đơn giản (Weighted Average), bị kẻ tấn công đánh lừa mạng CNN lấn át các quy luật vật lý."
+  },
+  {
+    "num": 6,
+    "roman": "VI",
+    "code": "def attribute_generator(jitter, rt60, noise_jump):\n    if rt60 > 0.85 and noise_jump > 9.5:\n        return \"LOUDSPEAKER_REPLAY_CONCAT\"\n    if jitter > 4.5:\n        return \"RVC_VOICE_CONVERSION\"\n    if rt60 < 0.12 and jitter < 0.40:\n        return \"DIFFUSION_TTS_ELEVENLABS\"\n    return \"UNKNOWN_OR_AUTHENTIC\"",
+    "name": "Định Danh Họ Mô Hình Sinh Mã (Deepfake Attribution Engine)",
+    "tag": "ai",
+    "subtitle": "Phân Loại Họ Kiến Trúc: Diffusion Vocoder, Autoregressive TTS, RVC Voice Conversion & Loa Ngoài",
+    "summary": "Xác định danh tính công nghệ đứng sau đợt tấn công thông qua dấu vân tay quang phổ (Spectral Fingerprints) và cơ chế bù pha, hỗ trợ điều tra án hình sự ngân hàng.",
+    "theory": "1. Phân loại 4 họ kiến trúc sinh mã phổ biến:\n   - Họ Diffusion (ElevenLabs, Coqui XTTS, DiffWave): Đặc trưng bởi độ bẹp F0, suy giảm vi dội âm cực thấp (RT60 < 0.10s), phổ năng lượng mịn trên 4000Hz.\n   - Họ Voice Conversion (RVC v2, FreeSVC): Hiện tượng giật pha STFT do thuật toán Harvest F0 làm Jitter tăng đột biến > 4.8%, xuất hiện các vạch sọc dọc trên phổ Log-Mel.\n   - Họ Neural Vocoder cổ điển (HiFi-GAN, MelGAN): Hài âm bậc cao nhân tạo xuất hiện ở các tần số bội số cố định (Artifacts periodicity).\n   - Họ Replay & Cắt Ghép: Dội âm kép RT60 > 0.85s, rãnh lọc lược Comb-Filter và bước nhảy nền nhiễu Delta Noise Floor > 9.5dB giữa các âm tiết.\n2. Ứng dụng điều tra pháp y ngân hàng:\n   - Giúp chuyên gia giám định chỉ đích danh loại phần mềm kẻ gian sử dụng để báo cáo Cơ quan An ninh mạng.",
+    "metrics": [
+      {
+        "name": "Độ chính xác định danh họ AI",
+        "val": "> 94.2%"
+      },
+      {
+        "name": "Thời gian trích xuất dấu vết",
+        "val": "< 15 ms"
+      },
+      {
+        "name": "Số lượng họ mô hình hỗ trợ",
+        "val": "6 họ kiến trúc phổ biến"
+      }
+    ],
+    "standards": "NIST SRE (Speaker Recognition Evaluation), ASVspoof 5 Attribution Challenge",
+    "traps": "Kinh điển: Nhầm lẫn giữa nhiễu môi trường tự nhiên với dấu vết lượng tử hóa của mô hình sinh mã."
+  },
+  {
+    "num": 7,
+    "roman": "VII",
+    "code": "def orthogonal_project(v_feature, v_identity_subspace):\n    projection = np.dot(v_feature, v_identity_subspace.T) @ v_identity_subspace\n    v_liveness = v_feature - projection\n    return v_liveness / (np.linalg.norm(v_liveness) + 1e-9)",
+    "name": "Sinh Trắc Giọng Nói 1:1 & Phân Ly Không Gian Trực Giao",
+    "tag": "ai",
+    "subtitle": "Tách Biệt Vector Đặc Trưng Danh Tính (x-vector / ECAPA-TDNN) & Vector Liveness",
+    "summary": "Ngăn chặn hiện tượng nhận diện sai danh tính do liveness: Chiếu trực giao không gian vector (Orthogonal Projection) để tách riêng 'Giọng của ai' và 'Có phải người sống hay không'.",
+    "theory": "1. Vấn đề cốt lõi của hệ thống xác thực sinh trắc:\n   - Nếu dùng chung 1 mô hình embedding để vừa chấm điểm danh tính vừa chấm liveness, mô hình dễ bị thiên lệch: Giọng người quen bị AI bắt chước sẽ được chấm điểm rất cao, dẫn tới bỏ lọt Deepfake tinh vi.\n2. Cơ chế phân ly không gian trực giao (Orthogonal Subspace Projection):\n   - Không gian V_id: Mã hóa đặc trưng sinh học dây thanh và đường dẫn phát âm cố định của cá nhân (Speaker Identity).\n   - Không gian V_live: Mã hóa các biến động vi mô động lực học (Micro-Jitter, Glottal Closure, Room Reflection).\n   - Chiếu trực giao: V_live_clean = V_total - Proj_{V_id}(V_total), đảm bảo điểm liveness không bị ảnh hưởng bởi danh tính người nói.",
+    "metrics": [
+      {
+        "name": "Độ phân ly không gian",
+        "val": "cos(theta) < 0.05 (Gần vuông góc 90 deg)"
+      },
+      {
+        "name": "Độ dài vector định danh",
+        "val": "192 chiều (ECAPA-TDNN)"
+      },
+      {
+        "name": "Tỷ lệ chấp nhận sai (FAR)",
+        "val": "< 0.01%"
+      }
+    ],
+    "standards": "ISO/IEC 19794-13 (Voice Biometric Data Interchange Formats)",
+    "traps": "Kinh điển: Dùng điểm tương đồng cosine danh tính (Speaker Cosine Similarity) làm ngưỡng tin cậy chống lừa đảo."
+  },
+  {
+    "num": 8,
+    "roman": "VIII",
+    "code": "def simulate_g711_telephony(pcm_16k):\n    # Downsample to 8kHz, apply bandpass 300-3400Hz and Mu-law quantization\n    b, a = signal.butter(4, [300/(8000/2), 3400/(8000/2)], btype='bandpass')\n    pcm_8k = signal.resample(pcm_16k, len(pcm_16k) // 2)\n    filtered = signal.lfilter(b, a, pcm_8k)\n    mu = 255\n    quantized = np.sign(filtered) * np.log(1 + mu * np.abs(filtered)) / np.log(1 + mu)\n    return quantized",
+    "name": "Kiểm Thử Độ Bền Vững & Giả Lập Tấn Công (Red-Team Sandbox)",
+    "tag": "security",
+    "subtitle": "Giả Lập Kênh Thoại G.711u/A, Mất Gói Tin PLC, Nhiễu Môi Trường & Adversarial FGSM",
+    "summary": "Hộp cát Red-Team tự động kiểm thử độ bền vững của mô hình phòng vệ trước các điều kiện viễn thông khắc nghiệt: nén codec G.711 8-bit, mất gói tin RTP 10-20% và tấn công đối nghịch FGSM.",
+    "theory": "1. Lượng tử hóa và nén băng thông viễn thông G.711:\n   - Nén phi tuyến theo hàm logarit Mu-law / A-law đưa dải động 14-bit về 8-bit tại tần số 8kHz (Dải thông 300-3400Hz).\n   - Triệt tiêu hoàn toàn các hài âm trên 3400Hz. Hệ thống tự động kích hoạt Cổng động kênh truyền: Hạ trọng số CNN xuống 0.10, tăng trọng số Ngữ âm tiếng Việt lên 0.65 và Âm học phòng lên 0.25.\n2. Giả lập mất gói tin (Packet Loss Concealment - PLC):\n   - Khi mạng VoIP mất 5-15% gói tin, thuật toán PLC nội suy các khung lặp lại, có thể gây nhiễu chỉ số Jitter. Hệ thống phát hiện các khung PLC thông qua cờ RTP Sequence Number để loại bỏ khỏi vùng tính toán.\n3. Tấn công mẫu đối nghịch (Adversarial Perturbation FGSM):\n   - Thêm nhiễu epsilon siêu nhỏ không nghe thấy bằng tai người vào phổ âm thanh để đánh lừa mạng nơ-ron:\n     x_adv = x + epsilon * sign(GRADIENT_x J(theta, x, y)).\n   - Nhờ có 2 trụ cột vật lý (Jitter dây thanh và Dội âm ISO 3382) không thể bị đánh lừa bởi nhiễu số, hệ thống vẫn giữ vững khả năng phát hiện gian lận.",
+    "metrics": [
+      {
+        "name": "Chịu đựng mất gói tin RTP",
+        "val": "Lên tới 15% Packet Loss"
+      },
+      {
+        "name": "Khả năng chống suy hao G.711",
+        "val": "Bảo toàn F0 & Glottal Stop 100%"
+      },
+      {
+        "name": "Kháng nhiễu đối nghịch",
+        "val": "Chặn đứng FGSM epsilon <= 0.03"
+      }
+    ],
+    "standards": "ITU-T G.711, ITU-T G.114 (One-way transmission time), RFC 3550 RTP",
+    "traps": "Kinh điển: Đánh giá mô hình trên file ghi âm phòng thu WAV 48kHz không nén, dẫn tới sụp đổ khi triển khai trên tổng đài di động thực tế."
+  },
+  {
+    "num": 9,
+    "roman": "IX",
+    "code": "class CircularAudioBuffer:\n    def __init__(self, capacity=16000 * 2):\n        self.buffer = np.zeros(capacity, dtype=np.float32)\n        self.write_pos = 0\n    def write(self, chunk):\n        n = len(chunk)\n        self.buffer[self.write_pos:self.write_pos + n] = chunk\n        self.write_pos = (self.write_pos + n) % len(self.buffer)",
+    "name": "Độ Trễ Toàn Trình Đầu-Cuối (End-to-End Latency T_E2E ≈ 350ms)",
+    "tag": "security",
+    "subtitle": "Bộ Đệm Vòng Khóa Không Chờ (Lock-free Ring Buffer), Streaming STFT & WebRTC Fast-Path",
+    "summary": "Kiến trúc xử lý dòng trực tiếp khống chế thời gian phản hồi toàn trình dưới 350ms, đảm bảo phong tỏa cuộc gọi lừa đảo ngay từ âm tiết đầu tiên trước khi nạn nhân thao tác chuyển tiền.",
+    "theory": "1. Phân bổ ngân sách độ trễ toàn trình (Latency Budget Breakdown):\n   - Thu âm & Cửa sổ dòng (Chunking): 256ms (4096 mẫu tại 16kHz).\n   - Bộ đệm mạng WebRTC / WebSocket: 30ms.\n   - Tiền xử lý DSP (Polyphase + STFT Log-Mel): 12ms.\n   - Trích xuất F0 NAFE & Glottal Stop: 15ms.\n   - Tính toán dội âm ISO 3382 Schroeder: 18ms.\n   - Suy luận mạng MelCNN trên ONNX CPU: 6.8ms.\n   - Dung hợp Dempster-Shafer & Hard Veto: 0.8ms.\n   - Gửi lệnh ngắt kết nối SIP BYE / Webhook ngân hàng: 15ms.\n   -> Tổng thời gian T_E2E = 347.6 ms (Thỏa mãn tiêu chuẩn viễn thông T_E2E < 400ms của ITU-T G.114).\n2. Cơ chế Bộ đệm vòng (Lock-Free Circular Ring Buffer):\n   - Loại bỏ hoàn toàn chi phí sao chép dữ liệu (Zero-Copy) và Garbage Collection giữa Web Audio Thread và Forensic Worker Thread.",
+    "metrics": [
+      {
+        "name": "Tổng độ trễ T_E2E",
+        "val": "≈ 347.6 ms (< 400 ms)"
+      },
+      {
+        "name": "Kích thước chunk streaming",
+        "val": "256 ms (4096 mẫu)"
+      },
+      {
+        "name": "Thời gian chạy mô hình AI",
+        "val": "6.8 ms (ONNX CPU)"
+      },
+      {
+        "name": "Thời gian ngắt kết nối SIP",
+        "val": "< 20 ms"
+      }
+    ],
+    "standards": "ITU-T G.114 (One-Way Transmission Time), WebRTC 1.0 Spec",
+    "traps": "Kinh điển: Gom cả đoạn audio dài 3-5 giây mới gửi đi phân tích, lúc phát hiện thì nạn nhân đã hoàn tất chuyển tiền."
+  },
+  {
+    "num": 10,
+    "roman": "X",
+    "code": "import hashlib\nimport hmac\n\ndef generate_evidence_token(audio_bytes, telemetry_json, secret_key):\n    payload = audio_bytes + telemetry_json.encode('utf-8')\n    token = hmac.new(secret_key, payload, hashlib.sha256).hexdigest()\n    return token",
+    "name": "Pháp Y Số, Chuỗi Bảo Quản Chứng Cứ & Quản Trị Rủi Ro Ngân Hàng",
+    "tag": "security",
+    "subtitle": "Mã Hóa SHA-256 HMAC, Chứng Thực Dấu Thời Gian RFC 3161 & Tuân Thủ FIPS 140-3 Level 3",
+    "summary": "Bảo đảm tính toàn vẹn và giá trị pháp lý trước tòa án của hồ sơ giám định: Ký số HMAC-SHA256 từng gói tin, đóng dấu thời gian RFC 3161 trên HSM phần cứng và chính sách kiểm soát FPR < 0.05%.",
+    "theory": "1. Chuỗi bảo quản chứng cứ pháp lý (Chain of Custody):\n   - Mọi tệp âm thanh thu nhận từ tổng đài phải được gắn kèm mã băm SHA-256 ngay tại thời điểm gói tin RTP chạm tới Ingress Gateway.\n   - Gói tin pháp y gồm: Hash âm thanh, Dữ liệu Telemetry (F0, Jitter, RT60, Log-Mel), Quyết định Veto và Chữ ký số RSA-4096 / ECDSA P-384.\n2. Dấu thời gian chuẩn quốc tế RFC 3161:\n   - Hồ sơ giám định được gửi tới Máy chủ Chứng thực Dấu thời gian (Timestamping Authority - TSA) độc lập để tạo bằng chứng không thể chối bỏ (Non-repudiation) về thời gian xảy ra vụ việc.\n3. Tiêu chuẩn phần cứng bảo mật FIPS 140-3 Level 3:\n   - Khóa ký số được lưu trữ trong module HSM phần cứng chuyên dụng có cơ chế tự hủy dữ liệu khi bị can thiệp vật lý.\n4. Quản trị rủi ro ngân hàng & FPR < 0.05%:\n   - Trong giao dịch tài chính, việc chặn nhầm khách hàng VIP (False Positive) gây tổn thất danh tiếng nghiêm trọng. DeepGuard giải quyết triệt để nhờ cơ chế phân tầng Tri-Band kết hợp OTP thách thức.",
+    "metrics": [
+      {
+        "name": "Chuẩn băm toàn vẹn",
+        "val": "SHA-256 / HMAC-SHA512"
+      },
+      {
+        "name": "Chuẩn dấu thời gian",
+        "val": "RFC 3161 Trusted Timestamp"
+      },
+      {
+        "name": "Cấp độ bảo mật phần cứng",
+        "val": "FIPS 140-3 Level 3 HSM"
+      },
+      {
+        "name": "Cam kết tỷ lệ báo động giả",
+        "val": "FPR < 0.05% (Dải chặn cứng)"
+      }
+    ],
+    "standards": "FIPS 140-3 (NIST), RFC 3161 (Internet X.509 PKI), ISO/IEC 27001, PCI-DSS v4.0",
+    "traps": "Kinh điển: Lưu trữ tệp âm thanh và kết quả giám định dưới dạng tệp văn bản thường không ký số, bị luật sư đối phương bác bỏ chứng cứ trước tòa."
+  },
+  {
+    "num": 11,
+    "roman": "XI",
+    "code": "# Docker Compose horizontal scaling snippet\nservices:\n  forensic-worker:\n    image: deepguard-worker:latest\n    deploy:\n      replicas: 8\n      resources:\n        limits:\n          cpus: '4.0'\n          memory: 1024M",
+    "name": "Kiến Trúc Fullstack Doanh Nghiệp & Khả Năng Mở Rộng 200.000 Cuộc Gọi/Ngày",
+    "tag": "fusion",
+    "subtitle": "FastAPI gRPC Microservices, ClickHouse Time-Series Telemetry, Redis Queue & Prometheus Alerting",
+    "summary": "Hạ tầng backend phân tán sẵn sàng cho môi trường sản xuất: Xử lý 200.000 cuộc gọi mỗi ngày với chi phí vận hành CPU thấp, lưu trữ phân tích pháp y trên ClickHouse và cảnh báo gian lận Grafana.",
+    "theory": "1. Mô hình kiến trúc phân tán (Microservices Architecture):\n   - Ingress Gateway (SIP Proxy / FreeSWITCH / Asterisk): Tiếp nhận luồng RTP viễn thông và chuyển tiếp qua gRPC streaming.\n   - Forensic Inference Workers (FastAPI + C++ ONNX Runtime): Scale ngang qua Docker Swarm / Kubernetes HPA (Horizontal Pod Autoscaling) dựa trên CPU load.\n   - Redis Sharded Cluster: Lưu trữ trạng thái phiên xác thực (Session State) và Ring Buffer đệm âm thanh với độ trễ < 1ms.\n2. Cơ sở dữ liệu phân tích pháp y ClickHouse:\n   - Lưu trữ hàng tỷ bản ghi telemetry âm thanh (F0, Jitter, RT60, Log-Mel features) dưới dạng cột (Column-oriented storage), nén dữ liệu 10x và truy vấn hàng triệu bản ghi trong vài mili-giây.\n3. Giám sát & Cảnh báo thời gian thực:\n   - Prometheus thu thập các số liệu: E2E Latency, Jitter Distribution, Veto Trigger Count, Model Drift Rate.\n   - Grafana Dashboard hiển thị bản đồ nhiệt rủi ro gian lận theo thời gian thực và tự động kích hoạt webhook cảnh báo đội ngũ SOC ngân hàng.",
+    "metrics": [
+      {
+        "name": "Công suất xử lý thiết kế",
+        "val": "> 200,000 cuộc gọi / ngày"
+      },
+      {
+        "name": "Khả năng mở rộng ngang",
+        "val": "Docker / K8s HPA Auto-scaling"
+      },
+      {
+        "name": "Thời gian truy vấn Telemetry",
+        "val": "< 15 ms trên ClickHouse"
+      },
+      {
+        "name": "Chi phí hạ tầng so với GPU",
+        "val": "Tiết kiệm 85% chi phí (Chạy 100% CPU)"
+      }
+    ],
+    "standards": "OpenAPI 3.1, gRPC Protocol Buffers v3, Twelve-Factor App Methodology",
+    "traps": "Kinh điển: Dùng cơ sở dữ liệu quan hệ truyền thống (MySQL/PostgreSQL) để lưu trữ vector sóng âm, gây nghẽn I/O ổ đĩa khi tải cao."
+  }
+];
+
+// 5. DATA REPOSITORY: 5 CORE BACKEND CODE MODULES WITH AUDIT CHALLENGES (MODE 5)
 const CODE_AUDIT_MODULES = [
   {
-    id: "mod_dsp",
-    filename: "backend/app/services/audio_dsp.py",
-    title: "DSP Pipeline: Polyphase Resampling & Log-Mel Spectrogram",
-    perf: "Thời gian xử lý: 3.2ms / chunk",
-    desc: "Chuẩn hóa tín hiệu âm thanh đầu vào về 16kHz Polyphase và tính STFT Hann 1024 / Hop 256 xuất ra 80 dải Log-Mel.",
-    code: `import numpy as np
-import scipy.signal as signal
-import librosa
-
-class ForensicDSPPipeline:
-    def __init__(self, target_sr=16000, n_fft=1024, hop_length=256, n_mels=80):
-        self.sr = target_sr
-        self.n_fft = n_fft
-        self.hop_length = hop_length
-        self.n_mels = n_mels
-        # Khởi tạo trước Mel filterbank ma trận để tránh tính lặp lại (Zero-overhead)
-        self.mel_basis = librosa.filters.mel(
-            sr=target_sr, n_fft=n_fft, n_mels=n_mels, fmin=100, fmax=8000
-        )
-        self.window = signal.windows.hann(n_fft, sym=False)
-
-    def process_chunk(self, audio_raw: np.ndarray, orig_sr: int) -> np.ndarray:
-        # 1. Polyphase Resampling chống Aliasing
-        if orig_sr != self.sr:
-            gcd = np.gcd(orig_sr, self.sr)
-            audio = signal.resample_poly(audio_raw, self.sr // gcd, orig_sr // gcd)
-        else:
-            audio = audio_raw
-
-        # 2. STFT với cửa sổ Hann đối xứng tuần hoàn
-        stft = librosa.stft(
-            audio, n_fft=self.n_fft, hop_length=self.hop_length, window=self.window
-        )
-        mag_spec = np.abs(stft) ** 2
-
-        # 3. Ánh xạ Log-Mel Spectrogram phi tuyến
-        mel_spec = np.dot(self.mel_basis, mag_spec)
-        log_mel = np.log(np.maximum(mel_spec, 1e-6))
-        return log_mel[np.newaxis, np.newaxis, :, :]  # Shape (1, 1, 80, T)`,
-    sliders: [
-      { id: "sl_hop", label: "Hop Length (mẫu):", min: 128, max: 512, step: 64, val: 256, unit: " mẫu" }
+    "id": "mod_dsp",
+    "filename": "backend/app/services/audio_dsp.py",
+    "title": "DSP Pipeline: Polyphase Resampling & Log-Mel Spectrogram",
+    "perf": "Thời gian xử lý: 3.2ms / chunk",
+    "desc": "Chuẩn hóa tín hiệu âm thanh đầu vào về 16kHz Polyphase và tính STFT Hann 1024 / Hop 256 xuất ra 80 dải Log-Mel.",
+    "code": "import numpy as np\nimport scipy.signal as signal\nimport librosa\n\nclass ForensicDSPPipeline:\n    def __init__(self, target_sr=16000, n_fft=1024, hop_length=256, n_mels=80):\n        self.sr = target_sr\n        self.n_fft = n_fft\n        self.hop_length = hop_length\n        self.n_mels = n_mels\n        self.window = signal.windows.hann(n_fft)\n        self.mel_basis = librosa.filters.mel(sr=target_sr, n_fft=n_fft, n_mels=n_mels, fmin=100.0, fmax=8000.0)\n\n    def resample_polyphase(self, audio: np.ndarray, orig_sr: int) -> np.ndarray:\n        if orig_sr == self.sr:\n            return audio\n        gcd = np.gcd(orig_sr, self.sr)\n        up = self.sr // gcd\n        down = orig_sr // gcd\n        # Kaiser window beta=5.0 gives >80dB stopband attenuation\n        return signal.resample_poly(audio, up, down, window=('kaiser', 5.0))\n\n    def compute_log_mel(self, audio: np.ndarray) -> np.ndarray:\n        # Zero-pad or frame slicing\n        stft = librosa.stft(audio, n_fft=self.n_fft, hop_length=self.hop_length, window=self.window, center=False)\n        power_spec = np.abs(stft) ** 2\n        mel_spec = np.dot(self.mel_basis, power_spec)\n        log_mel = np.log(np.maximum(mel_spec, 1e-6))\n        return log_mel",
+    "sliders": [
+      {
+        "id": "sl_nfft",
+        "label": "Kích thước cửa sổ N_FFT (Hann):",
+        "min": 512,
+        "max": 2048,
+        "step": 512,
+        "val": 1024,
+        "unit": " mẫu"
+      },
+      {
+        "id": "sl_hop",
+        "label": "Độ trượt Hop Length:",
+        "min": 128,
+        "max": 512,
+        "step": 128,
+        "val": 256,
+        "unit": " mẫu"
+      }
     ],
-    calcSim: (vals) => {
-      const hop = vals.sl_hop;
-      const ms = (hop / 16000) * 1000;
-      const overlap = ((1024 - hop) / 1024) * 100;
-      return `Độ phân giải thời gian: ${ms.toFixed(1)}ms | Độ chồng lấn: ${overlap.toFixed(1)}% | Tốc độ trích xuất: ${(hop < 256 ? "Chậm hơn, tăng FLOPS" : (hop > 256 ? "Nhanh hơn, nhưng mất độ mịn F0" : "CHUẨN PHÁP Y"))}`;
+    "auditChallenge": {
+      "question": "Trong đoạn code `resample_polyphase`, nếu lập trình viên thay thế bộ lọc Kaiser bằng `signal.resample(audio, target_len)` (sử dụng FFT Resampling), lỗ hổng gì sẽ phát sinh?",
+      "opts": [
+        "Làm tăng kích thước RAM lên gấp 10 lần do biến đổi Fourier hai chiều.",
+        "Gây ra hiện tượng Time-Domain Ringing (hiệu ứng Gibbs) tại hai đầu biên audio, làm sai lệch năng lượng và sinh ra Formant ảo ở dải trầm.",
+        "Làm tốc độ tính toán bị chậm đi 100 lần.",
+        "Mô hình ONNX sẽ từ chối nhận ma trận đầu vào vì sai kích thước."
+      ],
+      "correct": 1,
+      "explanation": "FFT Resampling giả định tín hiệu tuần hoàn vô hạn. Khi tín hiệu âm thanh thực tế bị cắt cụt ở hai đầu, hiệu ứng Gibbs sinh ra các gợn sóng dao động biên độ lớn (Ringing Artifacts), làm hỏng phép đo năng lượng RMS của nắp thanh môn.",
+      "secureFix": "Luôn sử dụng `signal.resample_poly(..., window=('kaiser', 5.0))` với cửa sổ Kaiser có hệ số tắt dần để triệt tiêu hiệu ứng Gibbs và bảo toàn dải chặn > 80dB."
     }
   },
   {
-    id: "mod_prosody",
-    filename: "backend/app/services/vietnamese_prosody.py",
-    title: "Vietnamese Prosody Engine: NAFE & Glottal Stop Mining",
-    perf: "Thời gian xử lý: 3.1ms / chunk",
-    desc: "Bóc tách F0 qua Normalized Autocorrelation, tính toán Micro-Jitter sinh học và dò tìm hiện tượng nghẽn nắp thanh môn trên thanh Ngã.",
-    code: `class VietnameseProsodyEngine:
-    def __init__(self, sr=16000, hop_length=256):
-        self.sr = sr
-        self.hop_length = hop_length
-
-    def extract_f0_nafe(self, audio: np.ndarray) -> np.ndarray:
-        # Normalized Autocorrelation F0 Estimation (Dải sinh học 60Hz - 400Hz)
-        frame_len = 1024
-        f0_list = []
-        for i in range(0, len(audio) - frame_len, self.hop_length):
-            frame = audio[i : i + frame_len]
-            norm_corr = signal.correlate(frame, frame, mode='full')
-            norm_corr = norm_corr[len(frame) - 1 :]
-            # Chuẩn hóa năng lượng
-            norm_corr = norm_corr / (norm_corr[0] + 1e-9)
-            
-            min_lag = int(self.sr / 400)  # 400Hz -> 40 mẫu
-            max_lag = int(self.sr / 60)   # 60Hz -> 266 mẫu
-            peak_lag = min_lag + np.argmax(norm_corr[min_lag:max_lag])
-            
-            if norm_corr[peak_lag] > 0.40:
-                f0_list.append(self.sr / peak_lag)
-            else:
-                f0_list.append(0.0)
-        return np.array(f0_list)
-
-    def mine_glottal_stop(self, audio: np.ndarray, f0: np.ndarray, threshold_db=-12.0):
-        # Tính đường cong năng lượng RMS khung
-        rms = librosa.feature.rms(y=audio, frame_length=1024, hop_length=self.hop_length)[0]
-        # Quét thung lũng năng lượng hẹp 20-60ms (1 đến 4 khung)
-        for i in range(2, len(rms) - 2):
-            drop_db = 10 * np.log10((rms[i] + 1e-9) / (min(rms[i-2], rms[i+2]) + 1e-9))
-            if drop_db < threshold_db and f0[i] == 0:
-                return True, drop_db  # Tìm thấy nghẽn nắp thanh môn sinh học!
-        return False, 0.0`,
-    sliders: [
-      { id: "sl_glottal_thresh", label: "Ngưỡng sụt năng lượng Glottal Stop:", min: -20, max: -6, step: 1, val: -12, unit: " dB" }
+    "id": "mod_prosody",
+    "filename": "backend/app/services/prosody_glottal.py",
+    "title": "Ngữ Âm Học NAFE & Khai Thác Nắp Thanh Môn (Glottal Stop Miner)",
+    "perf": "Thời gian xử lý: 4.1ms / chunk",
+    "desc": "Bóc tách tần số cơ bản F0 qua NAFE và phát hiện hiện tượng sụt năng lượng thanh môn trong thanh Ngã tiếng Việt.",
+    "code": "import numpy as np\n\nclass VietnameseGlottalMiner:\n    def __init__(self, sr=16000, frame_len=512, hop_len=128):\n        self.sr = sr\n        self.frame_len = frame_len\n        self.hop_len = hop_len\n        self.min_lag = int(sr / 400) # 400Hz F0 max\n        self.max_lag = int(sr / 60)  # 60Hz F0 min\n\n    def compute_nafe_f0(self, frame: np.ndarray) -> float:\n        # Normalized Autocorrelation F0 Estimation\n        norm = np.sum(frame ** 2)\n        if norm < 1e-4:\n            return 0.0 # Unvoiced / Silence\n        corr = np.correlate(frame, frame, mode='full')[len(frame)-1:]\n        search_region = corr[self.min_lag:self.max_lag]\n        best_lag = np.argmax(search_region) + self.min_lag\n        peak_val = corr[best_lag] / norm\n        if peak_val > 0.45:\n            return float(self.sr / best_lag)\n        return 0.0\n\n    def mine_glottal_stop(self, rms_series: np.ndarray, f0_series: np.ndarray):\n        # Look for sharp energy dips within voiced speech\n        for i in range(2, len(rms_series) - 2):\n            if f0_series[i-2] > 0 and f0_series[i+2] > 0:\n                delta_db = 20 * np.log10((rms_series[i] + 1e-9) / (rms_series[i-2] + 1e-9))\n                if delta_db < -12.0:\n                    return {\"detected\": True, \"drop_db\": delta_db, \"frame\": i, \"is_human\": True}\n        return {\"detected\": False, \"drop_db\": 0.0, \"frame\": -1, \"is_human\": False}",
+    "sliders": [
+      {
+        "id": "sl_glottal_thresh",
+        "label": "Ngưỡng sụt năng lượng thanh môn (ΔE):",
+        "min": -20,
+        "max": -5,
+        "step": 1,
+        "val": -12,
+        "unit": " dB"
+      }
     ],
-    calcSim: (vals) => {
-      const db = vals.sl_glottal_thresh;
-      return `Ngưỡng kích hoạt: ${db} dB | Trạng thái: ${db > -8 ? "CẢNH BÁO: Báo động giả cao (AI TTS thường sụt -5dB)" : (db < -16 ? "Quá chặt: Bỏ sót người thật phát âm nhẹ" : "TỐI ƯU PHÁP Y (-12dB bóc tách chính xác thanh môn)")}`;
+    "auditChallenge": {
+      "question": "Trong hàm `mine_glottal_stop`, tại sao điều kiện `if f0_series[i-2] > 0 and f0_series[i+2] > 0` lại là điều kiện an ninh bắt buộc trước khi tính `delta_db`?",
+      "opts": [
+        "Để ngăn chặn lỗi chia cho số 0 trong phép tính logarit.",
+        "Để bảo đảm khoảng lặng năng lượng nằm giữa hai nguyên âm hữu thanh (Voiced context), loại trừ hiện tượng bắt nhầm phụ âm câm (/p/, /t/, /k/) hoặc khoảng lặng tự nhiên giữa các từ.",
+        "Vì thuật toán tự tương quan chỉ hoạt động khi F0 lớn hơn 0.",
+        "Để tăng độ to của âm thanh đầu ra."
+      ],
+      "correct": 1,
+      "explanation": "Nắp thanh môn trong thanh Ngã chỉ đóng tạm thời giữa một nguyên âm hữu thanh. Nếu không kiểm tra F0 > 0 ở hai đầu, mọi khoảng dừng giữa câu hoặc các phụ âm bật vô thanh (/p/, /t/, /k/) đều sẽ bị nhận nhầm thành thanh Ngã, tạo ra báo động giả.",
+      "secureFix": "Luôn kiểm tra điều kiện trạng thái hữu thanh hai phía (`f0_series[i-2] > 0 and f0_series[i+2] > 0`) kết hợp với kiểm tra thời lượng đóng thanh môn trong khoảng 20ms - 50ms."
     }
   },
   {
-    id: "mod_acoustics",
-    filename: "backend/app/services/room_acoustics.py",
-    title: "ISO 3382 Acoustics: Schroeder Backward Integration & RT60",
-    perf: "Thời gian xử lý: 2.0ms / chunk",
-    desc: "Ước lượng thời gian dội âm RT60 từ các đoạn rơi âm đuôi tự nhiên (Speech Offset Tails) và phát hiện tấn công Replay qua loa ngoài.",
-    code: `class RoomAcousticsEngine:
-    def __init__(self, sr=16000):
-        self.sr = sr
-
-    def estimate_rt60_schroeder(self, audio: np.ndarray) -> float:
-        # 1. Phát hiện đoạn rơi năng lượng (Speech Offset Tail)
-        rms = librosa.feature.rms(y=audio, frame_length=512, hop_length=128)[0]
-        tail_idx = np.where(np.diff(rms) < -0.05)[0]
-        if len(tail_idx) == 0: return 0.35 # Giá trị mặc định
-        
-        start_samp = tail_idx[0] * 128
-        tail_audio = audio[start_samp : start_samp + int(self.sr * 0.4)]
-        if len(tail_audio) < 512: return 0.35
-
-        # 2. Tích phân năng lượng lùi Schroeder
-        energy_reversed = tail_audio[::-1] ** 2
-        schroeder_curve = np.cumsum(energy_reversed)[::-1]
-        schroeder_db = 10 * np.log10(schroeder_curve / (schroeder_curve[0] + 1e-12))
-
-        # 3. Ước lượng khoảng suy giảm T20 (-5dB đến -25dB)
-        try:
-            t5_idx = np.where(schroeder_db <= -5.0)[0][0]
-            t25_idx = np.where(schroeder_db <= -25.0)[0][0]
-            t20 = (t25_idx - t5_idx) / self.sr
-            rt60 = 3.0 * t20
-            return float(np.clip(rt60, 0.05, 2.5))
-        except Exception:
-            return 0.35`,
-    sliders: [
-      { id: "sl_rt60_upper", label: "Ngưỡng chặn Replay RT60:", min: 0.6, max: 1.2, step: 0.05, val: 0.85, unit: " s" }
+    "id": "mod_acoustics",
+    "filename": "backend/app/services/room_acoustics.py",
+    "title": "Âm Học Phòng ISO 3382: Tích Phân Schroeder & RT60",
+    "perf": "Thời gian xử lý: 2.8ms / chunk",
+    "desc": "Tính toán đường cong tích phân năng lượng suy giảm ngược dòng Schroeder trên các đoạn Speech Offset Tails và ngoại suy RT60.",
+    "code": "import numpy as np\n\nclass RoomAcousticsForensics:\n    def __init__(self, sr=16000):\n        self.sr = sr\n\n    def compute_schroeder_rt60(self, speech_tail: np.ndarray) -> float:\n        # Tail must be zero-meaned\n        tail = speech_tail - np.mean(speech_tail)\n        # 1. Reverse energy integration: E(t) = integral_t^inf h^2(tau) dtau\n        energy_reversed = tail[::-1] ** 2\n        schroeder_curve = np.cumsum(energy_reversed)[::-1]\n        \n        # 2. Subtract estimated noise floor to prevent plateau\n        noise_floor = np.median(schroeder_curve[-int(0.1*len(schroeder_curve)):])\n        schroeder_clean = np.maximum(schroeder_curve - noise_floor, 1e-12)\n        \n        # 3. Convert to dB scale relative to peak\n        db_curve = 10 * np.log10(schroeder_clean / np.max(schroeder_clean))\n        \n        # 4. Measure T20 (-5dB to -25dB)\n        try:\n            idx_5db = np.where(db_curve <= -5.0)[0][0]\n            idx_25db = np.where(db_curve <= -25.0)[0][0]\n            t20 = (idx_25db - idx_5db) / self.sr\n            rt60 = 3.0 * t20\n            return float(rt60)\n        except IndexError:\n            return 0.05 # Truncated or anechoic signal",
+    "sliders": [
+      {
+        "id": "sl_rt60_sim",
+        "label": "Thời gian dội âm giả lập (RT60):",
+        "min": 0.05,
+        "max": 1.2,
+        "step": 0.05,
+        "val": 0.35,
+        "unit": " s"
+      }
     ],
-    calcSim: (vals) => {
-      const rt = vals.sl_rt60_upper;
-      return `Ngưỡng chặn dội âm kép: ${rt}s | Đánh giá: ${rt < 0.75 ? "Quá nhạy: Có thể chặn nhầm phòng họp lớn" : "CHUẨN AN TOÀN: Bắt gọn loa Bluetooth dội âm kép"}`;
+    "auditChallenge": {
+      "question": "Trong hàm `compute_schroeder_rt60`, nếu loại bỏ bước số 2 (`schroeder_clean = np.maximum(schroeder_curve - noise_floor, 1e-12)`), đường cong suy giảm năng lượng sẽ gặp lỗi gì?",
+      "opts": [
+        "Đường cong sẽ bị đảo ngược thành âm thanh tăng dần năng lượng.",
+        "Đường cong năng lượng bị bẹt ở phần đuôi (Plateau Effect) do tích lũy nhiễu nền, khiến điểm -25dB không bao giờ tìm thấy được hoặc ước lượng RT60 bị sai lệch vọt lên 2-3 giây.",
+        "Làm sập ứng dụng với lỗi `MemoryError`.",
+        "Không có ảnh hưởng gì vì nhiễu nền luôn bằng 0."
+      ],
+      "correct": 1,
+      "explanation": "Nhiễu nền luôn có năng lượng > 0. Tích phân lùi trên nhiễu nền tích lũy sẽ tạo ra một đường nằm ngang ở đuôi. Nếu không trừ mức nhiễu nền (Noise Floor), đường cong dB không thể chạm ngưỡng -25dB một cách tuyến tính, làm sai lệch toàn bộ phép đo pháp y.",
+      "secureFix": "Luôn ước lượng mức nhiễu nền ở 10% đuôi của tín hiệu và trừ đi trước khi chuẩn hóa dB theo tiêu chuẩn ISO 3382."
     }
   },
   {
-    id: "mod_onnx",
-    filename: "backend/app/services/mel_cnn_onnx.py",
-    title: "ONNX Runtime Inference Engine (Opset 14, 4-Threads)",
-    perf: "Thời gian xử lý: 7.2ms / chunk trên CPU",
-    desc: "Khởi tạo mô hình MelCNN 2D Opset 14 tối ưu hóa đồ thị tính toán và cấu hình luồng CPU song song.",
-    code: `import onnxruntime as ort
-
-class MelCNNInferenceEngine:
-    def __init__(self, model_path: str):
-        # Thiết lập phiên suy luận tối ưu cho hạ tầng CPU
-        opts = ort.SessionOptions()
-        opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
-        opts.intra_op_num_threads = 4  # Tận dụng 4 core vật lý cho 1 tensor
-        opts.inter_op_num_threads = 1  # Ngăn chặn lock contention giữa các node
-        opts.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
-        
-        self.session = ort.InferenceSession(model_path, opts, providers=['CPUExecutionProvider'])
-        self.input_name = self.session.get_inputs()[0].name
-        self.output_name = self.session.get_outputs()[0].name
-
-    def predict(self, log_mel_tensor: np.ndarray) -> float:
-        # Chạy suy luận trực tiếp với Tensor Float32
-        outputs = self.session.run([self.output_name], {self.input_name: log_mel_tensor.astype(np.float32)})
-        probs = outputs[0][0]  # Softmax output [P_real, P_fake]
-        return float(probs[1]) # Trả về xác suất Deepfake`,
-    sliders: [
-      { id: "sl_intra_threads", label: "Số luồng CPU (intra_op):", min: 1, max: 8, step: 1, val: 4, unit: " cores" }
+    "id": "mod_melcnn",
+    "filename": "backend/app/services/onnx_inference.py",
+    "title": "Mô Hình Học Sâu MelCNN: ONNX Runtime Opset 14 CPU",
+    "perf": "Thời gian suy luận: 6.8ms / chunk",
+    "desc": "Mô hình MelCNN 1.2M tham số tối ưu hóa đa luồng trên CPU Intel Xeon thông qua ONNX Runtime Opset 14 FusedConv.",
+    "code": "import onnxruntime as ort\nimport numpy as np\n\nclass MelCNNInferenceEngine:\n    _instance = None # Singleton pattern to prevent re-instantiation\n\n    def __init__(self, model_path: str = \"models/melcnn_v3_opset14.onnx\"):\n        self.session_options = ort.SessionOptions()\n        # 1. Thread affinity: 4 intra-threads for 4-core CPU\n        self.session_options.intra_op_num_threads = 4\n        self.session_options.inter_op_num_threads = 1\n        # 2. Graph Optimization: Operator Fusion (FusedConv)\n        self.session_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL\n        self.session = ort.InferenceSession(model_path, self.session_options, providers=['CPUExecutionProvider'])\n        self.input_name = self.session.get_inputs()[0].name\n        self.output_name = self.session.get_outputs()[0].name\n\n    def infer_chunk(self, log_mel_tensor: np.ndarray) -> float:\n        # Input shape: [1, 1, 80, 64] -> (Batch, Channel, Mels, Time)\n        ort_inputs = {self.input_name: log_mel_tensor.astype(np.float32)}\n        ort_outs = self.session.run([self.output_name], ort_inputs)\n        # Softmax probability for FAKE class\n        prob_fake = float(ort_outs[0][0][1])\n        return prob_fake",
+    "sliders": [
+      {
+        "id": "sl_intra_threads",
+        "label": "Số luồng tính toán ma trận (intra_op):",
+        "min": 1,
+        "max": 8,
+        "step": 1,
+        "val": 4,
+        "unit": " luồng"
+      }
     ],
-    calcSim: (vals) => {
-      const th = vals.sl_intra_threads;
-      const lat = (th === 1 ? 16.5 : (th === 2 ? 10.2 : (th === 4 ? 6.8 : 7.1)));
-      return `Luồng cấu hình: ${th} | Ước tính độ trễ suy luận: ${lat}ms | Ghi chú: ${th === 4 ? "ĐIỂM NGỌT (SWEET SPOT): Tối ưu tối đa cache L3 CPU" : (th > 4 ? "Lãng phí: Overhead điều phối luồng làm trễ tăng nhẹ" : "Chậm, nguy cơ trễ E2E")}`;
+    "auditChallenge": {
+      "question": "Nếu trong file controller của FastAPI, lập trình viên tạo mới một đối tượng `MelCNNInferenceEngine()` bên trong hàm xử lý request thay vì dùng Singleton `_instance`, hậu quả gì sẽ xảy ra?",
+      "opts": [
+        "Mô hình sẽ không thể load được file `.onnx`.",
+        "Mỗi request sẽ nạp lại file mô hình và biên dịch đồ thị tính toán (mất 200ms và cấp phát thêm 85MB RAM), dẫn tới tràn bộ nhớ RAM (OOM) và độ trễ tăng vọt lên hàng nghìn mili-giây khi có nhiều người gọi đồng thời.",
+        "Mô hình sẽ tự động chuyển sang chế độ huấn luyện (Training Mode).",
+        "Dữ liệu của khách hàng sẽ bị gửi ra ngoài Internet."
+      ],
+      "correct": 1,
+      "explanation": "ONNX Runtime InferenceSession là đối tượng rất nặng vì nó thực hiện biên dịch đồ thị, phân bổ bộ đệm bộ nhớ tĩnh và bind các thread pool. Bắt buộc phải khởi tạo một lần duy nhất theo mẫu Singleton lúc ứng dụng khởi động.",
+      "secureFix": "Khởi tạo `engine = MelCNNInferenceEngine()` ở phạm vi toàn cục hoặc trong hàm `lifespan` của FastAPI, tái sử dụng cùng một session cho mọi luồng request."
     }
   },
   {
-    id: "mod_fusion",
-    filename: "backend/app/services/decision_fusion.py",
-    title: "Decision Fusion Engine: Context-Aware Gating & Hard Veto",
-    perf: "Thời gian xử lý: 0.5ms / chunk",
-    desc: "Cơ chế dung hợp quyết định phi tuyến tính, xử lý mâu thuẫn OOD và chính sách phân vùng 3 dải Tri-Band Policy.",
-    code: `class DecisionFusionEngine:
-    def __init__(self):
-        # Trọng số mặc định cho kênh băng rộng 16kHz
-        self.weights_wideband = {"cnn": 0.50, "prosody": 0.30, "acoustics": 0.20}
-        # Cổng động thích ứng kênh thoại hẹp G.711 (8kHz)
-        self.weights_telephony = {"cnn": 0.10, "prosody": 0.65, "acoustics": 0.25}
-
-    def evaluate(self, cnn_score, jitter, glottal_found, rt60, noise_jump, is_g711=False):
-        # 1. QUYỀN PHỦ QUYẾT BẤT BIẾN VẬT LÝ (HARD PHYSICS VETO)
-        if jitter < 0.35:
-            return {"decision": "FAKE_VETO", "reason": "Jitter < 0.35% (Neural Vocoder phi sinh học)", "score": 1.0}
-        if jitter > 4.80:
-            return {"decision": "FAKE_VETO", "reason": "Jitter > 4.80% (RVC v2 Phase Glitch)", "score": 1.0}
-        if rt60 < 0.15:
-            return {"decision": "FAKE_VETO", "reason": "RT60 < 0.15s (Phòng câm hoàn toàn Anechoic)", "score": 1.0}
-        if rt60 > 0.85:
-            return {"decision": "FAKE_VETO", "reason": "RT60 > 0.85s (Tấn công Replay loa ngoài)", "score": 1.0}
-        if noise_jump > 9.5:
-            return {"decision": "FAKE_VETO", "reason": "Bước nhảy nền nhiễu > 9.5dB (Cắt ghép âm thanh)", "score": 1.0}
-
-        # 2. CỔNG ĐỘNG DUNG HỢP TRỌNG SỐ
-        w = self.weights_telephony if is_g711 else self.weights_wideband
-        prosody_score = 0.1 if glottal_found else 0.85
-        acoustics_score = 0.15 if (0.20 <= rt60 <= 0.65) else 0.80
-
-        final_score = w["cnn"] * cnn_score + w["prosody"] * prosody_score + w["acoustics"] * acoustics_score
-
-        # 3. CHÍNH SÁCH PHÂN VÙNG 3 DẢI (TRI-BAND POLICY)
-        if final_score < 0.30:
-            return {"decision": "PASS_AUTHENTIC", "action": "Cho phép giao dịch", "score": final_score}
-        elif final_score < 0.80:
-            return {"decision": "STEP_UP_AUTH", "action": "Kích hoạt OTP giọng nói thanh Ngã", "score": final_score}
-        else:
-            return {"decision": "BLOCK_FRAUD", "action": "Khóa giao dịch khẩn cấp", "score": final_score}`,
-    sliders: [
-      { id: "sl_cnn_telephony", label: "Trọng số CNN kênh G.711:", min: 0.05, max: 0.50, step: 0.05, val: 0.10, unit: "" }
+    "id": "mod_fusion",
+    "filename": "backend/app/services/decision_veto.py",
+    "title": "Cơ Chế Dung Hợp Dempster-Shafer & Quyền Phủ Quyết Cứng (Hard Veto)",
+    "perf": "Thời gian xử lý: 0.8ms / chunk",
+    "desc": "Dung hợp bằng chứng đa tầng và kích hoạt Quyền Phủ Quyết Cứng khi phát hiện vi phạm bất biến vật lý.",
+    "code": "class DecisionVetoEngine:\n    def __init__(self, tri_band_green=0.30, tri_band_red=0.80):\n        self.tb_green = tri_band_green\n        self.tb_red = tri_band_red\n\n    def evaluate_verdict(self, cnn_score: float, jitter: float, rt60: float, glottal_drop: float) -> dict:\n        # 1. HARD VETO CHECK (Bất biến vật lý không thể thỏa hiệp)\n        veto_triggers = []\n        if jitter < 0.35:\n            veto_triggers.append(f\"Jitter phi sinh học ({jitter:.2f}% < 0.35%)\")\n        if rt60 < 0.15:\n            veto_triggers.append(f\"Phòng câm số ({rt60:.2f}s < 0.15s)\")\n        if rt60 > 0.85:\n            veto_triggers.append(f\"Dội âm Replay ({rt60:.2f}s > 0.85s)\")\n        if glottal_drop > -6.0 and glottal_drop != 0.0:\n            veto_triggers.append(f\"Thanh Ngã không ngắt âm (ΔE = {glottal_drop:.1f}dB > -6dB)\")\n\n        if len(veto_triggers) > 0:\n            return {\n                \"decision\": \"BLOCK_HARD_VETO\",\n                \"risk_score\": 0.99,\n                \"reasons\": veto_triggers,\n                \"action\": \"Phong tỏa giao dịch khẩn cấp\"\n            }\n\n        # 2. NORMAL DEMPSTER-SHAFER FUSION\n        w_cnn = 0.50\n        w_prosody = 0.30\n        w_acoustics = 0.20\n        final_score = (w_cnn * cnn_score) + (w_prosody * (1.0 - (jitter / 2.5))) + (w_acoustics * (1.0 - (rt60 / 0.5)))\n        final_score = float(max(0.0, min(1.0, final_score)))\n\n        if final_score < self.tb_green:\n            return {\"decision\": \"PASS_AUTHENTIC\", \"risk_score\": final_score, \"action\": \"Thông qua 100%\"}\n        elif final_score < self.tb_red:\n            return {\"decision\": \"STEP_UP_AUTH\", \"risk_score\": final_score, \"action\": \"Kích hoạt OTP giọng nói thanh Ngã\"}\n        else:\n            return {\"decision\": \"BLOCK_FRAUD\", \"risk_score\": final_score, \"action\": \"Khóa giao dịch\"}",
+    "sliders": [
+      {
+        "id": "sl_cnn_telephony",
+        "label": "Trọng số CNN kênh G.711:",
+        "min": 0.05,
+        "max": 0.5,
+        "step": 0.05,
+        "val": 0.1,
+        "unit": ""
+      }
     ],
-    calcSim: (vals) => {
-      const wCnn = vals.sl_cnn_telephony;
-      const wProsody = 1.0 - wCnn - 0.25;
-      return `Trọng số G.711: CNN = ${wCnn.toFixed(2)} | Prosody = ${wProsody.toFixed(2)} | Acoustics = 0.25 | ${wCnn > 0.25 ? "NGUY HIỂM: G.711 mất dải cao, phụ thuộc CNN dễ gây báo động giả!" : "AN TOÀN: Dồn trọng tâm vào F0 và nắp thanh môn"}`;
+    "auditChallenge": {
+      "question": "Tại sao kiểm tra `HARD VETO CHECK` phải được thực hiện ở Bước 1 và thoát ra (Early Return) ngay lập tức trước khi thực hiện `NORMAL DEMPSTER-SHAFER FUSION`?",
+      "opts": [
+        "Để tiết kiệm điện năng cho máy chủ.",
+        "Vì nếu để bước dung hợp tính toán, điểm số cao của mạng CNN (ví dụ AI bị lừa chấm 0.01 Fraud) sẽ kéo tụt điểm số rủi ro trung bình xuống, cho phép kẻ tấn công Deepfake lọt qua dải xanh an toàn.",
+        "Vì Python không cho phép chạy hai khối lệnh trong cùng một hàm.",
+        "Để trả về kết quả dưới dạng chuỗi JSON thay vì số thực."
+      ],
+      "correct": 1,
+      "explanation": "Đây là nguyên tắc Quyền Phủ Quyết Cứng: Một bằng chứng vi phạm bất biến vật lý (như phòng câm số hoặc Jitter quá mượt) có tính chất tuyệt đối. Không một mô hình xác suất nào được phép 'bỏ phiếu hòa tan' một sự thật vật lý hiển nhiên.",
+      "secureFix": "Luôn kiểm tra Hard Veto ở đầu hàm và lập tức trả về `BLOCK_HARD_VETO` với điểm rủi ro 0.99 mà không chạy qua bất kỳ phép cộng trừ điểm số nào khác."
     }
   }
 ];
 
-// =====================================================================
-// 6. APPLICATION CONTROLLER & UI BINDINGS
-// =====================================================================
+// Re-attach dynamic calculation functions to sliders
+CODE_AUDIT_MODULES[0].calcSim = (vals) => {
+  const df = (16000 / vals.sl_nfft).toFixed(2);
+  const dt = ((vals.sl_hop / 16000) * 1000).toFixed(1);
+  const overlap = (((vals.sl_nfft - vals.sl_hop) / vals.sl_nfft) * 100).toFixed(1);
+  return `Độ phân giải tần số: Δf = ${df} Hz | Độ phân giải thời gian: Δt = ${dt} ms | Độ chồng lấn: ${overlap}% | ${vals.sl_nfft === 1024 && vals.sl_hop === 256 ? "TỐI ƯU CHO PHÁP Y TIẾNG VIỆT" : "CẢNH BÁO: Phá vỡ cân bằng Heisenberg-Gabor!"}`;
+};
+CODE_AUDIT_MODULES[1].calcSim = (vals) => {
+  const th = vals.sl_glottal_thresh;
+  return `Ngưỡng kích hoạt: ${th} dB | ${th <= -12 ? "CHUẨN SINH HỌC: Bắt trúng 99% thanh Ngã người thật, loại bỏ Deepfake làm trơn" : "NGUY HIỂM: Ngưỡng quá nông (> -12dB) sẽ bị Deepfake Vocoder qua mặt dễ dàng!"}`;
+};
+CODE_AUDIT_MODULES[2].calcSim = (vals) => {
+  const rt = vals.sl_rt60_sim;
+  if (rt < 0.15) return `RT60 = ${rt.toFixed(2)}s | PHÁT HIỆN: Phòng câm số (Anechoic) - Dấu vết Vocoder Deepfake TTS!`;
+  if (rt > 0.85) return `RT60 = ${rt.toFixed(2)}s | PHÁT HIỆN: Dội âm phòng kép - Dấu vết Loudspeaker Replay Attack!`;
+  return `RT60 = ${rt.toFixed(2)}s | HỢP LỆ: Âm học phòng sinh hoạt tự nhiên của người thật (0.15s - 0.85s).`;
+};
+CODE_AUDIT_MODULES[3].calcSim = (vals) => {
+  const th = vals.sl_intra_threads;
+  const lat = (24.0 / Math.sqrt(th)).toFixed(1);
+  return `Cấu hình ${th} luồng: Độ trễ suy luận = ${lat} ms | ${th === 4 ? "TỐI ƯU TUYỆT ĐỐI: Phân tải vừa vặn 4 core vật lý, không tranh chấp luồng" : th > 4 ? "CẢNH BÁO: Quá số core vật lý sẽ gây tranh chấp luồng (Lock Contention)!" : "CẢNH BÁO: Thiếu luồng làm độ trễ tăng vọt!"}`;
+};
+CODE_AUDIT_MODULES[4].calcSim = (vals) => {
+  const wCnn = vals.sl_cnn_telephony;
+  const wProsody = 1.0 - wCnn - 0.25;
+  return `Trọng số G.711: CNN = ${wCnn.toFixed(2)} | Prosody = ${wProsody.toFixed(2)} | Acoustics = 0.25 | ${wCnn > 0.25 ? "NGUY HIỂM: G.711 mất dải cao, phụ thuộc CNN dễ gây báo động giả!" : "AN TOÀN: Dồn trọng tâm vào F0 và nắp thanh môn"}`;
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Tab Navigation
   const navTabs = document.querySelectorAll('.nav-tab');
@@ -1421,86 +2410,99 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   renderJudgeStage(JUDGES[0]);
 
-  // 5. Render Mode 3 & Tab 4: Forensic Case Studies (6 Cases)
-  const caseWorkspace = document.getElementById('cases-workspace');
-  if (caseWorkspace) {
-    caseWorkspace.innerHTML = `
-      <div class="cases-list-panel" id="cases-list"></div>
-      <div class="case-investigation-area" id="case-detail"></div>
+  
+  // 5. Render Mode 3 & Tab 4: Forensic Case Studies (10 Real Cases)
+  function initForensicCasesWorkspace(container, prefix = '') {
+    if (!container) return;
+    const listId = prefix + 'cases-list';
+    const detailId = prefix + 'case-detail';
+    
+    container.innerHTML = `
+      <div class="cases-workspace" style="display: grid; grid-template-columns: 360px 1fr; gap: 1.5rem; width: 100%;">
+        <div class="cases-list-panel" id="${listId}" style="display: flex; flex-direction: column; gap: 0.8rem; max-height: 800px; overflow-y: auto; padding-right: 0.5rem;"></div>
+        <div class="case-investigation-area" id="${detailId}"></div>
+      </div>
     `;
 
-    const casesList = document.getElementById('cases-list');
-    const caseDetail = document.getElementById('case-detail');
+    const casesList = document.getElementById(listId);
+    const caseDetail = document.getElementById(detailId);
+    if (!casesList || !caseDetail) return;
 
     function renderCaseDetail(c) {
+      const resBoxId = prefix + 'verdict-res-' + c.id;
+      const btnFakeId = prefix + 'btn-fake-' + c.id;
+      const btnRealId = prefix + 'btn-real-' + c.id;
+
       caseDetail.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-          <span style="font-family: var(--font-mono); color: #ff3366; font-weight: 700;">HỒ SƠ GIÁM ĐỊNH: ${c.id}</span>
-          <span class="badge" style="background: rgba(255, 51, 102, 0.2); color: #ff3366;">${c.category}</span>
-        </div>
-        <h3 style="font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem;">${c.title}</h3>
-        <p style="color: #8b9bb4; font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem;">${c.audioProfile}</p>
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.8rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+            <span style="font-family: var(--font-mono); color: #ff3366; font-weight: 700; font-size: 0.9rem;">HỒ SƠ GIÁM ĐỊNH: ${c.id}</span>
+            <span class="badge" style="background: rgba(255, 51, 102, 0.2); color: #ff3366; font-weight: 700;">${c.category}</span>
+          </div>
+          <h3 style="font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem;">${c.title}</h3>
+          <p style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;">${c.audioProfile}</p>
 
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
-          <div class="metric-box">
-            <span class="metric-label">Micro-Jitter:</span>
-            <span class="metric-val" style="font-size: 1rem;">${c.telemetry.jitter}</span>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+            <div class="metric-box" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); padding: 1rem; border-radius: 6px;">
+              <span class="metric-label" style="font-size: 0.75rem; color: #8b9bb4; display: block; margin-bottom: 4px;">Micro-Jitter:</span>
+              <span class="metric-val" style="font-size: 0.95rem; font-weight: 700; color: #00f0ff; font-family: var(--font-mono);">${c.telemetry.jitter}</span>
+            </div>
+            <div class="metric-box" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); padding: 1rem; border-radius: 6px;">
+              <span class="metric-label" style="font-size: 0.75rem; color: #8b9bb4; display: block; margin-bottom: 4px;">Glottal Stop Mining:</span>
+              <span class="metric-val" style="font-size: 0.95rem; font-weight: 700; color: #ffb700; font-family: var(--font-mono);">${c.telemetry.glottal}</span>
+            </div>
+            <div class="metric-box" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); padding: 1rem; border-radius: 6px;">
+              <span class="metric-label" style="font-size: 0.75rem; color: #8b9bb4; display: block; margin-bottom: 4px;">Dội Âm ISO 3382 RT60:</span>
+              <span class="metric-val" style="font-size: 0.95rem; font-weight: 700; color: #00ff9d; font-family: var(--font-mono);">${c.telemetry.rt60}</span>
+            </div>
+            <div class="metric-box" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); padding: 1rem; border-radius: 6px;">
+              <span class="metric-label" style="font-size: 0.75rem; color: #8b9bb4; display: block; margin-bottom: 4px;">Dải Cao Độ F0:</span>
+              <span class="metric-val" style="font-size: 0.95rem; font-weight: 700; color: #38bdf8; font-family: var(--font-mono);">${c.telemetry.f0Span}</span>
+            </div>
+            <div class="metric-box" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); padding: 1rem; border-radius: 6px;">
+              <span class="metric-label" style="font-size: 0.75rem; color: #8b9bb4; display: block; margin-bottom: 4px;">Bước Nhảy Nền Nhiễu:</span>
+              <span class="metric-val" style="font-size: 0.95rem; font-weight: 700; color: #f43f5e; font-family: var(--font-mono);">${c.telemetry.noiseJump}</span>
+            </div>
+            <div class="metric-box" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); padding: 1rem; border-radius: 6px;">
+              <span class="metric-label" style="font-size: 0.75rem; color: #8b9bb4; display: block; margin-bottom: 4px;">Mô Hình Khả Nghi:</span>
+              <span class="metric-val" style="font-size: 0.88rem; font-weight: 700; color: #f59e0b;">${c.suspectModel}</span>
+            </div>
           </div>
-          <div class="metric-box">
-            <span class="metric-label">Glottal Stop Mining:</span>
-            <span class="metric-val" style="font-size: 1rem;">${c.telemetry.glottal}</span>
-          </div>
-          <div class="metric-box">
-            <span class="metric-label">Dội Âm ISO 3382 RT60:</span>
-            <span class="metric-val" style="font-size: 1rem;">${c.telemetry.rt60}</span>
-          </div>
-          <div class="metric-box">
-            <span class="metric-label">Dải Biến Thiên Cao Độ F0:</span>
-            <span class="metric-val" style="font-size: 1rem;">${c.telemetry.f0Span}</span>
-          </div>
-          <div class="metric-box">
-            <span class="metric-label">Bước Nhảy Nền Nhiễu:</span>
-            <span class="metric-val" style="font-size: 1rem;">${c.telemetry.noiseJump}</span>
-          </div>
-          <div class="metric-box">
-            <span class="metric-label">Mô Hình Khả Nghi:</span>
-            <span class="metric-val" style="font-size: 0.85rem; color: #ffb700;">${c.suspectModel}</span>
-          </div>
-        </div>
 
-        <div style="background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1.2rem; margin-bottom: 1.5rem;">
-          <div style="font-weight: 700; color: #00f0ff; margin-bottom: 0.5rem;">HÀNH ĐỘNG GIÁM ĐỊNH CỦA BẠN:</div>
-          <div style="display: flex; gap: 1rem;">
-            <button class="btn-primary" id="btn-verdict-fake" style="background: linear-gradient(135deg, #ff3366, #ff0055); color: #fff;">
-              🚨 KẾT ÁN: DEEPFAKE GIAN LẬN
-            </button>
-            <button class="btn-secondary" id="btn-verdict-real" style="border-color: #00ff9d; color: #00ff9d;">
-              ✅ XÁC NHẬN: NGƯỜI SỐNG HỢP LỆ
-            </button>
+          <div style="background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1.2rem; margin-bottom: 1.5rem;">
+            <div style="font-weight: 700; color: #00f0ff; margin-bottom: 0.8rem; font-size: 0.95rem;">HÀNH ĐỘNG GIÁM ĐỊNH CỦA BẠN (ĐƯA RA PHÁN QUYẾT):</div>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <button class="btn-primary" id="${btnFakeId}" style="background: linear-gradient(135deg, #ff3366, #ff0055); color: #fff; font-weight: 700; padding: 0.6rem 1.2rem;">
+                🚨 KẾT ÁN: DEEPFAKE GIAN LẬN
+              </button>
+              <button class="btn-secondary" id="${btnRealId}" style="border-color: #00ff9d; color: #00ff9d; font-weight: 700; padding: 0.6rem 1.2rem;">
+                ✅ XÁC NHẬN: NGƯỜI SỐNG HỢP LỆ
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div id="verdict-result-box" style="display: none; background: rgba(255, 51, 102, 0.12); border: 1px solid #ff3366; padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem;">
-          <div style="font-weight: 700; color: #ff5555; font-size: 0.95rem; margin-bottom: 0.4rem;">${c.verdict}</div>
-          <p style="font-size: 0.88rem; color: #fed7aa; line-height: 1.6;">${c.analysisText}</p>
+          <div id="${resBoxId}" style="display: none; background: rgba(255, 51, 102, 0.12); border: 1px solid #ff3366; padding: 1.2rem; border-radius: 8px; margin-bottom: 1rem;">
+            <div style="font-weight: 700; color: #ff5555; font-size: 1rem; margin-bottom: 0.5rem;">${c.verdict}</div>
+            <p style="font-size: 0.9rem; color: #fed7aa; line-height: 1.6;">${c.analysisText}</p>
+          </div>
         </div>
       `;
 
-      const resBox = document.getElementById('verdict-result-box');
-      document.getElementById('btn-verdict-fake').addEventListener('click', () => {
+      const resBox = document.getElementById(resBoxId);
+      document.getElementById(btnFakeId)?.addEventListener('click', () => {
         resBox.style.display = 'block';
         if (c.groundTruth === 'FAKE') {
           alert("CHÍNH XÁC! Bạn đã nhận diện đúng các dấu vết vật lý giả mạo.");
         } else {
-          alert("CẢNH BÁO: BẠN ĐÃ KẾT ÁN SAI! Đây là trường hợp khách hàng người thật bị bệnh lý giọng nói.");
+          alert("CẢNH BÁO: BẠN ĐÃ KẾT ÁN SAI! Đây là trường hợp khách hàng người thật có bệnh lý giọng nói hoặc môi trường đặc thù.");
         }
       });
-      document.getElementById('btn-verdict-real').addEventListener('click', () => {
+      document.getElementById(btnRealId)?.addEventListener('click', () => {
         resBox.style.display = 'block';
         if (c.groundTruth === 'REAL') {
           alert("CHÍNH XÁC! Bạn đã không mắc bẫy báo động giả của trường hợp bệnh lý.");
         } else {
-          alert("NGUY HIỂM: BẠN ĐÃ BỊ QUA MẶT! Cuộc gọi này có dấu hiệu giả mạo rõ ràng.");
+          alert("NGUY HIỂM: BẠN ĐÃ BỊ QUA MẶT! Cuộc gọi này có dấu hiệu giả mạo rõ ràng vi phạm các bất biến vật lý.");
         }
       });
     }
@@ -1509,22 +2511,222 @@ document.addEventListener('DOMContentLoaded', () => {
     FORENSIC_CASES.forEach((c, idx) => {
       const btn = document.createElement('div');
       btn.className = `case-card-btn ${idx === 0 ? 'active' : ''}`;
+      btn.style.cursor = 'pointer';
       btn.innerHTML = `
-        <div class="case-header-row">
-          <span class="case-code">${c.id}</span>
-          <span class="case-badge badge-finance">${c.category}</span>
+        <div class="case-header-row" style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+          <span class="case-code" style="font-family: var(--font-mono); font-size: 0.75rem; color: #ff3366; font-weight: 700;">${c.id}</span>
+          <span class="case-badge badge-finance" style="font-size: 0.7rem; background: rgba(255,183,0,0.15); color: #ffb700; padding: 2px 6px; border-radius: 4px;">${c.category}</span>
         </div>
-        <div class="case-title">${c.title}</div>
-        <div class="case-desc">${c.audioProfile.substring(0, 75)}...</div>
+        <div class="case-title" style="font-weight: 700; color: #fff; font-size: 0.9rem; margin-bottom: 0.3rem;">${c.title}</div>
+        <div class="case-desc" style="font-size: 0.8rem; color: #8b9bb4; line-height: 1.4;">${c.audioProfile.substring(0, 75)}...</div>
       `;
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.case-card-btn').forEach(b => b.classList.remove('active'));
+        casesList.querySelectorAll('.case-card-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         renderCaseDetail(c);
       });
       casesList.appendChild(btn);
     });
     renderCaseDetail(FORENSIC_CASES[0]);
+  }
+
+  // Initialize Forensic Cases in BOTH Mode 3 (Defense Arena) and Tab 11 (Án Lệ Ngân Hàng)
+  initForensicCasesWorkspace(document.getElementById('forensic-cases-container'), 'mode3_');
+  initForensicCasesWorkspace(document.getElementById('cases-workspace'), 'tab11_');
+
+  
+  // ===================================================================
+  // 5B. RENDER MODE 4: INTERACTIVE 3D FLASHCARDS BẪY SÂU (24 FLASHCARDS)
+  // ===================================================================
+  const flashcardsContainer = document.getElementById('flashcards-container');
+  if (flashcardsContainer && typeof FLASHCARDS_DATA !== 'undefined') {
+    let activeCategory = 'all';
+    let filteredCards = [...FLASHCARDS_DATA];
+    let currentCardIdx = 0;
+    const masteredCardIds = new Set();
+
+    function renderFlashcardsDeck() {
+      flashcardsContainer.innerHTML = `
+        <div class="flashcards-wrapper-inner" style="max-width: 900px; margin: 0 auto;">
+          <!-- Category Filter Bar -->
+          <div class="quiz-filter-bar" style="margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
+            <button class="quiz-filter-pill ${activeCategory === 'all' ? 'active' : ''}" data-fcat="all">Tất Cả (24 Thẻ)</button>
+            <button class="quiz-filter-pill ${activeCategory === 'dsp' ? 'active' : ''}" data-fcat="dsp">DSP & Lấy Mẫu</button>
+            <button class="quiz-filter-pill ${activeCategory === 'acoustics' ? 'active' : ''}" data-fcat="acoustics">Âm Học ISO 3382</button>
+            <button class="quiz-filter-pill ${activeCategory === 'prosody' ? 'active' : ''}" data-fcat="prosody">Ngữ Âm Tiếng Việt</button>
+            <button class="quiz-filter-pill ${activeCategory === 'onnx' ? 'active' : ''}" data-fcat="onnx">MelCNN & ONNX</button>
+            <button class="quiz-filter-pill ${activeCategory === 'fusion' ? 'active' : ''}" data-fcat="fusion">Dung Hợp & Hard Veto</button>
+            <button class="quiz-filter-pill ${activeCategory === 'security' ? 'active' : ''}" data-fcat="security">Pháp Y & Viễn Thông</button>
+          </div>
+
+          <!-- Card Progress Info -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; color: #8b9bb4; font-size: 0.88rem; font-family: var(--font-mono);">
+            <span>TIẾN ĐỘ THẺ: <strong style="color: #00f0ff;" id="fc-progress-text">${currentCardIdx + 1} / ${filteredCards.length}</strong></span>
+            <span>ĐÃ NẮM VỮNG: <strong style="color: #00ff9d;" id="fc-mastered-count">${masteredCardIds.size} / ${FLASHCARDS_DATA.length}</strong></span>
+          </div>
+
+          <!-- 3D Card Scene -->
+          <div class="flashcard-scene" id="fc-scene" style="perspective: 1200px; margin-bottom: 1.5rem; cursor: pointer;">
+            <div class="flashcard-3d" id="fc-card" style="position: relative; width: 100%; min-height: 380px; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d;">
+              
+              <!-- Front Face -->
+              <div class="flashcard-face flashcard-front" style="position: absolute; inset: 0; backface-visibility: hidden; background: linear-gradient(145deg, rgba(16, 24, 40, 0.95), rgba(10, 15, 29, 0.98)); border: 1.5px solid rgba(0, 240, 255, 0.3); border-radius: var(--radius-md); padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                    <span class="pillar-badge" style="background: rgba(0, 240, 255, 0.15); color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.3); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
+                      ${filteredCards[currentCardIdx].categoryLabel}
+                    </span>
+                    <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #ff3366; font-weight: 700;">
+                      ${filteredCards[currentCardIdx].id}
+                    </span>
+                  </div>
+
+                  <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 1rem; line-height: 1.5;">
+                    ${filteredCards[currentCardIdx].title}
+                  </h3>
+
+                  <div style="background: rgba(255, 51, 102, 0.1); border-left: 4px solid #ff3366; padding: 1rem; border-radius: 4px; color: #fecdd3; font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.2rem;">
+                    ${filteredCards[currentCardIdx].trapAlert}
+                  </div>
+
+                  <p style="color: #cbd5e1; font-size: 1rem; line-height: 1.6; font-weight: 500;">
+                    ${filteredCards[currentCardIdx].frontQuestion}
+                  </p>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1rem;">
+                  <span style="font-size: 0.82rem; color: #8b9bb4;">💡 Nhấn vào thẻ hoặc nút bên dưới để lật xem đáp án</span>
+                  <span style="color: #00f0ff; font-weight: 700; font-size: 0.88rem;">🔄 LẬT THẺ ➔</span>
+                </div>
+              </div>
+
+              <!-- Back Face -->
+              <div class="flashcard-face flashcard-back" style="position: absolute; inset: 0; backface-visibility: hidden; transform: rotateY(180deg); background: linear-gradient(145deg, rgba(8, 20, 36, 0.97), rgba(4, 12, 24, 0.99)); border: 1.5px solid rgba(0, 255, 157, 0.4); border-radius: var(--radius-md); padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 30px rgba(0, 255, 157, 0.1);">
+                <div style="overflow-y: auto; max-height: 320px; padding-right: 0.5rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+                    <span style="color: #00ff9d; font-weight: 700; font-size: 0.85rem; font-family: var(--font-mono);">
+                      ✅ BẢN CHẤT KHOA HỌC & GIẢI THÍCH
+                    </span>
+                    <span style="background: rgba(0,255,157,0.15); color: #00ff9d; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-family: var(--font-mono);">
+                      ${filteredCards[currentCardIdx].standardRef}
+                    </span>
+                  </div>
+
+                  <div style="color: #e2e8f0; font-size: 0.92rem; line-height: 1.7; white-space: pre-line; margin-bottom: 1rem;">
+                    ${filteredCards[currentCardIdx].backAnswer}
+                  </div>
+
+                  <div style="background: rgba(0, 240, 255, 0.08); border-left: 3px solid #00f0ff; padding: 0.8rem; border-radius: 4px; font-size: 0.85rem; color: #bae6fd; line-height: 1.5;">
+                    <strong style="color: #00f0ff;">MẸO BẢO VỆ ĐỒ ÁN:</strong> ${filteredCards[currentCardIdx].tip}
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.8rem;">
+                  <span style="font-size: 0.82rem; color: #8b9bb4;">🔄 Nhấn để lật lại câu hỏi</span>
+                  <span style="color: #00ff9d; font-weight: 700; font-size: 0.85rem;">ĐÃ HIỂU RÕ ➔</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Controls Bar -->
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
+            <div style="display: flex; gap: 0.6rem;">
+              <button class="btn-secondary" id="fc-btn-prev" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">
+                ⬅️ Thẻ Trước
+              </button>
+              <button class="btn-primary" id="fc-btn-flip" style="padding: 0.6rem 1.4rem; font-size: 0.9rem; background: linear-gradient(135deg, #00f0ff, #3b82f6); color: #040711; font-weight: 700;">
+                🔄 Lật Thẻ (Space)
+              </button>
+              <button class="btn-secondary" id="fc-btn-next" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">
+                Thẻ Tiếp ➔
+              </button>
+            </div>
+
+            <div style="display: flex; gap: 0.6rem;">
+              <button class="btn-secondary" id="fc-btn-shuffle" style="padding: 0.6rem 1rem; font-size: 0.85rem;">
+                🎲 Đảo Ngẫu Nhiên
+              </button>
+              <button class="btn-secondary" id="fc-btn-master" style="padding: 0.6rem 1rem; font-size: 0.85rem; border-color: ${masteredCardIds.has(filteredCards[currentCardIdx].id) ? '#00ff9d' : '#8b9bb4'}; color: ${masteredCardIds.has(filteredCards[currentCardIdx].id) ? '#00ff9d' : '#cbd5e1'};">
+                ${masteredCardIds.has(filteredCards[currentCardIdx].id) ? '⭐ Đã Nắm Vững' : '☆ Đánh Dấu Đã Thuộc'}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Event listeners for Flashcard
+      const cardEl = document.getElementById('fc-card');
+      const sceneEl = document.getElementById('fc-scene');
+      let isFlipped = false;
+
+      function toggleFlip() {
+        isFlipped = !isFlipped;
+        if (isFlipped) {
+          cardEl.style.transform = 'rotateY(180deg)';
+        } else {
+          cardEl.style.transform = 'rotateY(0deg)';
+        }
+      }
+
+      sceneEl.addEventListener('click', toggleFlip);
+      document.getElementById('fc-btn-flip').addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleFlip();
+      });
+
+      document.getElementById('fc-btn-prev').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentCardIdx > 0) {
+          currentCardIdx--;
+          renderFlashcardsDeck();
+        }
+      });
+
+      document.getElementById('fc-btn-next').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentCardIdx < filteredCards.length - 1) {
+          currentCardIdx++;
+          renderFlashcardsDeck();
+        }
+      });
+
+      document.getElementById('fc-btn-shuffle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        filteredCards.sort(() => 0.5 - Math.random());
+        currentCardIdx = 0;
+        renderFlashcardsDeck();
+      });
+
+      document.getElementById('fc-btn-master').addEventListener('click', (e) => {
+        e.stopPropagation();
+        const curId = filteredCards[currentCardIdx].id;
+        if (masteredCardIds.has(curId)) {
+          masteredCardIds.delete(curId);
+        } else {
+          masteredCardIds.add(curId);
+        }
+        renderFlashcardsDeck();
+      });
+
+      // Category filter pills
+      flashcardsContainer.querySelectorAll('.quiz-filter-pill').forEach(pill => {
+        pill.addEventListener('click', (e) => {
+          e.stopPropagation();
+          activeCategory = pill.dataset.fcat;
+          if (activeCategory === 'all') {
+            filteredCards = [...FLASHCARDS_DATA];
+          } else {
+            filteredCards = FLASHCARDS_DATA.filter(c => c.cat === activeCategory);
+          }
+          currentCardIdx = 0;
+          renderFlashcardsDeck();
+        });
+      });
+    }
+
+    renderFlashcardsDeck();
   }
 
   // 6. Render Mode 4 & Tab 5: Quiz Trap Engine (Categorized Filters)
@@ -1734,7 +2936,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-reset-quiz').addEventListener('click', resetQuiz);
   renderQuizQuestion(0);
 
-  // 7. Render Mode 5: Code Audit Studio (5 Backend Modules)
+  
+  // 7. Render Mode 5: Code Audit Studio (5 Backend Modules With Interactive Challenges)
   const codeNav = document.getElementById('code-module-nav');
   const codeViewer = document.getElementById('code-viewer-panel');
 
@@ -1762,41 +2965,238 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>
 
-      <div>
+      <div style="margin-bottom: 2rem;">
         <div style="font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">
           MÃ NGUỒN TRIỂN KHAI BACKEND:
         </div>
-        <div class="source-code-block">${mod.code}</div>
+        <div class="source-code-block" style="max-height: 400px; overflow-y: auto;">${mod.code}</div>
       </div>
+
+      <!-- INTERACTIVE CODE AUDIT CHALLENGE -->
+      ${mod.auditChallenge ? `
+        <div class="audit-challenge-box" style="background: rgba(16, 24, 40, 0.9); border: 1.5px solid rgba(255, 183, 0, 0.4); border-radius: 8px; padding: 1.5rem; margin-top: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+            <span style="color: #ffb700; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+              🛡️ THỬ THÁCH CODE AUDIT & TRUY TÌM LỖ HỔNG BẢO MẬT:
+            </span>
+            <span class="badge" style="background: rgba(255, 183, 0, 0.15); color: #ffb700; font-family: var(--font-mono); font-size: 0.72rem;">
+              SECURITY AUDIT
+            </span>
+          </div>
+
+          <p style="color: #fff; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.2rem; font-weight: 500;">
+            ${mod.auditChallenge.question}
+          </p>
+
+          <div class="audit-options-list" style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem;">
+            ${mod.auditChallenge.opts.map((opt, oIdx) => `
+              <button class="audit-opt-btn" data-aopt="${oIdx}" style="text-align: left; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 0.8rem 1.2rem; border-radius: 6px; color: #cbd5e1; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; line-height: 1.5;">
+                <span style="font-weight: 700; color: #ffb700; margin-right: 8px;">${['A', 'B', 'C', 'D'][oIdx]}.</span>
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+
+          <div id="audit-feedback-${mod.id}" style="display: none; padding: 1.2rem; border-radius: 6px; margin-top: 1rem; line-height: 1.6; font-size: 0.9rem;">
+            <!-- Rendered upon choosing answer -->
+          </div>
+        </div>
+      ` : ''}
     `;
 
+    // Sliders listeners
     mod.sliders.forEach(s => {
       const sliderEl = document.getElementById(s.id);
       const valEl = document.getElementById(`${s.id}-val`);
-      sliderEl.addEventListener('input', () => {
-        valEl.textContent = `${sliderEl.value}${s.unit}`;
-        const currentVals = Object.fromEntries(mod.sliders.map(item => [item.id, parseFloat(document.getElementById(item.id).value)]));
-        document.getElementById('mod-sim-output').textContent = mod.calcSim(currentVals);
-      });
+      if (sliderEl && valEl) {
+        sliderEl.addEventListener('input', () => {
+          valEl.textContent = `${sliderEl.value}${s.unit}`;
+          const currentVals = Object.fromEntries(mod.sliders.map(item => [item.id, parseFloat(document.getElementById(item.id).value)]));
+          document.getElementById('mod-sim-output').textContent = mod.calcSim(currentVals);
+        });
+      }
     });
+
+    // Code audit options listener
+    if (mod.auditChallenge) {
+      const fbBox = document.getElementById(`audit-feedback-${mod.id}`);
+      const optBtns = codeViewer.querySelectorAll('.audit-opt-btn');
+      optBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const chosenIdx = parseInt(btn.dataset.aopt);
+          const isCorrect = chosenIdx === mod.auditChallenge.correct;
+
+          optBtns.forEach((b, idx) => {
+            b.disabled = true;
+            if (idx === mod.auditChallenge.correct) {
+              b.style.borderColor = '#00ff9d';
+              b.style.background = 'rgba(0, 255, 157, 0.12)';
+              b.style.color = '#fff';
+            } else if (idx === chosenIdx) {
+              b.style.borderColor = '#ff3366';
+              b.style.background = 'rgba(255, 51, 102, 0.12)';
+            }
+          });
+
+          fbBox.style.display = 'block';
+          if (isCorrect) {
+            fbBox.style.background = 'rgba(0, 255, 157, 0.1)';
+            fbBox.style.border = '1px solid #00ff9d';
+            fbBox.innerHTML = `
+              <div style="font-weight: 700; color: #00ff9d; margin-bottom: 0.4rem; font-size: 0.95rem;">
+                🎯 CHÍNH XÁC! BẠN ĐÃ NHẬN DIỆN ĐÚNG LỖ HỔNG BẢO MẬT.
+              </div>
+              <div style="color: #cbd5e1; margin-bottom: 0.8rem;">${mod.auditChallenge.explanation}</div>
+              <div style="background: rgba(0,0,0,0.4); border-left: 3px solid #00ff9d; padding: 0.6rem 0.8rem; font-family: var(--font-mono); font-size: 0.82rem; color: #a7f3d0;">
+                <strong style="color: #00ff9d;">CODE KHẮC PHỤC CHUẨN:</strong><br>${mod.auditChallenge.secureFix}
+              </div>
+            `;
+          } else {
+            fbBox.style.background = 'rgba(255, 51, 102, 0.1)';
+            fbBox.style.border = '1px solid #ff3366';
+            fbBox.innerHTML = `
+              <div style="font-weight: 700; color: #ff5555; margin-bottom: 0.4rem; font-size: 0.95rem;">
+                ⚠️ CHƯA CHÍNH XÁC! HÃY XEM LẠI PHÂN TÍCH BẢN CHẤT.
+              </div>
+              <div style="color: #cbd5e1; margin-bottom: 0.8rem;">${mod.auditChallenge.explanation}</div>
+              <div style="background: rgba(0,0,0,0.4); border-left: 3px solid #00ff9d; padding: 0.6rem 0.8rem; font-family: var(--font-mono); font-size: 0.82rem; color: #a7f3d0;">
+                <strong style="color: #00ff9d;">CODE KHẮC PHỤC CHUẨN:</strong><br>${mod.auditChallenge.secureFix}
+              </div>
+            `;
+          }
+        });
+      });
+    }
   }
 
-  codeNav.innerHTML = '';
-  CODE_AUDIT_MODULES.forEach((mod, idx) => {
-    const btn = document.createElement('div');
-    btn.className = `code-module-btn ${idx === 0 ? 'active' : ''}`;
-    btn.innerHTML = `
-      <span class="mod-filename">${mod.filename.split('/').pop()}</span>
-      <div class="mod-desc">${mod.title}</div>
-    `;
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.code-module-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderCodeModule(mod);
+  if (codeNav) {
+    codeNav.innerHTML = '';
+    CODE_AUDIT_MODULES.forEach((mod, idx) => {
+      const btn = document.createElement('div');
+      btn.className = `code-module-btn ${idx === 0 ? 'active' : ''}`;
+      btn.innerHTML = `
+        <span class="mod-filename">${mod.filename.split('/').pop()}</span>
+        <div class="mod-desc">${mod.title}</div>
+      `;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.code-module-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderCodeModule(mod);
+      });
+      codeNav.appendChild(btn);
     });
-    codeNav.appendChild(btn);
-  });
-  renderCodeModule(CODE_AUDIT_MODULES[0]);
+    renderCodeModule(CODE_AUDIT_MODULES[0]);
+  }
+
+  
+  // ===================================================================
+  // 7B. RENDER TAB 3: HỒ SƠ 11 TRỤ CỘT TRI THỨC BẬC THẦY (ACCORDION & SEARCH)
+  // ===================================================================
+  const pillarsList = document.getElementById('pillars-list');
+  const knowledgeSearch = document.getElementById('knowledge-search');
+  const quickTags = document.querySelectorAll('.quick-tags .qtag');
+
+  function initKnowledgeBase() {
+    if (!pillarsList || typeof PILLARS_DATA === 'undefined') return;
+
+    let activeKbTag = 'all';
+
+    function renderPillars(filtered) {
+      pillarsList.innerHTML = '';
+      if (filtered.length === 0) {
+        pillarsList.innerHTML = `
+          <div style="text-align: center; padding: 3rem; color: #8b9bb4; font-family: var(--font-mono);">
+            Không tìm thấy trụ cột nào phù hợp với từ khóa tìm kiếm.
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach((p, idx) => {
+        const item = document.createElement('div');
+        item.className = `pillar-item ${idx === 0 ? 'open' : ''}`;
+        item.innerHTML = `
+          <div class="pillar-item-header">
+            <div class="pillar-item-title">
+              <span class="pillar-num">${p.roman}. [${p.code}]</span>
+              <span class="pillar-name">${p.name}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.8rem;">
+              <span class="badge" style="background: rgba(0,240,255,0.15); color: #00f0ff; font-size: 0.75rem; font-family: var(--font-mono);">${p.tag.toUpperCase()}</span>
+              <span class="pillar-expand-icon">▼</span>
+            </div>
+          </div>
+
+          <div class="pillar-item-body">
+            <div style="color: #00f0ff; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.8rem;">
+              ${p.subtitle}
+            </div>
+            <p style="color: #cbd5e1; line-height: 1.6; margin-bottom: 1.2rem;">
+              ${p.summary}
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.8rem; margin-bottom: 1.2rem;">
+              ${p.metrics.map(m => `
+                <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 0.8rem; border-radius: 6px;">
+                  <span style="font-size: 0.75rem; color: #8b9bb4; display: block;">${m.name}</span>
+                  <span style="font-size: 0.95rem; font-weight: 700; color: #00ff9d; font-family: var(--font-mono);">${m.val}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <div style="background: rgba(0,0,0,0.4); border-left: 3px solid #00f0ff; padding: 1rem; border-radius: 4px; margin-bottom: 1.2rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.7; color: #bae6fd; white-space: pre-line;">
+              ${p.theory}
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+              <div style="font-weight: 700; color: #fff; font-size: 0.85rem; margin-bottom: 0.4rem;">MÃ NGUỒN TRIỂN KHAI MẪU:</div>
+              <div class="source-code-block" style="max-height: 250px; overflow-y: auto;">${p.code}</div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.8rem; font-size: 0.82rem; color: #8b9bb4;">
+              <span>📜 <strong>TIÊU CHUẨN THAM CHIẾU:</strong> ${p.standards}</span>
+              <span style="color: #ff3366;">⚠️ ${p.traps}</span>
+            </div>
+          </div>
+        `;
+
+        item.querySelector('.pillar-item-header').addEventListener('click', () => {
+          item.classList.toggle('open');
+        });
+
+        pillarsList.appendChild(item);
+      });
+    }
+
+    function filterKnowledge() {
+      const q = knowledgeSearch ? knowledgeSearch.value.trim().toLowerCase() : '';
+      const filtered = PILLARS_DATA.filter(p => {
+        const matchTag = (activeKbTag === 'all') || (p.tag === activeKbTag);
+        if (!matchTag) return false;
+        if (!q) return true;
+        const haystack = (p.code + ' ' + p.name + ' ' + p.subtitle + ' ' + p.summary + ' ' + p.theory + ' ' + p.standards).toLowerCase();
+        return haystack.includes(q);
+      });
+      renderPillars(filtered);
+    }
+
+    if (knowledgeSearch) {
+      knowledgeSearch.addEventListener('input', filterKnowledge);
+    }
+
+    quickTags.forEach(tagBtn => {
+      tagBtn.addEventListener('click', () => {
+        quickTags.forEach(b => b.classList.remove('active'));
+        tagBtn.classList.add('active');
+        activeKbTag = tagBtn.dataset.tag;
+        filterKnowledge();
+      });
+    });
+
+    renderPillars(PILLARS_DATA);
+  }
+
+  initKnowledgeBase();
 
   // 8. Integrate ForensicAudioEngine & Live Canvas Visualizers (Tab 2)
   const audioEngine = new ForensicAudioEngine();
@@ -2016,6 +3416,53 @@ document.addEventListener('DOMContentLoaded', () => {
       // Draw Waveform on Canvas
       drawUploadedWaveform(pcmData);
     });
+  }
+
+  
+  function drawUploadedSpectrogram(pcm) {
+    const cv = document.getElementById('canvas-file-spectrogram');
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
+    const width = cv.width;
+    const height = cv.height;
+
+    ctx.fillStyle = '#030712';
+    ctx.fillRect(0, 0, width, height);
+
+    const cols = 180;
+    const bins = 64;
+    const colWidth = width / cols;
+    const rowHeight = height / bins;
+
+    // Simulate STFT Log-Mel power distribution from PCM
+    for (let c = 0; c < cols; c++) {
+      const chunkStart = Math.floor((c / cols) * (pcm.length - 512));
+      let chunkEnergy = 0;
+      for (let k = 0; k < 512; k++) {
+        const val = pcm[chunkStart + k] || 0;
+        chunkEnergy += val * val;
+      }
+      chunkEnergy = Math.min(1.0, Math.sqrt(chunkEnergy / 512) * 5.0);
+
+      for (let r = 0; r < bins; r++) {
+        // Mel scale energy concentration (higher at bottom, lower at top)
+        const freqRatio = 1.0 - (r / bins);
+        const noise = Math.random() * 0.2;
+        const binVal = Math.min(1.0, Math.max(0, (chunkEnergy * freqRatio * 1.5) + (noise * 0.15)));
+
+        // Heatmap color: dark blue -> cyan -> yellow -> red -> white
+        let color = '#020617';
+        if (binVal > 0.85) color = '#ffffff';
+        else if (binVal > 0.65) color = '#ff3366';
+        else if (binVal > 0.45) color = '#ffb700';
+        else if (binVal > 0.25) color = '#00f0ff';
+        else if (binVal > 0.08) color = '#0284c7';
+        else color = '#0f172a';
+
+        ctx.fillStyle = color;
+        ctx.fillRect(c * colWidth, r * rowHeight, colWidth + 0.5, rowHeight + 0.5);
+      }
+    }
   }
 
   function drawUploadedWaveform(pcm) {
@@ -2277,7 +3724,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Pick 8 randomized questions from QUIZ_QUESTIONS + 2 case studies
       const shuffled = [...QUIZ_QUESTIONS].sort(() => 0.5 - Math.random());
-      examQuestions = shuffled.slice(0, 10);
+      examQuestions = shuffled.slice(0, 20);
       currentExamQIdx = 0;
       examScore = 0;
       examSecondsLeft = 2700;
@@ -2357,7 +3804,7 @@ document.addEventListener('DOMContentLoaded', () => {
     examResultCard.style.display = 'block';
 
     const finalGpa = ((examScore / examQuestions.length) * 10).toFixed(1);
-    const isPassed = finalGpa >= 8.5;
+    const isPassed = finalGpa >= 8.0;
     const certId = "DG-CERT-" + Date.now().toString().slice(-8);
     const mockHash = "cert_sha256_" + Math.random().toString(36).substring(2, 12);
 

@@ -3681,3 +3681,79 @@ canvas {
   }
 }
 
+
+/* =====================================================================
+   FLASHCARD 3D FLIP SYSTEM (MODE 4)
+   ===================================================================== */
+.flashcards-wrapper-inner {
+  perspective: 1200px;
+}
+
+.flashcard-scene {
+  perspective: 1200px;
+  user-select: none;
+}
+
+.flashcard-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.flashcard-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flashcard-front {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+}
+
+.flashcard-scene:hover .flashcard-front {
+  border-color: rgba(0, 240, 255, 0.6);
+}
+
+.flashcard-scene:hover .flashcard-back {
+  border-color: rgba(0, 255, 157, 0.7);
+}
+
+/* =====================================================================
+   INTERACTIVE CODE AUDIT STYLES (MODE 5)
+   ===================================================================== */
+.audit-challenge-box {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.audit-opt-btn:hover:not(:disabled) {
+  border-color: #ffb700 !important;
+  background: rgba(255, 183, 0, 0.08) !important;
+  color: #fff !important;
+}
+
+/* =====================================================================
+   KNOWLEDGE BASE ACCORDION ENHANCEMENTS (TAB 3)
+   ===================================================================== */
+.pillar-item {
+  transition: all 0.25s ease;
+}
+
+.pillar-item.open {
+  border-color: rgba(0, 240, 255, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.08);
+}
+
+.pillar-item.open .pillar-name {
+  color: #00f0ff;
+}
+
+.pillar-search-highlight {
+  background: rgba(255, 183, 0, 0.3);
+  color: #fff;
+  border-radius: 2px;
+  padding: 0 2px;
+}
