@@ -23,6 +23,21 @@
     </div>
     
     <div class="header-right">
+      <div class="user-account-widget" id="user-account-widget">
+        <button id="btn-open-auth-modal" class="auth-header-btn">
+          <span class="auth-icon">🔑</span>
+          <span class="auth-text" id="header-auth-label">Đăng Nhập / Đăng Ký</span>
+        </button>
+        <div id="header-user-badge" class="header-user-badge" style="display: none;">
+          <span class="user-avatar-mini" id="header-user-avatar">👨‍💻</span>
+          <div class="user-mini-info">
+            <span class="user-mini-name" id="header-user-name">Học Viên</span>
+            <span class="user-mini-streak" id="header-user-streak">🔥 1 ngày</span>
+          </div>
+          <button id="btn-quick-goto-memory" class="mini-profile-btn" title="Mở Bộ Nhớ & Hồ Sơ Năng Lực">🧠</button>
+        </div>
+      </div>
+
       <button id="btn-quick-goto-academy" class="quick-nav-pill-btn" title="Đi tới phần ôn tập dành cho người mới nhập môn">
         <span class="pulse-dot"></span>
         <span>🌱 Ôn Tập Nhập Môn (69 Câu)</span>
@@ -78,6 +93,10 @@
       <button class="nav-tab" data-tab="case-study">
         <span class="tab-icon">⚖️</span> Án Lệ Ngân Hàng
       </button>
+      <button class="nav-tab memory-tab-btn" data-tab="user-memory-hub" id="nav-tab-memory-hub">
+        <span class="tab-icon">🧠</span> Bộ Nhớ & Hồ Sơ Năng Lực <span class="hot-badge">PRO</span>
+      </button>
+
     </div>
   </nav>
 
@@ -1025,6 +1044,12 @@
       </div>
     </section>
 
+  
+    <!-- TAB 12: BỘ NHỚ HỌC TẬP & HỒ SƠ NĂNG LỰC -->
+    <section id="user-memory-hub" class="tab-panel">
+      <!-- Dynamically rendered via memory_hub_ui.js -->
+    </section>
+
   </main>
 
   <!-- Academy Level-Up Celebratory Modal -->
@@ -1092,8 +1117,86 @@
   </footer>
 
   <script src="master_questions_data.js"></script>
+  <script src="memory_engine.js"></script>
+  <script src="memory_hub_ui.js"></script>
   <script src="app.js"></script>
   <script src="ai_forge_engine.js"></script>
   <script src="progressive_db_academy.js"></script>
+
+  <!-- Auth Modal (Login / Register / Profile) -->
+  <div id="auth-modal" class="auth-modal">
+    <div class="auth-modal-card">
+      <div class="auth-modal-header">
+        <div class="auth-tabs-row">
+          <button id="auth-tab-btn-login" class="auth-tab-btn active">Đăng Nhập</button>
+          <button id="auth-tab-btn-register" class="auth-tab-btn">Đăng Ký Mới</button>
+        </div>
+        <button id="auth-modal-close-btn" class="auth-modal-close">✕</button>
+      </div>
+      
+      <div class="auth-modal-body">
+        <div id="auth-error-msg" class="auth-error-box" style="display: none;"></div>
+
+        <!-- Form Login -->
+        <form id="auth-form-login" class="auth-form">
+          <div class="form-group">
+            <label>Tên đăng nhập:</label>
+            <input type="text" id="login-username" placeholder="Nhập username..." required autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label>Mật khẩu:</label>
+            <input type="password" id="login-password" placeholder="Nhập mật khẩu..." required autocomplete="current-password">
+          </div>
+          <div class="form-check-row">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #cbd5e1; cursor: pointer;">
+              <input type="checkbox" id="login-remember" checked> Ghi nhớ phiên đăng nhập trên thiết bị này
+            </label>
+          </div>
+          <button type="submit" class="btn-primary btn-auth-submit" style="width: 100%; margin-top: 0.8rem; background: linear-gradient(135deg, #00f0ff, #3b82f6); color: #040711; font-weight: 700;">
+            ⚡ Đăng Nhập Vào Hệ Thống
+          </button>
+        </form>
+
+        <!-- Form Register -->
+        <form id="auth-form-register" class="auth-form" style="display: none;">
+          <div class="form-group">
+            <label>Họ và tên học viên:</label>
+            <input type="text" id="reg-fullname" placeholder="Ví dụ: Nguyễn Văn A" required>
+          </div>
+          <div class="form-group">
+            <label>Tên đăng nhập (Username):</label>
+            <input type="text" id="reg-username" placeholder="Chỉ chữ cái và số..." required autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label>Email liên hệ (tùy chọn):</label>
+            <input type="email" id="reg-email" placeholder="email@example.com" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label>Mật khẩu (Tối thiểu 6 ký tự):</label>
+            <input type="password" id="reg-password" placeholder="Mật khẩu bảo mật..." required minlength="6" autocomplete="new-password">
+          </div>
+          <div class="form-group">
+            <label>Xác nhận lại mật khẩu:</label>
+            <input type="password" id="reg-password-confirm" placeholder="Nhập lại mật khẩu..." required minlength="6" autocomplete="new-password">
+          </div>
+          <div class="form-group">
+            <label>Chọn biểu tượng Avatar:</label>
+            <div class="avatar-picker-row" style="display: flex; gap: 1rem; font-size: 1.4rem; margin-top: 5px;">
+              <label style="cursor: pointer;"><input type="radio" name="reg-avatar" value="👨‍💻" checked> 👨‍💻</label>
+              <label style="cursor: pointer;"><input type="radio" name="reg-avatar" value="👩‍💻"> 👩‍💻</label>
+              <label style="cursor: pointer;"><input type="radio" name="reg-avatar" value="🧑‍🔬"> 🧑‍🔬</label>
+              <label style="cursor: pointer;"><input type="radio" name="reg-avatar" value="🕵️‍♂️"> 🕵️‍♂️</label>
+              <label style="cursor: pointer;"><input type="radio" name="reg-avatar" value="🛡️"> 🛡️</label>
+              <label style="cursor: pointer;"><input type="radio" name="reg-avatar" value="🤖"> 🤖</label>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary btn-auth-submit" style="width: 100%; margin-top: 0.8rem; background: linear-gradient(135deg, #00ff9d, #00f0ff); color: #040711; font-weight: 700;">
+            ✨ Tạo Tài Khoản & Bắt Đầu Ghi Nhớ
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

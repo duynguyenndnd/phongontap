@@ -2491,6 +2491,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const resBox = document.getElementById(resBoxId);
       document.getElementById(btnFakeId)?.addEventListener('click', () => {
         resBox.style.display = 'block';
+
+        if (window.DeepGuardMemory && window.DeepGuardMemory.logQuestionAttempt) {
+          window.DeepGuardMemory.logQuestionAttempt({
+            questionId: c.id,
+            module: 'cases',
+            pillar: 'acoustics',
+            questionText: c.title + ': ' + c.audioProfile,
+            chosenAnswer: 'FAKE',
+            correctAnswer: c.groundTruth,
+            isCorrect: (c.groundTruth === 'FAKE'),
+            explanation: c.analysisText
+          });
+        }
+
         if (c.groundTruth === 'FAKE') {
           alert("CHÍNH XÁC! Bạn đã nhận diện đúng các dấu vết vật lý giả mạo.");
         } else {
@@ -2499,6 +2513,20 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       document.getElementById(btnRealId)?.addEventListener('click', () => {
         resBox.style.display = 'block';
+
+        if (window.DeepGuardMemory && window.DeepGuardMemory.logQuestionAttempt) {
+          window.DeepGuardMemory.logQuestionAttempt({
+            questionId: c.id,
+            module: 'cases',
+            pillar: 'acoustics',
+            questionText: c.title + ': ' + c.audioProfile,
+            chosenAnswer: 'REAL',
+            correctAnswer: c.groundTruth,
+            isCorrect: (c.groundTruth === 'REAL'),
+            explanation: c.analysisText
+          });
+        }
+
         if (c.groundTruth === 'REAL') {
           alert("CHÍNH XÁC! Bạn đã không mắc bẫy báo động giả của trường hợp bệnh lý.");
         } else {
@@ -2882,6 +2910,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const isCorrect = (selected === q.ans);
 
         // Record User Behavior for Adaptive Learning Engine
+        
+        // Record into DeepGuard User Memory
+        if (window.DeepGuardMemory && window.DeepGuardMemory.logQuestionAttempt) {
+          window.DeepGuardMemory.logQuestionAttempt({
+            questionId: q.id || ('QUIZ-' + (idx + 1)),
+            module: 'quiz_trap',
+            pillar: q.cat || 'dsp',
+            questionText: q.q,
+            chosenAnswer: selected,
+            correctAnswer: q.ans,
+            isCorrect: isCorrect,
+            explanation: q.exp || ''
+          });
+        }
+
         if (window.DeepGuardAIForge && window.DeepGuardAIForge.recordQuizAttempt) {
           window.DeepGuardAIForge.recordQuizAttempt({
             questionId: q.id || `q-${idx}`,
@@ -3037,6 +3080,20 @@ document.addEventListener('DOMContentLoaded', () => {
               b.style.background = 'rgba(255, 51, 102, 0.12)';
             }
           });
+
+          
+          if (window.DeepGuardMemory && window.DeepGuardMemory.logQuestionAttempt) {
+            window.DeepGuardMemory.logQuestionAttempt({
+              questionId: 'AUDIT-' + mod.id,
+              module: 'code_audit',
+              pillar: mod.id === 'mod_dsp' ? 'dsp' : (mod.id === 'mod_prosody' ? 'prosody' : (mod.id === 'mod_acoustics' ? 'acoustics' : (mod.id === 'mod_melcnn' ? 'onnx' : 'fusion'))),
+              questionText: mod.auditChallenge.question,
+              chosenAnswer: chosenIdx,
+              correctAnswer: mod.auditChallenge.correct,
+              isCorrect: isCorrect,
+              explanation: mod.auditChallenge.explanation
+            });
+          }
 
           fbBox.style.display = 'block';
           if (isCorrect) {
@@ -3807,6 +3864,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const isPassed = finalGpa >= 8.0;
     const certId = "DG-CERT-" + Date.now().toString().slice(-8);
     const mockHash = "cert_sha256_" + Math.random().toString(36).substring(2, 12);
+
+    
+    if (isPassed && window.DeepGuardMemory && window.DeepGuardMemory.saveCertificate) {
+      window.DeepGuardMemory.saveCertificate({
+        certId: certId,
+        title: 'DeepGuard Certified Forensic Engineer (Level 3)',
+        candidateName: name,
+        score: finalGpa + ' / 10',
+        hash: mockHash
+      });
+    }
 
     examResultCard.innerHTML = `
       <div class="certificate-box">

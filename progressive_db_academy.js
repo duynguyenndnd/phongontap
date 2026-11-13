@@ -1634,6 +1634,21 @@
     recordAnswer(question, selectedIdx) {
       const isCorrect = (selectedIdx === question.ans);
       this.profile.totalAnswers++;
+
+      // Connect to DeepGuard User Memory Hub
+      if (window.DeepGuardMemory && window.DeepGuardMemory.logQuestionAttempt) {
+        window.DeepGuardMemory.logQuestionAttempt({
+          questionId: question.id,
+          module: 'progressive_l' + lvl,
+          pillar: lvl === 3 ? 'security' : (lvl === 2 ? 'onnx' : 'dsp'),
+          questionText: question.q,
+          chosenAnswer: selectedIdx,
+          correctAnswer: question.ans,
+          isCorrect: isCorrect,
+          explanation: question.exp || ''
+        });
+      }
+
       const lvl = question.level;
 
       if (!this.profile.levelScores[lvl]) {
