@@ -90,6 +90,10 @@
     return 'dg_u_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 9);
   }
 
+  function generateSalt() {
+    return Math.random().toString(36).substring(2, 10);
+  }
+
   class DeepGuardMemoryEngine {
     constructor() {
       this.db = null;
@@ -217,6 +221,7 @@
         salt: salt,
         password_hash: hash,
         avatar: avatar,
+        status: 'active',
         created_at: new Date().toISOString(),
         last_login: new Date().toISOString()
       };
@@ -252,6 +257,10 @@
       const user = await this.getUserByUsername(cleanUsername);
       if (!user) {
         throw new Error('Tài khoản không tồn tại trên hệ thống!');
+      }
+
+      if (user.status === 'locked') {
+        throw new Error('Tài khoản này đã bị Quản Trị Viên tạm khóa. Vui lòng liên hệ Admin để mở khóa!');
       }
 
       const hash = await hashPassword(password, user.salt);
@@ -689,6 +698,172 @@
       this.memoryListeners.forEach(fn => {
         try { fn(this.currentMemory); } catch (e) { console.error(e); }
       });
+    }
+
+    // ==========================================
+    // ADMIN CONSOLE METHODS (QUẢN TRỊ TÀI KHOẢN)
+    // ==========================================
+
+    getAdminKey() {
+      return localStorage.getItem('dg_admin_master_key') || 'admin2026';
+    }
+
+    setAdminKey(newKey) {
+      if (!newKey || newKey.trim().length < 4) {
+        throw new Error('Mã PIN Admin phải có ít nhất 4 ký tự!');
+      }
+      localStorage.setItem('dg_admin_master_key', newKey.trim());
+      return true;
+    }
+
+    verifyAdminKey(inputKey) {
+      return (inputKey || '').trim() === this.getAdminKey();
+    }
+
+    async getAllUsers() {
+      return new Promise((resolve) => {
+        if (this.db) {
+          try {
+            const tx = this.db.transaction('users', 'readonly');
+            const store = tx.objectStore('users');
+            const req = store.getAll();
+            req.onsuccess = () => resolve(req.result || []);
+            req.onerror = () => resolve(this.getAllUsersFallback());
+            return;
+          } catch (e) {}
+        }
+        resolve(this.getAllUsersFallback());
+      });
+    }
+
+    getAllUsersFallback() {
+      try {
+        const users = JSON.parse(localStorage.getItem('dg_users_store') || '{}');
+        return Object.values(users);
+      } catch (e) {
+        return [];
+      }
+    }
+
+    async adminSetUserStatus(userId, status) {
+      const user = await this.getUserById(userId);
+      if (!user) throw new Error('Không tìm thấy tài khoản để cập nhật trạng thái!');
+      user.status = status;
+      await this.saveUser(user);
+      if (this.currentUser && this.currentUser.user_id === userId && status === 'locked') {
+        this.logout();
+      }
+      return user;
+    }
+
+    async adminResetPassword(userId, newPassword) {
+      if (!newPassword || newPassword.length < 6) {
+        throw new Error('Mật khẩu mới phải có ít nhất 6 ký tự!');
+      }
+      const user = await this.getUserById(userId);
+      if (!user) throw new Error('Không tìm thấy tài khoản để đặt lại mật khẩu!');
+      const newSalt = generateSalt();
+      const newHash = await hashPassword(newPassword, newSalt);
+      user.salt = newSalt;
+      user.password_hash = newHash;
+      await this.saveUser(user);
+      return true;
+    }
+
+    async adminDeleteUser(userId) {
+      const user = await this.getUserById(userId);
+      if (!user) throw new Error('Không tìm thấy tài khoản cần xóa!');
+
+      if (this.currentUser && this.currentUser.user_id === userId) {
+        this.logout();
+      }
+
+      if (this.db) {
+        try {
+          const tx1 = this.db.transaction('users', 'readwrite');
+          tx1.objectStore('users').delete(userId);
+          const tx2 = this.db.transaction('memory_vault', 'readwrite');
+          tx2.objectStore('memory_vault').delete(userId);
+        } catch (e) {}
+      }
+
+      try {
+        const users = JSON.parse(localStorage.getItem('dg_users_store') || '{}');
+        delete users[userId];
+        localStorage.setItem('dg_users_store', JSON.stringify(users));
+
+        const memories = JSON.parse(localStorage.getItem('dg_memory_store') || '{}');
+        delete memories[userId];
+        localStorage.setItem('dg_memory_store', JSON.stringify(memories));
+      } catch (e) {}
+
+      return true;
+    }
+
+    async adminCreateUser({ username, full_name, email, password, role = 'student' }) {
+      const cleanUsername = (username || '').trim().toLowerCase();
+      if (!cleanUsername || cleanUsername.length < 3) {
+        throw new Error('Tên đăng nhập phải có ít nhất 3 ký tự!');
+      }
+      if (!password || password.length < 6) {
+        throw new Error('Mật khẩu phải có ít nhất 6 ký tự!');
+      }
+
+      const existing = await this.getUserByUsername(cleanUsername);
+      if (existing) {
+        throw new Error(`Tài khoản "${cleanUsername}" đã tồn tại trên hệ thống!`);
+      }
+
+      const userId = 'usr_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+      const salt = generateSalt();
+      const hash = await hashPassword(password, salt);
+      const avatar = '🛡️';
+
+      const newUser = {
+        user_id: userId,
+        username: cleanUsername,
+        full_name: (full_name || cleanUsername).trim(),
+        email: (email || '').trim().toLowerCase(),
+        role: role,
+        salt: salt,
+        password_hash: hash,
+        avatar: avatar,
+        status: 'active',
+        created_at: new Date().toISOString(),
+        last_login: null
+      };
+
+      const initialMemory = createDefaultMemoryState(userId, cleanUsername, newUser.full_name, avatar);
+      await this.saveUser(newUser);
+      await this.saveMemory(initialMemory);
+      return newUser;
+    }
+
+    async adminExportFullDatabase() {
+      const users = await this.getAllUsers();
+      const data = {
+        exported_at: new Date().toISOString(),
+        system: 'DeepGuard AI Enterprise',
+        users_count: users.length,
+        users: []
+      };
+
+      for (const u of users) {
+        const mem = await this.getMemoryByUserId(u.user_id);
+        data.users.push({
+          user_id: u.user_id,
+          username: u.username,
+          full_name: u.full_name,
+          email: u.email,
+          role: u.role || 'student',
+          status: u.status || 'active',
+          created_at: u.created_at,
+          last_login: u.last_login,
+          memory: mem || null
+        });
+      }
+
+      return data;
     }
   }
 
